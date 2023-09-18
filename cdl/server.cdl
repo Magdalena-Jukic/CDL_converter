@@ -1,0 +1,1119 @@
+Server {
+    Type = KeyValuePair,
+    ShortHelp = 'Per server configuration'
+    Keys {
+        Type = String,
+        ShortHelp = 'Server name'
+    }
+    Values {
+        Type = Hash,
+        ShortHelp = 'Per instance configuration',
+        Items {
+            Enabled     { Type = Boolean, Default = true, ShortHelp = "Allows to disable this server temporarily", Group = 0Inheritance }
+            Services { Type = List, ShortHelp = "List of service groups requiring this server (deprecated)"
+                Keys { Type = Enumeration, Values {  RADIUS, COMMAND, LDAP, DNS, PORTAL, LDAPTIER, DBT, SESSION, MME, SHADOW } }
+            }
+
+            Handler     { Type = KeyValuePair, ShortHelp = 'Handler plug-ins on well-defined slots'
+                Keys   { Type = Enumeration, Values { Access.In, Access.Out, Accounting.In, Accounting.Out } }
+                Values { Type = Handler, ShortHelp = 'The handler (code or name) to be applied' }
+            }
+            Limit      { Type = Speed, ShortHelp = "Throughput limit of submitted requests" }
+            Limits     { Type = List, Keys { Type = String, ShortHelp = "Additional throughput limiting resource names to be taken into account for throttling" } }
+            LazyDecoding { Type = Boolean, Default = false, ShortHelp = "If supported by the coder: use late decoding, suitable for router applications" }
+            ParallelProcessing { Type = Boolean, Default = true, ShortHelp = "Use the threadpool to dipatch processing of incoming messages" }
+            ThreadPool { Type = String, ShortHelp = "The name of the ThreadPool that should be used for processing incoming requests. Thread pools are configured in the top level section 'ThreadPools'" }
+            Encoding    { Type = String, Group = 1General, ShortHelp = "If the coder to be used differes from the Protocol, this defines the alternative coder (deprecated)"  }
+            Protocol    { Type = Enumeration, Default = RADIUS, Values { SAM, GIOP, RADIUS, MTP, MME, SESSION, LDAP, LDAP2, LDAP3, RAW, LES, PORTAL, UCP, Diameter, MAPTIER, Props, TEMPLATE, MYSQL, LDAPTIER, DBAD, Http, Http2, SESSIONItems, Items, H248Ascii, SMPP,DHCP, DHCPV6, BulkDHCP, BulkDHCPV6, DNS, BulkDNS, COPS, Command, Mysql, Smtp, Netconf, Event, Load, AML, LI }, ShortHelp = 'The peer protocol' }
+            Transport   { Type = Enumeration, Default = UDP, Values { MCAST_UDP, UDP, TCP, SCTP, TCPS, TCPMultiConnection, RUDP, MCAST_RUDP, MAP, MYSQL, Sync, DiameterRouter, Items, Local, SSH, NioTCP, JDBC, COPS }, ShortHelp = 'The peer transport (IP) protocol' }
+            Layer { Type = String, ShortHelp = "Comma separated list of layers to push on top of the plug, <lowest>,<next>,..,<top>" }
+            NotificationReceiver { Type = Hash
+                Items {
+                    Store    { Type = String }
+                    ItemType { Type = String }
+                    Group    { Type = String }
+                }
+            }
+            HTTPFormAuthenticationLayer { Type = Hash
+                Items {
+                    UsernameField { Type = String, Default="Username", ShortHelp = "The name of the username field of the login form" }
+                    PasswordField { Type = String, Default="Password", ShortHelp = "The name of the password field of the login form" }
+                    URI { Type = String, Default = "lib/resources/formauth/login.nsp", ShortHelp = "The URI of the login form" }
+                    Method { Type = Enumeration, Values { GET POST }, Default = "POST", ShortHelp = "The HTTP method to send the form data" }
+                }
+            }
+            ReconnectLayer { Type = Hash
+                Items {
+                    Mode { Type = Enumeration, Default = "BinaryExpBackoff", Values { "Interval", "BinaryExpBackoff" }, ShortHelp = 'Mode of reconnect' }
+                    StableConnectionInterval {Type = Duration, Default = "1s", ShortHelp = "Buffer zone after a maximal reconnect interval. If exceeded the InitialDelay is used for the next reconnect attempt."}
+                    Interval { Type = Hash
+                        Items {
+                            InitialDelay { Type = Duration, Default = "10ms", ShortHelp = "Delay before first attempt to reconnect a lost TCP connection" }
+                            MeanDelay { Type = Duration, Default = "5s", ShortHelp = "Mean delay before succeeding attempts to reconnect a lost TCP connection" }
+                            MaxDeviation { Type = Percentage, Default = "20%", ShortHelp = "Maximum deviation from the MeanDelay in percent" }
+                        }
+                    }
+                    BinaryExpBackoff { Type = Hash
+                        Items {
+                            InitialDelay { Type = Duration, Default = "10ms", ShortHelp = "Delay before first attempt to reconnect a lost TCP connection" }
+                            MinDelay { Type = Duration, Default = "10ms", ShortHelp = "Min delay for succeeding attempts reconnect a lost TCP connection" }
+                            MaxDelay { Type = Duration, Default = "5s", ShortHelp = "Max delay for succeeding attempts reconnect a lost TCP connection" }
+                            MaxDeviation { Type = Percentage, Default = "20%", ShortHelp = "Maximum deviation from the MeanDelay in percent" }
+                        }
+                    }
+                }
+            }
+            Soap { Type = Hash
+                Items {
+                    AppendSignalPostfix {
+                        ShortHelp = "Append Req,Res,Rej to internal soap signals"
+                        Type = Boolean
+                        Default = false
+                    }
+                    Version {
+                        ShortHelp = "Specifies the SOAP version"
+                        Type = Enumeration
+                        Values { "1.1" }
+                    }
+                    Mode {
+                        ShortHelp = "Specifies the encoding document style and encoding"
+                        Type = Enumeration
+                        Values { "TRANSPARENT", "DOCUMENT_LITERAL", "RPC_LITERAL", "RPC_ENCODED", "DOCUMENT_ENCODED" }
+                    }
+                    HttpVersion {
+                        Type = Enumeration
+                        Values { "1.0", "1.1" }
+                        ShortHelp = "Use this HTTP version in requests."
+                    }
+                    HttpHeaders {
+                        ShortHelp = "Additional HTTP headers to be included in requests",
+                        Type = KeyValuePair,
+                        Keys { Type = String, ShortHelp="The header name", Example="Connection" }
+                        Values { Type = String, ShortHelp="The header value" Example="Keep-Alive" }
+                    }
+                }
+            }
+            SMPP { Type = Hash
+                Items {
+                    BindMode { Type = Enumeration, Default = Transmitter, Values { "Receiver", "Transmitter", "Transceiver" }, ShortHelp = "Desired mode for binding to an SMSC" }
+                    EnquireLinkInterval { Type = Duration, Default = "0s", ShortHelp = "Interval between two consecutive EnquireLinkReqs. Set to 0 to disable." }
+                    SystemId { Type = String, ShortHelp = "SystemId (username) to register with the SMSC" }
+                    Password { Type = Password, ShortHelp = "Password to register with the SMSC" }
+                    SystemType { Type = String, ShortHelp = "The system_type sent to the SMSC in bind request" }
+                    Version { Type = String, Default="SMPP_V34", ShortHelp = "The SMPP version to include in the bind request. Currently only SMPP 3.4 is supported." }
+                    AddressTon { Type = Enumeration, Default = "Unknown", Values { "Unknown", "International", "National", "NetworkSpecific", "SubscriberNumber", "Alphanumeric", "Abbreviated" }, ShortHelp = "The address type of number to send in the bind request. Set to 'Unknown' if not needed by SMSC" }
+                    AddressNpi { Type = Enumeration, Default = "Unknown", Values { "Unknown", "ISDN", "Data", "Telex", "LandMobile", "National", "Private", "ERMES", "Internet", "WAP" }, ShortHelp = "The address number plan indicator to use in the bind request. Set to 'Unknown' if not needed by the SMSC" }
+                    AddressRange { Type = String, ShortHelp = "The address range to use. If not known leave away." }
+                }
+            }
+            SMPPCoder {
+                Type = Hash
+                Items {
+                    SMSCDefaultEncoding { Type = "String", Default="ASCII", ShortHelp="The default encoding used by the SMSC when no DataCoding is specified in an SMPP request." }
+                }
+            }
+            Smtp { Type = Hash
+                Items {
+                    AuthMechanisms { Type = List, ShortHelp = "List of configured Sasl authentication mechanisms"
+                        Keys { Type = Enumeration, Values { Plain } }
+                        Default { Plain }
+                    }
+                    Sasl { Type = Hash
+                        Items {
+                            Plain { Type = Hash
+                                Items {
+                                    Authzid { Type = String, ShortHelp = "Authorization identity" }
+                                    Authcid { Type = String, ShortHelp = "Authentication identity" }
+                                    Passwd { Type = Password, ShortHelp = "Password" }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            WindowSizeQueueSize    { Type = Int, Default = 100, ShortHelp = "The maximum number of messages to queue due to windowssize limitations" }
+            WindowSize             { Type = Int, Default = 0, ShortHelp = "The allowed window size, 0 means unlimited" }
+
+            SSLCert     { Type = String, ShortHelp = 'TCP: The file containing the SSL certificate used for the SSL connection' }
+            SSLKey      { Type = String, ShortHelp = 'TCP: The file containing the SSL key used for the SSL connection' }
+            SSLCA       { Type = String, ShortHelp = 'TCP: The file containing the SSL certificate authority certificates used for the SSL connection' }
+            SSLPass     { Type = Secret, ShortHelp = 'TCP: The secret for the SSL keystores' }
+            SSLTrustAll { Type = Boolean, ShortHelp = 'TCP: If activated all certificates will be trusted.' }
+
+            TemplatePath { Type = String, ShortHelp = 'The path for the templating engine, the templates to be encoded and sent via HTTP are stored here.', Default = '$(Home)/conf/templates' }
+
+            Secret      { Type = Secret, ShortHelp = "RADIUS: The shared secret/password" }
+            LocalAddr   { Type = IPv4v6Address, ShortHelp = 'The IP address we send requests from' }
+            LocalPort   { Type = Int, ShortHelp = 'The IP port we send requests from', Min=0, Max = 65535 }
+            Interface   { Type = String, ShortHelp = 'The interface to send from, applies only to multicast, e.g. bge0'}
+            ProbeMessage   { Type = String, ShortHelp = 'A message definition to be used for probing'}
+            KeepAliveInterval { Type = Int, ShortHelp = 'Interval in milliseconds after which traffic absence will be checked.' }
+            KeepAliveMessage {Type = String, ShortHelp = 'String representation of a message to be used to keep connection alive.' }
+            RemoteAddr  { Type = IPv4v6Address, ShortHelp = 'The IP address we sent requests to', Mandatory = true }
+            RemotePort  { Type = Int,  ShortHelp = 'The destination port', Mandatory = true }
+            RemoteService { Type = String,  ShortHelp = 'The destination service'}
+            ReconnectMode { Type = Enumeration, Default = Off, Values { Off, Immediate, OnDemand }, ShortHelp = "TCP: Configure if low-level auto-reconnect is required" }
+
+            UDPReceiveBufferSize { Type = Int, Default = 65536, Unavailable = 1, Group = 8UDP
+                ShortHelp = "The internal allocated UDP kernel buffer size (receive queue buffer)"
+            }
+            UDPSendBufferSize { Type = Int, Default = 65536, Unavailable = 1, Group = 8UDP
+                ShortHelp = "The internal allocated UDP kernel buffer size (send queue buffer)",
+            }
+
+            MaxAttempts { Type = Int, Default = 1, Min = 1, Max = 100, High=3
+                ShortHelp = "How often shall we try until give up, obsolete if used with a ServerGroup, then the MaxAttepmts of that ServerGroup is used."
+            }
+
+            Timeouts { Type = List, Default { 1000ms }, ShortHelp = "List of staggered retry timeouts, e.g. { 1s, 2s, 2s }"
+                Keys { Type = Duration, Min = 100ms, Low = 500ms
+                    ShortHelp = "Retry timeout if no answer has been received"
+                }
+            }
+            TcpSoTimeout { Type = Duration, Default = 200ms, ShortHelp = "TCP socket read timeout, default 200ms" }
+            TcpWriteTimeout {
+                Type = Duration
+                Default = 3s
+                ShortHelp = "TCP write timeout"
+            }
+            TrafficClass {
+                Type = Int,
+                ShortHelp = "Sets the traffic class or type-of-service octet in the IP header",
+                Default = 0
+            }
+            KeepUpInterval { Type = Duration, Default = 5s
+                ShortHelp = "The time a server waits until allowing to flag the destination as 'down' after receiving a valid response"
+            }
+            DownWaitInterval { Type = Duration, Default = 10s
+                ShortHelp = "This defines the first ProbeInterval! after a server is flagged down"
+            }
+            ProbeInterval { Type = Duration, Default = 2s,
+                ShortHelp = "Interval to probe the destination after beeing recognised as unavailable, please see also DownWaitInterval as that interval will be used as the first probe interval before this value will be used for subsequent probes"
+            }
+            RestartInterval { Type = Duration, Default = 5s,
+                ShortHelp = "Interval to restart an unavailable plug."
+            }
+            URIPath { Type = String
+                ShortHelp = "The required url for TCP connections, e.g. HotSpot fetch"
+            }
+            CloseAfterRequest { Type = Boolean, Default = false
+                ShortHelp = "Defines the closing behaviour for TCP connections, shall the connection be closed after finishing the request or stay open"
+            }
+            SingleRequest { Type = Boolean, Default = false
+                ShortHelp = "Defines if only one request may be sent via a single connection. If so, a new connection will be invoked when a request is pending."
+            }
+            Username { Type = String,
+                ShortHelp = "The username, if required for protocol (e.g. UCP)"
+            }
+            ResTags { Type = String,
+                ShortHelp = "A regular expression, defining the tags to check for in xml templating adapter answer"
+            }
+            Password { Type = Secret,
+                ShortHelp = "The required password for protocol (e.g. UCP)"
+            }
+            ServiceId { Type = String,
+                ShortHelp = "The required ServiceId for protocol (e.g. LES)"
+            }
+            LogonRequired { Type = Boolean, Default = false,
+                ShortHelp = "If the server needs a logon, a LogonReq message is generated with Username/Password and sent prior the real request. The used adapter must support a LogonReq"
+            }
+            ConnectTimeout { Type = Duration, Default = 1s,
+                ShortHelp = "Specifies the TCP connect timeout"
+            }
+            MaxRequests { Type = Int, ShortHelp = 'After this number of requests the connection is closed by the server' }
+            MaxConnectTime { Type = Duration, ShortHelp = 'After this time the connection is closed by the server' }
+            MaxConnections {Type = Int, ShortHelp = 'Maximum number of simultaneous connections opened by a client plug.', Default = 1}
+            PropagateDeadline { Type = Boolean, Default = true, ShortHelp = "Whether the deadline should be propagated" }
+            UseGlobalTimeout { Type = Boolean, Default = false, ShortHelp = "Whether the timeout of the request should be used globally." }
+            MAP {
+                Type = Hash
+                Items {
+                    Node            { Type = String, ShortHelp = "Name of Ulticom node to use",                       Example = NODE1 }
+                    Name            { Type = String, ShortHelp = "The process identity for the Ulticom stack",        Example = MAPTD }
+                    SubSystemNumber { Type = Int,    ShortHelp = "Local subsystem number (similar to a port number)", Example = 5     }
+                    PointCode       { Type = Int,    ShortHelp = "Local pointcode (similar to an ip address)",        Example = 6091  }
+                    Debug           { Type = Int,    ShortHelp = "The MAP/SS7 stack debug level",                     Example = 1     }
+                }
+            }
+            Dictionary {
+                Type = Reference
+                In = Dictionaries
+                ShortHelp = "The dictionary to be used if required"
+            }
+            UseSSL { Type = Enumeration, Values {true, false, starttls, mtls}, Default = false, ShortHelp = "Use the Secure Channel connection based on SSL", Group = 2SSL }
+            SSLPassword  { Type = Password,  ShortHelp = "The SSL Password", Group = 2SSL }
+            SSLCertificate { Type = String,  ShortHelp = "The filename of the certicate", Group = 2SSL }
+            SSLSessionCacheSize { Type = Int, ShortHelp = "Maximum size of SSL Session Cache" Min=0, Default = 0, Group = 2SSL }
+            SSLSessionTimeout { Type = Int, ShortHelp = "Maximum duration of SSL Session in seconds" Min=1, Default = 86400, Group = 2SSL }
+            SSLCertificateStore {
+                Type = Hash,
+                Items {
+                    Profile { Type=String, ShortHelp="Name of the certificate profile" }
+                }
+            }
+            SSLEnabledProtocols {
+               ShortHelp = "List of enabled TLS versions"
+               Type = List
+               Keys {
+                  Type = Enumeration
+                  Values { 'TLSv1', 'TLSv1.1', 'TLSv1.2', 'TLSv1.3' }
+               }
+               Default { 'TLSv1.2', 'TLSv1.3' }
+               Group = 2SSL
+            }
+            SSLCipher  {
+                ShortHelp = "The list of allowed ciphers"
+                Type = List
+                Keys {
+                   Type = String
+                }
+                Group = 2SSL
+            }
+            OCSPEnabled   { Type = Boolean, Default = false, ShortHelp = "Enables OCSP checking" }
+            OCSPResponderURL   { Type = String, ShortHelp = 'OCSP responder URL' }
+            OCSPValidateCAChain   { Type = Boolean, Default = true, ShortHelp = 'Validates intermediate CAs' }
+            OCSPDistrustRevokedCA  { Type = Boolean, Default = true, ShortHelp = 'Removes revoked or expired intermediate CAs from the trust store' }
+            OCSPTrustIfUnavailableResponder  { Type = Boolean, Default = false, ShortHelp = 'Trust the client if the OCSP server is not responding' }
+            MYSQL {
+                Type = Hash
+                Items {
+                    User     { Type = String, ShortHelp = 'The login account name' }
+                    Password { Type = Password, ShortHelp = 'The login password' }
+                    Host     { Type = IPv4v6Address, Mandatory = true }
+                    Port     { Type = Int,  Default = 3306 }
+                    Database { Type = String, Mandatory = true ShortHelp = 'The databasename to be used' }
+                    TDLPath  { Type = String, ShortHelp = 'The path to table definition file in tdl format' }
+                    Engines  { Type = Int, ShortHelp = 'The number of threads processing the requests' }
+                }
+            }
+            JDBC {
+                Type = Hash
+                Items {
+                    DatabaseURL { Type = String, ShortHelp = 'The database URL. The full URL is compiled from this string and references to other top level config elements using angle brackets <>. E.g. jdbc:oracle:thin:<Username>/<Password>@myhost:1521:orcl or jdbc:mysql://<RemoteAddr>:<RemotePort>/' }
+                    QueueSize { Type = Int, Default = 10000, ShortHelp = 'The maximum queue size of one database connection'}
+                    PreparedStatementMapSize { Type = Int, Default = 1000, ShortHelp = 'The maximum number of concurrently held prepared statements per connection'}
+                }
+            }
+            Internal {
+                Type = Boolean
+                Default = false
+                ShortHelp = "Whether logging is on iin,iout rather than in, out"
+            }
+            PlugCount { Type = Int, Default = 1
+                ShortHelp = "The number of parallel incarnated plugs for this server (used round robin)"
+            }
+            PlugCreateDelay { Type = Duration, Default = 200ms, ShortHelp = 'The delay between creating the multiple plugs belonging to a single server' }
+            XmlSig { Type = Hash
+                Items {
+                    SSLKeyStore { Type = String, ShortHelp = "Filename of the java keystore" }
+                    SSLKeyStorePass { Type = String, ShortHelp = "The passphrase for the keystore" }
+                    SSLKeyAlias { Type = String, ShortHelp = "The alias of the key to use" }
+                    References { Type = KeyValuePair, ShortHelp = "A list of reference to include in signature"
+                        Keys { Type = String, ShortHelp="The Name of the Reference in slash syntax", Example="soapenv:Envelope/soapenv:Body" }
+                        Values { Type = Hash
+                            Items {
+                                Transforms { Type=List, Keys {
+                                    Type=Enumeration,
+                                    Values {
+                                        "http://www.w3.org/2000/09/xmldsig#enveloped-signature"
+                                        "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"
+                                    }
+                                }}
+                            }
+                        }
+                    }
+                }
+            }
+            DiameterBase { Type = Hash
+                Items {
+                    Realm {
+                        ShortHelp = "The diameter realm this diameter node belongs to"
+                        Mandatory = true
+                        Type = String
+                        Example = "pcrf.customer.us"
+                    }
+                    NodeID {
+                        ShortHelp = "The NodeID of this diameter node. Will be derived based on configured Realm and the instance name if not set. The NodeID is used to derive the DiameterIdentity to anounce to direct peers in CER/CEA messages."
+                        Type = String
+                        Example = "pcrf.tm.us"
+                    }
+                    AuthApplicationIds { Type = List, Keys {
+                        Type = String
+                    }}
+                    AcctApplicationIds { Type = List, Keys {
+                        Type = String
+                    }}
+                    SupportedVendorIds { Type = List, Keys {
+                            Type = Int
+                        }
+                        ShortHelp = 'A list of application ids (numerical) to be included in outgoing CER messages in AVP Supported-Vendor-Id'
+                    }
+                    HostIPAddress { Type = List, Keys {
+                            Type = IPv4v6Address
+                        }
+                        ShortHelp = 'The IP addresses to provide as Host-IP-Address AVPs in the CER/CEA exchange. If configured it overrides the addresses of the physical interfaces'
+                    }
+                    WatchdogInterval { Type = Duration, Default = 30s, ShortHelp = {
+                            The interval between two Device-WatchdogReq (see also WatchdogJitter)
+                        }.
+                    }
+                    WatchdogMaxAttempts { Type = Int, Default = 1, ShortHelp = {
+                            Number of unresponded Device-WatchdogReq before closing the connection.
+                        }.
+                    }
+                    WatchdogJitter { Type = Duration, Default = 2s, ShortHelp = {
+                            The additional random jitter for the WatchdogInterval.
+                        }.
+                    }
+                    UseUniqueIdentity { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true, the Origin-Host AVP value to be used is constructed by prepending the node id value with a unique prefix, so no two diameter connections use the same value. If set to false, the node id is used unmodified.'
+                    }
+                    CERRetryInterval { Type = Duration, Default = 3s, ShortHelp = {
+                            Time to wait before retrying a rejected or timed out Capabilities-ExchangeRequest.
+                        }.
+                    }
+                    DPRDisablePeriod { Type = Duration, Default = 5s, ShortHelp = {
+                            Time period that the diameter connection is disabled (not sending diameter messages) after receiving a Disconnect-Peer-Request.
+                        }.
+                    }
+                    OverwriteDestinationHost { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set'
+                    }
+                    OverwriteDestinationRealm { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set'
+                    }
+                    DestinationHost {
+                        ShortHelp = "The specified destination host will be inserted into outgoing messages. If the message already has a destination host it will only be overwritten if OverwriteDestinationHost is set to true"
+                        Mandatory = false
+                        Type = String
+                    }
+                    DestinationRealm {
+                        ShortHelp = "The specified destination realm will be inserted into outgoing messages. If the message already has a destination realm it will only be overwritten if OverwriteDestinationRealm is set to true"
+                        Mandatory = false
+                        Type = String
+                    }
+                    ProxyInfoFromRequest {
+                        Type = Boolean
+                        Default = true
+                        ShortHelp = 'Set to true if the coder should insert the multivalued Proxy-Info AVP from the request into the response'
+                    }
+                    DOIC {
+                        Type = Hash
+                        Items {
+                            Algorithms {
+                                ShortHelp = {
+                                    List of algorithms supported by the node
+                                }.
+                                Type = List,
+                                Keys {
+                                    Type = Enumeration,
+                                    Values { OLR_DEFAULT_ALGO }
+                                }
+                                Default { OLR_DEFAULT_ALGO }
+                            }
+                            Enabled {
+                                ShortHelp = {
+                                    If set to true, reacting role will be enabled.
+                                }.
+                                Type = Boolean
+                                Default = false
+                            }
+                            SlowStart { Type = Hash
+                                Items {
+                                    Mode { Type = Enumeration, Default = "Interval", Values { "Interval" }, ShortHelp = 'Mode of slow start' }
+                                    Use { Type = Enumeration, Default = "ExpireFull", Values { "Expire", "ExpireFull", "Off" }, ShortHelp = 'Active for use cases' }
+                                    Interval { Type = Hash
+                                        Items {
+                                            Time { Type = Duration, Default = "30s", ShortHelp  "Time interval" }
+                                            Step { Type = Percentage, Default = "5%", ShortHelp = "Each step in percentage" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    VendorId {
+                        ShortHelp = "Vendor id to use when inserting identity"
+                        Mandatory = false
+                        Type = Int
+                        Default = 53228
+                    }
+                    ProductName {
+                        ShortHelp = "Product name to use when inserting identity"
+                        Mandatory = false
+                        Type = String
+                        Default = "One-AAA"
+                    }
+                    RemoveVendorSpecificAVPs {
+                        Type = List,
+                        Keys {
+                            Type = Int
+                        }
+                        Mandatory = false
+                        ShortHelp = 'AVPs with these Vendor ids will be removed from external communication'
+                        Default {
+                            35269,
+                            10548
+                        }
+                    }
+                }
+            }
+            DiameterOutRouter { Type = Hash
+                Items {
+                    RealmRoutingTable {
+                        ShortHelp = "The name of the realm routing table"
+                        Type = String
+                        Mandatory = false
+                        Example = "RealmRoutingTable"
+                    }
+                    CapabilityMode {
+                        ShortHelp = "In 'Standard' mode the DiameterRouter finds diameter connections over the tuple (DiameterId, Auth-Application-Id/Acct-Application-Id'). In 'Weak' mode the DiameterRouter finds the connections over the DiameterId only"
+                        Type = Enumeration,
+                        Default = "Standard",
+                        Values { "Standard", "Weak" },
+                    }
+                }
+            }
+            DiameterRouter { Type = Hash
+                Items {
+                    Realm {
+                        ShortHelp = "The diameter realm this diameter node belongs to"
+                        Type = String
+                        Mandatory = true
+                        Example = "company.com"
+                    }
+                    NodeID {
+                        ShortHelp = "The NodeID of this diameter node. Will be derived based on configured Realm and the instance name if not set. The NodeID is used to derive the DiameterIdentity to anounce to direct peers in CER/CEA messages."
+                        Type = String
+                        Example = "aaa.company.com"
+                    }
+                    OriginHost {
+                        ShortHelp = "If set and RewriteOriginHost is set to true, this value is used to rewrite the Origin-Host AVP for outgoing payload (application-level) messages."
+                        Type = String
+                        Example = "aaa.company.com"
+                    }
+                    AuthApplicationIds { Type = List, Keys {
+                        Type = String
+                    }}
+                    AcctApplicationIds { Type = List, Keys {
+                        Type = String
+                    }}
+                    SupportedVendorIds { Type = List, Keys {
+                            Type = Int
+                        }
+                        ShortHelp = 'A list of application ids (numerical) to be included in outgoing CEA messages in AVP Supported-Vendor-Id'
+                    }
+                    HostIPAddress { Type = List, Keys {
+                            Type = IPv4v6Address
+                        }
+                        ShortHelp = 'The IP addresses to provide as Host-IP-Address AVPs in the CER/CEA exchange. If configured it overrides the addresses of the physical interfaces'
+                    }
+                    WatchdogInterval { Type = Duration, Default = 30s, ShortHelp = {
+                            The interval between two Device-WatchdogReq (see also WatchdogJitter)
+                        }.
+                    }
+                    WatchdogMaxAttempts { Type = Int, Default = 1, ShortHelp = {
+                            Number of unresponded Device-WatchdogReq before closing the connection.
+                        }.
+                    }
+                    WatchdogJitter { Type = Duration, Default = 2s, ShortHelp = {
+                            The additional random jitter for the WatchdogInterval.
+                        }.
+                    }
+                    RequireCER { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to false, accept Diameter requests without preceeding CER/CEA round. If set to true, the behaviour is compliant to rfc 3588'
+                    OLR_DEFAULT_ALGO}
+                    InterceptCER { Type = Boolean
+                        Default = false
+                        ShortHelp = 'If set to true, received CER messages are passed to the application for processing, along with the prepared CEA being available as /Response.'
+                    }
+                    CERRetryInterval { Type = Duration, Default = 3s, ShortHelp = {
+                            Time to wait before retrying a rejected or timed out Capabilities-ExchangeRequest.
+                        }.
+                    }
+                    DPRDisablePeriod { Type = Duration, Default = 5s, ShortHelp = {
+                            Time period that the diameter connection is disabled (not sending diameter messages) after receiving a Disconnect-Peer-Request.
+                        }.
+                    }
+                    RewriteOriginHost { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true, the Origin-Host and Origin-Realm AVPs of forwarded response messages will be rewritten to contain the configuration values defined for OriginHost and Realm of this layer. If this is set to true and UseUniqueIdentity is set to false, OriginHost must also be configured.'
+                    }
+                    UseUniqueIdentity { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true, the Origin-Host AVP value to be used is constructed by prepending the node id value with a unique prefix, so no two diameter connections use the same value. If set to false, the node id is used unmodified.'
+                    }
+                    OverwriteDestinationHost { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set'
+                    }
+                    OverwriteDestinationRealm { Type = Boolean
+                        Default = true
+                        ShortHelp = 'If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set'
+                    }
+                    DestinationHost {
+                        ShortHelp = "The specified destination host will be inserted into outgoing messages. If the message already has a destination host it will only be overwritten if OverwriteDestinationHost is set to true"
+                        Mandatory = false
+                       Type = String
+                    }
+                    DestinationRealm {
+                        ShortHelp = "The specified destination realm will be inserted into outgoing messages. If the message already has a destination realm it will only be overwritten if OverwriteDestinationRealm is set to true"
+                        Mandatory = false
+                        Type = String
+                    }
+                    ProxyInfoFromRequest {
+                        Type = Boolean
+                        Default = true
+                        ShortHelp = 'Set to true if the coder should insert the multivalued Proxy-Info AVP from the request into the response'
+                    }
+                    DOIC {
+                        Type = Hash
+                        Items {
+                            Algorithms {
+                                ShortHelp = {
+                                    List of algorithms supported by the node
+                                }.
+                                Type = List,
+                                Keys {
+                                    Type = Enumeration,
+                                    Values { OLR_DEFAULT_ALGO }
+                                }
+                                Default { OLR_DEFAULT_ALGO }
+                            }
+                            Enabled {
+                                ShortHelp = {
+                                    If set to true, reacting role will be enabled.
+                                }.
+                                Type = Boolean
+                                Default = false
+                            }
+                            SlowStart { Type = Hash
+                                Items {
+                                    Mode { Type = Enumeration, Default = "Interval", Values { "Interval" }, ShortHelp = 'Mode of slow start' }
+                                    Use { Type = Enumeration, Default = "ExpireFull", Values { "Expire", "ExpireFull", "Off" }, ShortHelp = 'Active for use cases' }
+                                    Interval { Type = Hash
+                                        Items {
+                                            Time { Type = Duration, Default = "30s", ShortHelp  "Time interval" }
+                                            Step { Type = Percentage, Default = "5%", ShortHelp = "Each step in percentage" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    VendorId {
+                        ShortHelp = "Vendor id to use when inserting identity"
+                        Mandatory = false
+                        Type = Int
+                        Default = 53228
+                    }
+                    ProductName {
+                        ShortHelp = "Product name to use when inserting identity"
+                        Mandatory = false
+                        Type = String
+                        Default = "One-AAA"
+                    }
+                    RemoveVendorSpecificAVPs {
+                        Type = List,
+                        Keys {
+                            Type = Int
+                        }
+                        Mandatory = false
+                        ShortHelp = 'AVPs with these Vendor ids will be removed from external communication'
+                        Default {
+                            35269,
+                            10548
+                        }
+                    }
+                }
+            }
+            Controller {
+                Type = Enumeration, Values {
+                    none, RMTP
+                }
+                Default = none
+                ShortHelp = {
+                    The traffic controller to be used
+                }.
+            }
+            RMTPSettings { Type = Hash
+                Items {
+                    BucketBeat { Type = Duration, Default = 20ms, ShortHelp = {
+                            The detection of lost packets and its refetching using a RetransmitReq\
+                            will operate in this cycle. Should be set to a small number\
+                            between 10ms and 40ms.
+                        }.
+                    }
+                    FirstRefetchInterval { Type = Duration, Default = 390ms, ShortHelp = {
+                            The interval after which the receiver will attempt to ask\
+                            for a packet retransmission of lost packets.
+                        }.
+                    }
+                    RefetchInterval { Type = Duration, Default = 690ms, ShortHelp = {
+                            The refetch interval for the second or later refetch request.
+                        }.
+                    }
+                    KeepTime { Type = Duration, Default = 15s, ShortHelp = {
+                            The sender will store and keep submittet packets for that amount of time.\
+                            After this time the packets are deleted by the server and are\
+                            not further available for a retransmission.
+                        }.
+                    }
+                    FlushInterval { Type = Duration, Default = 90ms, ShortHelp = {
+                            If payload traffic stops for longer than this interval the sender\
+                            will submit a 'KeepAliveReq' to allow a loss detection on the receiver site.
+                        }.
+                    }
+                    KeepAliveInterval { Type = Duration, Default = 3s, ShortHelp = {
+                            The sender will send KeepAliveReq messages after that amount of idle time\
+                            on the link to update its list of available receivers (Peers).
+                        }.
+                    }
+                    ResyncGap { Type = Int, Default = 12500, ShortHelp = {
+                            If the receiver receives a sequence number with a big difference to\
+                            the previously received one exceeding this maximum distance,\
+                            it will assume an 'out-of-sync' situation and clear and reset its receiver context.
+                        }.
+                    }
+                    ReceiveTableSize { Type = Int, Default = 32768, ShortHelp = {
+                            The internal receiver table to collect received sequence numbers in.\
+                            Should not be changed without a good reason.
+                        }.
+                    }
+                    SendTableSize { Type = Int, Default = 32768, ShortHelp = {
+                            The senders packet table size, the default is adequate and\
+                            should not be change without a good reason.
+                        }.
+                    }
+                    MaxRetries { Type = Int, Default = 10, ShortHelp = {
+                            The maximum allowed number of retransmit requests for a single missing\
+                            packet.
+                        }.
+                    }
+                    MaxRefetchSize { Type = Int, Default = 400, ShortHelp = {
+                            Once per BucketBeat interval, all missing packets are requested for retransmission\
+                            by the receiver to the sender. This number limits the number of simultaneously\
+                            requested packets per RetransmitReq per BucketBeat interval.
+                            This parameter will limit the refetch overhead and allows to throttle the retransmissions.
+                        }.
+                    }
+                    PeerIdleLimit { Type = Duration, Default = 120s, ShortHelp = {
+                            The sender maintains a Peer-State per receiver, updated using KeepAliveReq/Res\
+                            message exchanges. If the sender does not receive a KeepAliveRes from a Peer for this\
+                            amount of time, it will assume this receiver as gone.
+                        }.
+                    }
+                }
+            }
+            SCTP {
+                Type = Hash
+                Items {
+                    WriteTimeout {
+                        ShortHelp = {
+                            Maximal time to block on a write operation.
+                            A zero value disables the functionality.
+                        }.
+                        Type = Duration
+                        Default = '3s'
+                    }
+                    LocalAddrList {
+                        ShortHelp = {
+                            A list of IPv4 and/or IPv6 addresses to bind to if the wildcard address should not be used.
+                        }.
+                        Mandatory = false
+                        Type = List
+                        Keys { Type = IPv4v6Address }
+                    }
+                    RemoteAddrList {
+                        ShortHelp = {
+                            A list of IPv4 and/or IPv6 addresses to connect to.
+                        }.
+                        Mandatory = true
+                        Type = List
+                        Keys { Type = IPv4v6Address }
+                    }
+                    PrimaryRemoteAddr {
+                        ShortHelp = {
+                            The peer address to use as the association primary.
+                        }.
+                        Type = IPv4v6Address
+                        Mandatory = false
+                    }
+                    PrimaryLocalAddr {
+                        ShortHelp = {
+                            The address that the peer should use as the association primary.
+                        }.
+                        Type = IPv4v6Address
+                        Mandatory = false
+                    }
+                    FragmentInterleave {
+                        ShortHelp = {
+                            None: do not interleave messages at all.
+                            Multi: interleave messages from different associations only.
+                            Complete: interleave messages within associations
+                        }.
+                        Type = Enumeration, Values { None, Multi, Complete }
+                        Default = 'None'
+                    }
+                    NoDelay {
+                        ShortHelp = {
+                            If set to true, will disable a Nagle-like algorithm which coalesces short segments.
+                        }.
+                        Type = Boolean
+                        Default = false
+                    }
+                    DisableFragments {
+                        ShortHelp = {
+                            If set to true, no SCTP message fragmentation will be performed.
+                        }.
+                        Type = Boolean
+                        Default = false
+                    }
+                    ExplicitComplete {
+                        ShortHelp = {
+                            If set to true, the send method may be invoked multiple times to a send message.
+                        }.
+                        Type = Boolean
+                        Default = false
+                    }
+                    SoLinger {
+                        ShortHelp = {
+                            Time interval given in seconds to send queued unsent data after close is invoked on the socket.
+                            A negative value is disables the functionality.
+                        }.
+                        Type = Int
+                        Default = '1'
+                    }
+                    SoRcvBuf {
+                        ShortHelp = {
+                            Size of the socket receive buffer.
+                        }.
+                        Type = Int
+                        Default = '65536'
+                    }
+                    SoSndBuf {
+                        ShortHelp = {
+                            Size of the socket send buffer.
+                        }.
+                        Type = Int
+                        Default = '65536'
+                    }
+                    InitMaxInStreams {
+                        ShortHelp = {
+                            Maximum number of in streams requested during association. 0 indicates the default value.
+                        }.
+                        Type = Int
+                        Default = '0'
+                    }
+                    InitMaxOutStreams {
+                        ShortHelp = {
+                            Maximum number of out streams requested during association. 0 indicates the default value.
+                        }.
+                        Type = Int
+                        Default = '0'
+                    }
+                    PPID {
+                        ShortHelp = {
+                            Payload Protocol Identifier. Overrides any protocol specific value.
+                        }.
+                        Type = Int
+                    }
+                }
+            }
+            SSHClient {
+                Type = Hash
+                Items {
+                    UserName {
+                        Type = String
+                        Mandatory = true
+                        ShortHelp = 'The user name'
+                    }
+                    UserPassword {
+                        Type = Password
+                        Mandatory = false
+                        ShortHelp = 'The authentication password to use'
+                    }
+                    UserKeyFile {
+                        Type = Path
+                        Mandatory = false
+                        ShortHelp = 'The path to the keyfile to use for authentication'
+                    }
+                    TrustedServers {
+                        Type = List
+                        Keys {
+                            Type = String
+                        }
+                        ShortHelp = 'List of fingerprints of trusted servers. If not given, all servers are trusted'
+                    }
+                }
+            }
+            NetconfClient {
+                Type = Hash
+                Items {
+                    Realm {
+                        Type = String
+                        ShortHelp = "The diameter realm this diameter node belongs to"
+                    }
+                }
+            }
+            DNS {
+                Type = Hash
+                Items {
+                    SendBufferSize {
+                        ShortHelp = {
+			    The maximum size of DNS data before the packet is truncated.
+			    Configurable in the interval 512-65536 bytes.
+                        }.
+                        Type = Int
+                        Default = '4096'
+                    }
+                    ReceiveBufferSize {
+                        ShortHelp = {
+		            The payload size communicated in the OPT Resource Record to the peer.
+			    Configurable in the interval 512-65536 bytes.
+                        }.
+                        Type = Int
+                        Default = '4096'
+                    }
+                }
+            }
+            ItemStore {
+                Type = Hash
+                Items {
+                    StoreName {
+                        Type = String
+                        ShortHelp = "The name of the ItemStore to be used"
+                        Default = DefaultStore
+                    }
+                    ChangeNotificationSubscriptions {
+                        Type = List
+                        ShortHelp = 'list of the types that this connection wants to monitor for changes'
+                        Keys {
+                            Type = String
+                        }
+                    }
+                    FilterDuplicateChangeNotifications {
+                        Type = Boolean
+                        ShortHelp = {
+                            If enabled, only the first notification for a change is propagated to the application.
+                            Duplicates of the same event from other copies are discarded.
+                        }.
+                        Default = true
+                    }
+                    ChangeNotificationRetainWindow {
+                        Type = Duration
+                        ShortHelp = 'Size of the look-back window used to filter out duplicate change notifications.'
+                        Default = 5s
+                    }
+                    ThreadCount {
+                        Type = Int
+                        Default = 1
+                        ShortHelp = "The number of threads used to process IO events in the item store network"
+                    }
+                    MultiValueList {
+                        Type = Boolean
+                        ShortHelp = {
+                            If enabled, values of multivalued attributes in the response from ItemStore are provided as lists
+                            rather than properties (supporting LDAP coder).
+                        }.
+                        Default = false
+                    }
+                }
+            }
+            COPS {
+                Type = Hash
+                Items {
+                    PEPID {
+                        Type = String
+                        ShortHelp = 'Identity to use when acting as a client'
+                        Mandatory = true
+                    }
+                    MessageIntegrity {
+                        ShortHelp = {
+                            List of accepted methods in precedence order
+                            PLAIN - no data integrity
+                            MMAC - data integrity (shared keys)
+                            TLS - data encryption
+                        }.
+                        Type = List,
+                        Keys {
+                            Type = Enumeration,
+                            Values { PLAIN, HMAC, TLS }
+                        }
+                    }
+                    KeyTable {
+                        Type = Reference
+                        In = KeyTables
+                        ShortHelp = "Key table in case of HMAC data integrity"
+                    }
+                    Extension { Type = String, Default = "Base",
+                        ShortHelp = "Configure to PR if the COPS-PR extension should be used (Base/PR)"
+                    }
+                }
+            }
+            DHCP {
+                Type = Hash
+                Items {
+                    KeyTable {
+                        Type = Reference
+                        In = KeyTables
+                        ShortHelp = "Key table in case of HMAC data integrity"
+                    }
+                    PadTo300 {
+                        Type = Boolean
+                        ShortHelp = {
+                            If enabled, the coder pads messages to a minimum of 300 bytes.
+                        }.
+                        Default = true
+                    }
+                    PadToWordBoundary {
+                        Type = Boolean
+                        ShortHelp = {
+                            If enabled, the coder pads messages to word boundary.
+                        }.
+                        Default = true
+                    }
+                    MessageIntegrity {
+                        ShortHelp = {
+                            Authentication method
+                        }.
+                        Type = Enumeration,
+                        Values { PLAIN, HMAC },
+                        Default = PLAIN
+                    }
+                    DoReplayDetection {
+                        Type = Boolean
+                        ShortHelp = {
+                            If enabled, coder will perform replay detection
+                        }.
+                        Default = true
+                    }
+                }
+            }
+            Filters {
+                Type = Hash
+                Short = 'Optional filters'
+                Items {
+                    LoadMetrics {
+                        Type = Hash
+                        Short = 'Load metrics for overload control'
+                        Items {
+                            Tag  {
+                                Type = String
+                                ShortHelp = {
+                                    Tag to unify several plugs
+                                }.
+                            }
+                            ResponseTimes  {
+                                Type = Boolean
+                                ShortHelp = {
+                                    Measure response times
+                                }.
+                                Default = true
+                            }
+                            WindowSize {
+                                Type = Duration
+                                Default = 1s
+                                ShortHelp = "Floating window size"
+                            }
+                            FailureMatchers {
+                                Type = KeyValuePair
+                                Keys {
+                                    Type = String
+                                    ShortHelp = 'Matcher name'
+                                }
+                                Values {
+                                    Type = Hash
+                                    Items {
+                                        MessageSignature {
+                                            Type = KeyValuePair
+                                                ShortHelp = 'Message keys and values to match'
+                                            Keys {
+                                                Type = String
+                                                ShortHelp = 'Path to key'
+                                            }
+                                            Values {
+                                                Type = String
+                                                ShortHelp = 'Value to match'
+                                            }
+                                        }
+                                        MatcherType {
+                                            Type = Enumeration, Values { 'Exact', 'Regexp' }
+                                            Default = 'Exact'
+                                            ShortHelp = 'Matching method'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Registration { Type = Hash
+                Items {
+                    Signal { Type = String, Default = "Register", ShortHelp = "Signal by which registration is requested."}
+                    RetryInterval { Type = Duration, Default = "1s", ShortHelp = "Retry registration interval."}
+                }
+            }
+            Http2 {
+                Type = Hash
+                Items {
+                   SETTINGS_HEADER_TABLE_SIZE { Type = Int, Default = 4096, ShortHelp = 'Allows the sender to inform the remote endpoint of the maximum size of the header compression table used to decode header blocks, in octets. ' }
+                   SETTINGS_INITIAL_WINDOW_SIZE { Type = Int, Default = 65535, ShortHelp = 'Indicates the sender’s initial window size (in octets) for stream-level flow control. Max value: 2^31-1' }
+                   SETTINGS_MAX_FRAME_SIZE { Type = Int, Default = 16384, ShortHelp = 'Indicates the size of the largest frame payload that the sender is willing to receive, in octets. Max value: 2^24-1' }
+                   SETTINGS_MAX_HEADER_LIST_SIZE { Type = Int, Default = 100, ShortHelp = 'This directive informs a peer of the maximum size of header list that the sender is prepared to accept, in octets.' }
+                   SETTINGS_MAX_CONCURRENT_STREAMS { Type = Int, Min = 1, Default = 100, ShortHelp = 'The maximum number of concurrently active streams' }
+                }
+            }
+            HTTPRest { Type = Hash
+                Items {
+                	OutBoundProfile { Type = String, Default = "OutBound", ShortHelp = "The name of profile in provisioning chunk" }
+                	EnableDynamicSAMStatistics { Type = Boolean, Default = false, ShortHelp = "If enabled, HTTPRestLayer will generate Dynamic SAM Statistics"}
+                    SwappingTable {
+                    	Type = KeyValuePair,
+                        ShortHelp = "Swapping keys for outbound traffic"
+                        Keys { Type = String, ShortHelp="The key name", Example="Host" }
+                        Values { Type = String, ShortHelp="The key value" Example="Authority" }
+                	}
+                   	RESTProfiles {
+                   	    Type = List
+                   	    ShortHelp = 'List of profiles loaded with RESTProfileYAML provisioning chunks (used only by HTTPRestV2 layer)'
+                   	    Keys { Type = String, ShortHelp="The name of RESTProfileYAML provisioning chunk", Example="TestProfile" }
+                   	}
+            	}
+        	}
+            LDAP {
+                Type = Hash
+                Items {
+                    RebindOnErr1 {
+                        Type = Boolean,
+                        ShortHelp = "Forces rebind on LDAP layer on response with ErrorCode = 1"
+                        Default = false
+                    }
+                }
+            }
+        	IdleTimeout {
+        	    Type = Duration
+        	    ShortHelp = "Close server connection if idle for the specified time. Used only with CallbackServerGroup."
+            	Default = 0s
+            }
+            Http {
+                Type = Hash
+                Items {
+                   BodyCharset { Type = String, Default = "ISO-8859-1", ShortHelp = 'Charset used when encoding message body.' }
+                }
+            }
+            StratumIPC {
+                Type = Hash
+                Items {
+                   HeartbeatInterval { Type = Duration, Default = "1000ms", ShortHelp = 'The interval between heartbeat messages sent by the client' }
+                   MaxMissingHeartbeats { Type = Int, Min = 0, Default = 2, ShortHelp = 'The number of heartbeats sent without receiving heartbeat before connection is terminated' }
+                }
+            }
+        }
+    }
+}

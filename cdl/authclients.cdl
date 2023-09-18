@@ -1,0 +1,48 @@
+AuthClients {
+	Isa = Clients
+	Type = KeyValuePair
+	Keys {
+		Type = String
+		ShortHelp = "Name of the prov chunk"
+	}
+	Values {
+		Type = KeyValuePair
+		ShortHelp = "clients allowed to access the 5G Authenticator"
+		Keys {
+			Type = String
+			ShortHelp = "The global name of the client"
+		}
+		Values {
+			Type = Hash
+			ShortHelp = "The clients"
+			Items {
+				MaxSessionIdleTime {
+					Type = Duration
+					Default = 15s
+					ShortHelp = "Specifies the max. amount of time an authentication session may be idle before its state information is dismissed."
+				}            
+				Authentication {
+					ShortHelp = 'The list of authentication profiles enabled for this client, in descending order of precedence'
+					Type = List
+					Keys {
+						Type = String
+					}
+				}
+				EAPKeyTableSource {
+					Type = Enumeration
+					Mandatory = false
+					ShortHelp = "Specifies the source of EAP profile data {NDS, STORE} "
+					Default = 'NDS' 
+					Values { 
+						NDS, STORE
+					}
+				}
+				KeyTableView {
+					Type = String
+					Mandatory = false
+					ShortHelp = "Name of the LDAPView to use when accessing the EAP key table via LDAPTD"
+				}
+			}
+		}
+	}	
+}

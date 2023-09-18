@@ -1,0 +1,24 @@
+APPLICATIONClients {
+	Isa = Clients
+	Type = KeyValuePair
+	Keys {
+        Type = String
+        ShortHelp = "Name of the prov chunk"
+    }
+    Values {
+		Type = KeyValuePair
+	    Keys {
+			Type = String
+			ShortHelp = 'The name of the client'
+		}
+	    Values {
+			Type = Hash
+        	ShortHelp = "The client configuration"
+        	Items {
+				Dictionary { Type = Reference, In = Dictionaries,
+					ShortHelp = "The dictionary to be used if required"
+				}
+        	}
+   	   }
+	}
+}
