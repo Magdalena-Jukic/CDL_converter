@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<root>
+	<MaxSessionIdleTime>
+		<Type>Duration</Type>
+		<Default>15s</Default>
+		<ShortHelp>Specifies the max. amount of time an authentication session may be idle before its state information is dismissed.</ShortHelp>
+	</MaxSessionIdleTime>
+	<Authentication>
+		<ShortHelp>The list of authentication profiles enabled for this client  in descending order of precedence</ShortHelp>
+		<Type>List</Type>
+		<Keys>
+			<Type>String</Type>
+		</Keys>
+	</Authentication>
+	<EAPKeyTableSource>
+		<Type>Enumeration</Type>
+		<Mandatory>false</Mandatory>
+		<ShortHelp>Specifies the source of EAP profile data  { NDS  STORE }  </ShortHelp>
+		<Default>NDS</Default>
+		<Values>
+			<item>NDS</item>
+			<item>STORE</item>
+		</Values>
+	</EAPKeyTableSource>
+	<KeyTableView>
+		<Type>String</Type>
+		<Mandatory>false</Mandatory>
+		<ShortHelp>Name of the LDAPView to use when accessing the EAP key table via LDAPTD</ShortHelp>
+	</KeyTableView>
+</root>

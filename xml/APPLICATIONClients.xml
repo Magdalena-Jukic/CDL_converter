@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<root>
+	<Dictionary>
+		<Type>Reference</Type>
+		<In>Dictionaries</In>
+		<ShortHelp>The dictionary to be used if required</ShortHelp>
+	</Dictionary>
+</root>

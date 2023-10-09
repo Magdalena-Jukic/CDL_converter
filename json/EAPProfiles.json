@@ -1,0 +1,731 @@
+{
+    "TLS": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-TLS configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "SSLKeyStore": {
+                    "Type": "String",
+                    "Mandatory": "false",
+                    "ShortHelp": "path to the keystore file to use"
+                },
+                "SSLKeyStorePass": {
+                    "Type": "String",
+                    "ShortHelp": "password of the keystore"
+                },
+                "SSLServerAlias": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "the alias to lookup the server key pair in the keystore"
+                },
+                "SSLTrustStore": {
+                    "Type": "String",
+                    "ShortHelp": "path to the truststore file to use"
+                },
+                "SSLTrustStorePass": {
+                    "Type": "String",
+                    "ShortHelp": "password of the truststore"
+                },
+                "SSLCertificateStore": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Profile": {
+                            "Type": "String",
+                            "ShortHelp": "Name of certificate profile"
+                        }
+                    }
+                },
+                "SSLCertificateTrustStore": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Profile": {
+                            "Type": "String",
+                            "ShortHelp": "Name of certificate profile"
+                        }
+                    }
+                },
+                "SSLEnabledProtocols": {
+                    "ShortHelp": "List of enabled TLS versions",
+                    "Type": "List",
+                    "Keys": {
+                        "Type": "Enumeration",
+                        "Values": [
+                            "TLSv1",
+                            "TLSv1.1",
+                            "TLSv1.2",
+                            "TLSv1.3"
+                        ]
+                    },
+                    "Default": [
+                        "TLSv1.2",
+                        "TLSv1.3"
+                    ]
+                },
+                "SSLEnabledCipherSuites": {
+                    "Type": "List",
+                    "ShortHelp": "List of ciphersuites enabled for perferming a TLS handshake",
+                    "Keys": {
+                        "Type": "Enumeration",
+                        "ShortHelp": "The valid list elements.",
+                        "Values": [
+                            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "TLS_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_RSA_WITH_AES_256_CBC_SHA",
+                            "SSL_RSA_WITH_RC4_128_SHA",
+                            "SSL_RSA_WITH_RC4_128_MD5",
+                            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_RSA_WITH_DES_CBC_SHA",
+                            "SSL_DHE_RSA_WITH_DES_CBC_SHA",
+                            "SSL_DHE_DSS_WITH_DES_CBC_SHA",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "TLS_AES_128_GCM_SHA256",
+                            "TLS_AES_256_GCM_SHA384"
+                        ]
+                    },
+                    "Default": [
+                        "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                        "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                        "TLS_RSA_WITH_AES_128_CBC_SHA",
+                        "SSL_RSA_WITH_RC4_128_SHA",
+                        "SSL_RSA_WITH_RC4_128_MD5",
+                        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                        "TLS_AES_128_GCM_SHA256"
+                    ]
+                },
+                "FragmentSize": {
+                    "Type": "Int",
+                    "Default": "1000",
+                    "ShortHelp": "Maximum size of EAP message fragments"
+                }
+            }
+        }
+    },
+    "TTLS": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-TTLS configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "SSLKeyStore": {
+                    "Type": "String",
+                    "Mandatory": "false",
+                    "ShortHelp": "path to the keystore file to use"
+                },
+                "SSLKeyStorePass": {
+                    "Type": "String",
+                    "ShortHelp": "password of the keystore"
+                },
+                "SSLServerAlias": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "the alias of the server key pair in the keystore"
+                },
+                "SSLTrustStore": {
+                    "Type": "String",
+                    "ShortHelp": "path to the truststore file to use"
+                },
+                "SSLTrustStorePass": {
+                    "Type": "String",
+                    "ShortHelp": "password of the truststore"
+                },
+                "SSLCertificateStore": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Profile": {
+                            "Type": "String",
+                            "ShortHelp": "Name of certificate profile"
+                        }
+                    }
+                },
+                "SSLCertificateTrustStore": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Profile": {
+                            "Type": "String",
+                            "ShortHelp": "Name of certificate profile"
+                        }
+                    }
+                },
+                "SSLRequireClientAuth": {
+                    "Type": "Boolean",
+                    "ShortHelp": "enforce client authentication using a client certificate",
+                    "Default": "false"
+                },
+                "SSLEnabledProtocols": {
+                    "ShortHelp": "List of enabled TLS versions",
+                    "Type": "List",
+                    "Keys": {
+                        "Type": "Enumeration",
+                        "Values": [
+                            "TLSv1",
+                            "TLSv1.1",
+                            "TLSv1.2",
+                            "TLSv1.3"
+                        ]
+                    },
+                    "Default": [
+                        "TLSv1",
+                        "TLSv1.1",
+                        "TLSv1.2",
+                        "TLSv1.3"
+                    ]
+                },
+                "SSLEnabledCipherSuites": {
+                    "Type": "List",
+                    "Keys": {
+                        "Type": "Enumeration",
+                        "ShortHelp": "",
+                        "Values": [
+                            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "TLS_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_RSA_WITH_AES_256_CBC_SHA",
+                            "SSL_RSA_WITH_RC4_128_SHA",
+                            "SSL_RSA_WITH_RC4_128_MD5",
+                            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_RSA_WITH_DES_CBC_SHA",
+                            "SSL_DHE_RSA_WITH_DES_CBC_SHA",
+                            "SSL_DHE_DSS_WITH_DES_CBC_SHA",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "TLS_AES_128_GCM_SHA256",
+                            "TLS_AES_256_GCM_SHA384"
+                        ]
+                    },
+                    "Default": [
+                        "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                        "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                        "TLS_RSA_WITH_AES_128_CBC_SHA",
+                        "SSL_RSA_WITH_RC4_128_MD5",
+                        "SSL_RSA_WITH_RC4_128_SHA",
+                        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                        "TLS_AES_128_GCM_SHA256"
+                    ]
+                },
+                "EnforceClientAuth": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "require client authentication using a certificate during handshake"
+                },
+                "FragmentSize": {
+                    "Type": "Int",
+                    "Default": "1000",
+                    "ShortHelp": "Maximum size of EAP message fragments"
+                },
+                "Dictionary": {
+                    "Type": "Reference",
+                    "In": "Dictionaries",
+                    "ShortHelp": "The dictionary to be used if required"
+                }
+            }
+        }
+    },
+    "PEAP": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-PEAP configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "SSLKeyStore": {
+                    "Type": "String",
+                    "Mandatory": "false",
+                    "ShortHelp": "path to the keystore file to use"
+                },
+                "SSLKeyStorePass": {
+                    "Type": "String",
+                    "ShortHelp": "password of the keystore"
+                },
+                "SSLServerAlias": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "the alias of the server key pair in the keystore"
+                },
+                "SSLTrustStore": {
+                    "Type": "String",
+                    "ShortHelp": "path to the truststore file to use"
+                },
+                "SSLTrustStorePass": {
+                    "Type": "String",
+                    "ShortHelp": "password of the truststore"
+                },
+                "SSLCertificateStore": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Profile": {
+                            "Type": "String",
+                            "ShortHelp": "Name of certificate profile"
+                        }
+                    }
+                },
+                "SSLCertificateTrustStore": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Profile": {
+                            "Type": "String",
+                            "ShortHelp": "Name of certificate profile"
+                        }
+                    }
+                },
+                "SSLRequireClientAuth": {
+                    "Type": "Boolean",
+                    "ShortHelp": "enforce client authentication using a client certificate",
+                    "Default": "false"
+                },
+                "SSLEnabledProtocols": {
+                    "ShortHelp": "List of enabled TLS versions",
+                    "Type": "List",
+                    "Keys": {
+                        "Type": "Enumeration",
+                        "Values": [
+                            "TLSv1",
+                            "TLSv1.1",
+                            "TLSv1.2",
+                            "TLSv1.3"
+                        ]
+                    },
+                    "Default": [
+                        "TLSv1",
+                        "TLSv1.1",
+                        "TLSv1.2",
+                        "TLSv1.3"
+                    ]
+                },
+                "SSLEnabledCipherSuites": {
+                    "Type": "List",
+                    "Keys": {
+                        "Type": "Enumeration",
+                        "ShortHelp": "",
+                        "Values": [
+                            "SSL_RSA_WITH_NULL_MD5",
+                            "SSL_RSA_WITH_NULL_SHA",
+                            "SSL_RSA_EXPORT_WITH_RC4_40_MD5",
+                            "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
+                            "SSL_RSA_WITH_RC4_128_SHA",
+                            "SSL_RSA_WITH_RC4_128_MD5",
+                            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_RSA_WITH_DES_CBC_SHA",
+                            "TLS_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_RSA_WITH_AES_256_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                            "SSL_DHE_RSA_WITH_DES_CBC_SHA",
+                            "SSL_DHE_DSS_WITH_DES_CBC_SHA",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "TLS_AES_128_GCM_SHA256",
+                            "TLS_AES_256_GCM_SHA384"
+                        ]
+                    },
+                    "Default": [
+                        "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                        "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+                        "TLS_RSA_WITH_AES_128_CBC_SHA",
+                        "SSL_RSA_WITH_RC4_128_SHA",
+                        "SSL_RSA_WITH_RC4_128_MD5",
+                        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                        "TLS_AES_128_GCM_SHA256"
+                    ]
+                },
+                "EnforceClientAuth": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "require client authentication using a certificate during handshake"
+                },
+                "FragmentSize": {
+                    "Type": "Int",
+                    "Default": "1000",
+                    "ShortHelp": "Maximum size of EAP message fragments"
+                },
+                "TekLabelVersion": {
+                    "Type": "Int",
+                    "Default": "0",
+                    "ShortHelp": "Used as input for PRF calculation which generated MSK/EMSK. Version 0: \"client EAP encryption\". Version 1: \"client PEAP encryption\""
+                },
+                "SkipLastRound": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Last round of plain-text EAP-Request/Failure can be omitted"
+                }
+            }
+        }
+    },
+    "MSCHAPV2": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-MSCHAP-V2 configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "MaxRetries": {
+                    "Type": "Int",
+                    "Default": "3",
+                    "ShortHelp": "Maximum number of authentication retries"
+                },
+                "PasswordExpiration": {
+                    "Type": "Duration",
+                    "Default": "10y",
+                    "ShortHelp": "Lifetime of the password"
+                },
+                "FailureDelay": {
+                    "Type": "Duration",
+                    "Default": "200ms",
+                    "ShortHelp": "Average delay before sending failure message"
+                },
+                "CheckForSubscriberProfile": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "Mandatory": "false",
+                    "ShortHelp": "Checks if the subscriber is present in NDS before starting authentication. Evaluated only if SubscriberProfileSource is set to STORE"
+                },
+                "SubscriberProfileSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "false",
+                    "ShortHelp": "Specifies the source of EAP profile data  { NDS  STORE }  ",
+                    "Default": "NDS",
+                    "Values": [
+                        "NDS",
+                        "STORE"
+                    ]
+                },
+                "SubscriberProfileView": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "Name of the LDAPView to use when accessing the subscriber profile via LDAPTD"
+                },
+                "PasswordSource": {
+                    "Type": "Enumeration",
+                    "ShortHelp": "Specifies the password source to use for EAP/MSCHAPv2 authentication",
+                    "Default": "ldap",
+                    "Values": [
+                        "ldap",
+                        "Sh"
+                    ]
+                }
+            }
+        }
+    },
+    "SIM": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-SIM configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "UsePseudonyms": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "If set to true  the authentication server creates pseudonym identites in every full authentication"
+                },
+                "MaxReauths": {
+                    "Type": "Int",
+                    "Default": "3",
+                    "ShortHelp": "Maximum number of successive reauthentications between two full authentications"
+                },
+                "UseSuccessNotifications": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Include a SIM success notification round before EAP/Success is sent"
+                },
+                "UseFailureNotifications": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Include a SIM failure notification round before EAP/Failure is sent"
+                },
+                "TripletSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "true",
+                    "ShortHelp": "Specifies the triplets source to use for EAP/SIM authentication",
+                    "Values": [
+                        "ZHP",
+                        "WX",
+                        "DB",
+                        "MAPC"
+                    ],
+                    "Default": "ZHP"
+                },
+                "CheckForSubscriberProfile": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "Mandatory": "false",
+                    "ShortHelp": "Checks if the subscriber is present in NDS before starting authentication. Evaluated only if SubscriberProfileSource is set to STORE"
+                },
+                "SubscriberProfileSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "false",
+                    "ShortHelp": "Specifies the source of EAP profile data  { NDS  STORE }  ",
+                    "Default": "NDS",
+                    "Values": [
+                        "NDS",
+                        "STORE"
+                    ]
+                },
+                "SubscriberProfileView": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "Name of the LDAPView to use when accessing the subscriber profile via LDAPTD"
+                },
+                "ReauthIdUseRealm": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "Mandatory": "false",
+                    "ShortHelp": "Send fast re-authentication identity with realm part included"
+                },
+                "ReauthIdRealm": {
+                    "Type": "String",
+                    "Mandatory": "false",
+                    "ShortHelp": "Used as realm part of fast reauthentication identity. Significant only if RauthIdUseRealm is set to true"
+                }
+            }
+        }
+    },
+    "AKA": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-AKA configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "SkipIdentityRound": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "If set to true  then the AKA Identity round is skipped and AKA starts directly with the Challenge round  based on the information available from the EAP Identity round."
+                },
+                "UsePseudonyms": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "If set to true  the authentication server creates pseudonym identites in every full authentication"
+                },
+                "MaxReauths": {
+                    "Type": "Int",
+                    "Default": "3",
+                    "ShortHelp": "Maximum number of successive reauthentications between two full authentications. If set to 0 then fast reauthentication is disabled."
+                },
+                "UseSuccessNotifications": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Include an AKA success notification round before EAP/Success is sent"
+                },
+                "UseFailureNotifications": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Include an AKA failure notification round before EAP/Failure is sent"
+                },
+                "UseCheckcode": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "Use AT_CHECKCODE to integrity-protect EAP authentication conversation (if peer supports it)"
+                },
+                "NetworkTrustInd": {
+                    "Type": "Int",
+                    "ShortHelp": "Indicates if the network is trusted  AT_TRUST_IND  to the UE  { TRUSTED(1)  UNTRUSTED(2) }   0 to skip this attribute"
+                },
+                "VectorSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "true",
+                    "ShortHelp": "Specifies the quintuplet source to use for EAP/AKA authentication",
+                    "Values": [
+                        "ZHP",
+                        "WX",
+                        "SWX",
+                        "MAPC"
+                    ],
+                    "Default": "SWX"
+                },
+                "CheckForSubscriberProfile": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "Mandatory": "false",
+                    "ShortHelp": "Checks if the subscriber is present in NDS before starting authentication. Evaluated only if SubscriberProfileSource is set to STORE"
+                },
+                "SubscriberProfileSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "false",
+                    "ShortHelp": "Specifies the source of EAP profile data  { NDS  STORE }  ",
+                    "Default": "NDS",
+                    "Values": [
+                        "NDS",
+                        "STORE"
+                    ]
+                },
+                "SubscriberProfileView": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "Name of the LDAPView to use when accessing the subscriber profile via LDAPTD"
+                },
+                "ReauthIdUseRealm": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "Mandatory": "false",
+                    "ShortHelp": "Send fast re-authentication identity with realm part included"
+                },
+                "ReauthIdRealm": {
+                    "Type": "String",
+                    "Mandatory": "false",
+                    "ShortHelp": "Used as realm part of fast reauthentication identity. Significant only if RauthIdUseRealm is set to true"
+                },
+                "NumberOfVectors": {
+                    "Type": "Int",
+                    "Default": "1",
+                    "Min": "1",
+                    "Max": "10",
+                    "ShortHelp": "Number of authentication vectors retrieved from HSS"
+                },
+                "VectorGracePeriod": {
+                    "Type": "Duration",
+                    "Default": "300s",
+                    "ShortHelp": "Grace period to remove authentication vector cache"
+                }
+            }
+        }
+    },
+    "AKAPrime": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "EAP-AKAPrime configuration profiles are defined here",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The name of the profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "SkipIdentityRound": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "If set to true  then the AKAPrime Identity round is skipped and AKAPrime starts directly with the Challenge round  based on the information available from the EAP Identity round."
+                },
+                "UsePseudonyms": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "If set to true  the authentication server creates pseudonym identites in every full authentication"
+                },
+                "MaxReauths": {
+                    "Type": "Int",
+                    "Default": "3",
+                    "ShortHelp": "Maximum number of successive reauthentications between two full authentications. If set to 0 then fast reauthentication is disabled."
+                },
+                "UseSuccessNotifications": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Include an AKAPrime success notification round before EAP/Success is sent"
+                },
+                "UseFailureNotifications": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Include an AKAPrime failure notification round before EAP/Failure is sent"
+                },
+                "UseCheckcode": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "Use AT_CHECKCODE to integrity-protect EAP authentication conversation (if peer supports it)"
+                },
+                "NetworkTrustInd": {
+                    "Type": "Int",
+                    "ShortHelp": "Indicates if the network is trusted  AT_TRUST_IND  to the UE  { TRUSTED(1)  UNTRUSTED(2) }   0 to skip this attribute"
+                },
+                "VectorSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "true",
+                    "ShortHelp": "Specifies the quintuplet source to use for EAP/AKA' authentication",
+                    "Values": [
+                        "WX",
+                        "SWX"
+                    ],
+                    "Default": "SWX"
+                },
+                "LegacySupport": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Set to true if schema does not support seperate storage of AKAPrime attributes."
+                },
+                "CheckForSubscriberProfile": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "Mandatory": "false",
+                    "ShortHelp": "Checks if the subscriber is present in NDS before starting authentication. Evaluated only if SubscriberProfileSource is set to STORE"
+                },
+                "SubscriberProfileSource": {
+                    "Type": "Enumeration",
+                    "Mandatory": "false",
+                    "ShortHelp": "Specifies the source of EAP profile data  { NDS  STORE }  ",
+                    "Default": "NDS",
+                    "Values": [
+                        "NDS",
+                        "STORE"
+                    ]
+                },
+                "SubscriberProfileView": {
+                    "Type": "String",
+                    "Mandatory": "true",
+                    "ShortHelp": "Name of the LDAPView to use when accessing the subscriber profile via LDAPTD"
+                },
+                "ReauthIdUseRealm": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "Mandatory": "false",
+                    "ShortHelp": "Send fast re-authentication identity with realm part included"
+                },
+                "ReauthIdRealm": {
+                    "Type": "String",
+                    "Mandatory": "false",
+                    "ShortHelp": "Used as realm part of fast reauthentication identity. Significant only if RauthIdUseRealm is set to true"
+                },
+                "NumberOfVectors": {
+                    "Type": "Int",
+                    "Default": "1",
+                    "Min": "1",
+                    "Max": "10",
+                    "ShortHelp": "Number of authentication vectors retrieved from HSS"
+                },
+                "VectorGracePeriod": {
+                    "Type": "Duration",
+                    "Default": "300s",
+                    "ShortHelp": "Grace period to remove authentication vector cache"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,516 @@
+{
+    "Silent": {
+        "Type": "Boolean",
+        "Default": "false",
+        "ShortHelp": "Whether In Out should be logged"
+    },
+    "Internal": {
+        "Type": "Boolean",
+        "Default": "false",
+        "ShortHelp": "Whether logging is on iin iout rather than in  out"
+    },
+    "Enabled": {
+        "Type": "Boolean",
+        "ShortHelp": "If the service should be activated or not",
+        "Default": "true"
+    },
+    "AnnouncedService": {
+        "Type": "String",
+        "Default": "$(MyName)",
+        "ShortHelp": "The service name this server channel should announce in the network"
+    },
+    "Transport": {
+        "Group": "1General",
+        "Type": "Enumeration",
+        "Mandatory": "true",
+        "ShortHelp": "Transport protocol",
+        "Values": [
+            "UDP",
+            "TCP",
+            "SCTP",
+            "SSL",
+            "NioTCP"
+        ]
+    },
+    "ThreadPool": {
+        "Type": "String",
+        "ShortHelp": "The name of the ThreadPool that should be used for processing incoming requests. ThreadPools are configured in the top level section 'ThreadPools'"
+    },
+    "UseSSL": {
+        "Type": "Enumeration",
+        "Values": [
+            "true",
+            "false",
+            "starttls"
+        ],
+        "Default": "false",
+        "ShortHelp": "Use the Secure Channel connection based on SSL",
+        "Group": "2SSL"
+    },
+    "NetworkInterface": {
+        "Type": "String",
+        "ShortHelp": "Specifies the network interface to use. If not specified here may be specified in Hosts section",
+        "Group": "1General"
+    },
+    "SSLCertificate": {
+        "Type": "String",
+        "ShortHelp": "The filename of the certicate",
+        "Group": "2SSL"
+    },
+    "SendJitter": {
+        "ShortHelp": "How much the Packets from Sender to Receiver should be spreaded in time to avoid bursty network traffic",
+        "Type": "Duration"
+    },
+    "SSLPassword": {
+        "Type": "Password",
+        "ShortHelp": "The SSL Password",
+        "Group": "2SSL"
+    },
+    "SSLTrustAll": {
+        "Type": "Boolean",
+        "ShortHelp": "TCP: If activated all certificates will be trusted."
+    },
+    "SSLSessionCacheSize": {
+        "Type": "Int",
+        "ShortHelp": "Maximum size of SSL Session Cache",
+        "Min": "0",
+        "Default": "0",
+        "Group": "2SSL"
+    },
+    "SSLSessionTimeout": {
+        "Type": "Int",
+        "ShortHelp": "Maximum duration of SSL Session in seconds",
+        "Min": "1",
+        "Default": "86400",
+        "Group": "2SSL"
+    },
+    "Protocol": {
+        "Type": "Enumeration",
+        "Values": [
+            "RAW",
+            "MME",
+            "Http",
+            "HTTP",
+            "Resource",
+            "Command",
+            "Monica",
+            "UI",
+            "SAM",
+            "SNMP",
+            "SNMPD",
+            "Ping",
+            "SESSION",
+            "LDAP",
+            "LDAP2",
+            "LDAP3",
+            "DBAD",
+            "PROVCMD",
+            "Radius",
+            "Diameter",
+            "DIAMETER",
+            "MAPTIER",
+            "LDAPTIER",
+            "DNS",
+            "Props",
+            "SMPP",
+            "DHCP",
+            "Mysql",
+            "Event"
+        ],
+        "Group": "1General"
+    },
+    "Layer": {
+        "Type": "String",
+        "Group": "1General",
+        "ShortHelp": "A comma separated list of layers"
+    },
+    "WindowSizeQueueSize": {
+        "Type": "Int",
+        "Default": "100",
+        "ShortHelp": "The maximum number of messages to queue due to windowssize limitations"
+    },
+    "WindowSize": {
+        "Type": "Int",
+        "Default": "0",
+        "ShortHelp": "The allowed window size"
+    },
+    "Encoding": {
+        "Type": "String",
+        "Group": "1General"
+    },
+    "Spec": {
+        "Type": "Enumeration",
+        "Values": [
+            "TransactionProtocol",
+            "FrontendProtocol",
+            "BackendProtocol"
+        ],
+        "Group": "1General"
+    },
+    "Address": {
+        "Type": "AddressList",
+        "Mandatory": "true",
+        "ShortHelp": "The service address  e.g. 10.3.2.1:10010-10019",
+        "Group": "1General"
+    },
+    "AddressKey": {
+        "Type": "String",
+        "Group": "1General",
+        "Default": "",
+        "ShortHelp": "The key for loaddistribution  optional trailed with a slash and a number of significant chars (from the right hand side)"
+    },
+    "TTL": {
+        "Type": "Int",
+        "Default": "1",
+        "ShortHelp": "Time to live for the generated UDP packets"
+    },
+    "Network": {
+        "Type": "String",
+        "ShortHelp": "An abstract identifier for the Network used for this channel. "
+    },
+    "UDPReceiveBufferSize": {
+        "Type": "Byte",
+        "Default": "0",
+        "ShortHelp": "The internal allocated UDP kernel buffer size (receive queue buffer). Default depends on OS."
+    },
+    "UDPSendBufferSize": {
+        "Type": "Byte",
+        "Default": "0",
+        "ShortHelp": "The internal allocated UDP kernel buffer size (send queue buffer). Default depends on OS."
+    },
+    "Controller": {
+        "Type": "Enumeration",
+        "Values": [
+            "none",
+            "RMTP"
+        ],
+        "Default": "RMTP",
+        "ShortHelp": "The traffic controller to be used "
+    },
+    "RMTPSettings": {
+        "Type": "Hash",
+        "Items": {
+            "BucketBeat": {
+                "Type": "Duration",
+                "Default": "20ms",
+                "ShortHelp": "The detection of lost packets and its refetching using a RetransmitReq\\ will operate in this cycle. Should be set to a small number\\ between 10ms and 40ms. "
+            },
+            "FirstRefetchInterval": {
+                "Type": "Duration",
+                "Default": "390ms",
+                "ShortHelp": "The interval after which the receiver will attempt to ask\\ for a packet retransmission of lost packets. "
+            },
+            "RefetchInterval": {
+                "Type": "Duration",
+                "Default": "690ms",
+                "ShortHelp": "The refetch interval for the second or later refetch request. "
+            },
+            "KeepTime": {
+                "Type": "Duration",
+                "Default": "15s",
+                "ShortHelp": "The sender will store and keep submittet packets for that amount of time.\\ After this time the packets are deleted by the server and are\\ not further available for a retransmission. "
+            },
+            "FlushInterval": {
+                "Type": "Duration",
+                "Default": "90ms",
+                "ShortHelp": "If payload traffic stops for longer than this interval the sender\\ will submit a KeepAliveReq to allow a loss detection on the receiver site. "
+            },
+            "KeepAliveInterval": {
+                "Type": "Duration",
+                "Default": "3s",
+                "ShortHelp": "The sender will send KeepAliveReq messages after that amount of idle time\\ on the link to update its list of available receivers (Peers). "
+            },
+            "ResyncGap": {
+                "Type": "Int",
+                "Default": "12500",
+                "ShortHelp": "If the receiver receives a sequence number with a big difference to\\ the previously received one exceeding this maximum distance \\ it will assume an out-of-sync situation and clear and reset its receiver context. "
+            },
+            "ReceiveTableSize": {
+                "Type": "Int",
+                "Default": "32768",
+                "ShortHelp": "The internal receiver table to collect received sequence numbers in.\\ Should not be changed without a good reason. "
+            },
+            "SendTableSize": {
+                "Type": "Int",
+                "Default": "32768",
+                "ShortHelp": "The senders packet table size the default is adequate and\\ should not be change without a good reason. "
+            },
+            "MaxRetries": {
+                "Type": "Int",
+                "Default": "10",
+                "ShortHelp": "The maximum allowed number of retransmit requests for a single missing\\ packet. "
+            },
+            "MaxRefetchSize": {
+                "Type": "Int",
+                "Default": "400",
+                "ShortHelp": "Once per BucketBeat interval all missing packets are requested for retransmission\\ by the receiver to the sender. This number limits the number of simultaneously\\ requested packets per RetransmitReq per BucketBeat interval. This parameter will limit the refetch overhead and allows to throttle the retransmissions. "
+            },
+            "PeerIdleLimit": {
+                "Type": "Duration",
+                "Default": "120s",
+                "ShortHelp": "The sender maintains a Peer-State per receiver updated using KeepAliveReq/Res\\ message exchanges. If the sender does not receive a KeepAliveRes from a Peer for this\\ amount of time it will assume this receiver as gone. "
+            }
+        }
+    },
+    "ChannelClass": {
+        "ShortHelp": "Type of the channel",
+        "LongHelp": "Internal for internal channels with a one to one communication per message Multiple for internal channels which are served by many different entities Dynamic for channels which are opened according to provisioning DB ",
+        "Type": "Enumeration",
+        "Values": [
+            "Internal",
+            "Dynamic",
+            "Multiple"
+        ]
+    },
+    "Timeouts": {
+        "Type": "List",
+        "Default": [
+            "1500ms"
+        ],
+        "ShortHelp": "List of staggered retry timeouts  e.g.  {  2s  } ",
+        "Keys": {
+            "Type": "Duration",
+            "Min": "100ms",
+            "ShortHelp": "Retry timeout if no answer has been received"
+        }
+    },
+    "ThroughputLimit": {
+        "Type": "Speed",
+        "ShortHelp": "The default value for throughput vouchers",
+        "Example": "2/s"
+    },
+    "VoucherValidity": {
+        "Type": "Duration",
+        "Default": "10s",
+        "ShortHelp": "The default validity of vouchers for this channel"
+    },
+    "VoucherCount": {
+        "Type": "Int",
+        "Default": "100",
+        "ShortHelp": "The default count (allowed operations per voucher)"
+    },
+    "MaxMissingPings": {
+        "Type": "Int",
+        "Default": "3",
+        "ShortHelp": "Max amount of missing pings to peers of same service"
+    },
+    "PingPeriod": {
+        "Type": "Duration",
+        "Default": "500ms",
+        "ShortHelp": "Time between two subsequent pings"
+    },
+    "NotificationTimeout": {
+        "Type": "Duration",
+        "Default": "10s",
+        "ShortHelp": "Max time between two notifications"
+    },
+    "TcpSoTimeout": {
+        "Type": "Duration",
+        "Default": "0s",
+        "ShortHelp": "TCP socket read timeout  default 0s  i.e. infinite timeout"
+    },
+    "TcpWriteTimeout": {
+        "Type": "Duration",
+        "Default": "3s",
+        "ShortHelp": "TCP write timeout"
+    },
+    "Threads": {
+        "ShortHelp": "Number of threads to make use of multiple CPUs. Currently only supported on UDPServers",
+        "Type": "Int",
+        "Default": "1"
+    },
+    "Soap": {
+        "Type": "Hash",
+        "Items": {
+            "AppendSignalPostfix": {
+                "ShortHelp": "Append Req Res Rej to internal soap signals",
+                "Type": "Boolean",
+                "Default": "false"
+            },
+            "Version": {
+                "ShortHelp": "Specifies the SOAP version",
+                "Type": "Enumeration",
+                "Values": [
+                    "1.1"
+                ]
+            },
+            "Mode": {
+                "ShortHelp": "Specifies the encoding document style and encoding",
+                "Type": "Enumeration",
+                "Values": [
+                    "TRANSPARENT",
+                    "DOCUMENT_LITERAL",
+                    "RPC_LITERAL",
+                    "RPC_ENCODED",
+                    "DOCUMENT_ENCODED"
+                ]
+            }
+        }
+    },
+    "SMPP": {
+        "Type": "Hash",
+        "Items": {
+            "BindMode": {
+                "Type": "Enumeration",
+                "Default": "Transmitter",
+                "Values": [
+                    "Receiver",
+                    "Transmitter",
+                    "Transceiver"
+                ],
+                "ShortHelp": "Desired mode for binding to an SMSC"
+            },
+            "EnquireLinkInterval": {
+                "Type": "Duration",
+                "Default": "0s",
+                "ShortHelp": "Interval between two consecutive EnquireLinkReqs. Set to 0 to disable."
+            },
+            "SystemId": {
+                "Type": "String",
+                "ShortHelp": "SystemId (username) to register with the SMSC"
+            },
+            "Password": {
+                "Type": "Password",
+                "ShortHelp": "Password to register with the SMSC"
+            },
+            "SystemType": {
+                "Type": "String",
+                "ShortHelp": "The system_type sent to the SMSC in bind request"
+            },
+            "Version": {
+                "Type": "String",
+                "Default": "SMPP_V34",
+                "ShortHelp": "The SMPP version to include in the bind request. Currently only SMPP 3.4 is supported."
+            },
+            "AddressTon": {
+                "Type": "Enumeration",
+                "Default": "Unknown",
+                "Values": [
+                    "Unknown",
+                    "International",
+                    "National",
+                    "NetworkSpecific",
+                    "SubscriberNumber",
+                    "Alphanumeric",
+                    "Abbreviated"
+                ],
+                "ShortHelp": "The address type of number to send in the bind request. Set to 'Unknown' if not needed by SMSC"
+            },
+            "AddressNpi": {
+                "Type": "Enumeration",
+                "Default": "Unknown",
+                "Values": [
+                    "Unknown",
+                    "ISDN",
+                    "Data",
+                    "Telex",
+                    "LandMobile",
+                    "National",
+                    "Private",
+                    "ERMES",
+                    "Internet",
+                    "WAP"
+                ],
+                "ShortHelp": "The address number plan indicator to use in the bind request. Set to 'Unknown' if not needed by the SMSC"
+            },
+            "AddressRange": {
+                "Type": "String",
+                "ShortHelp": "The address range to use. If not known leave away."
+            }
+        }
+    },
+    "SMPPCoder": {
+        "Type": "Hash",
+        "Items": {
+            "SMSCDefaultEncoding": {
+                "Type": "String",
+                "Default": "ASCII",
+                "ShortHelp": "The default encoding used by the SMSC when no DataCoding is specified in an SMPP request."
+            }
+        }
+    },
+    "HTTPFormAuthenticationLayer": {
+        "Type": "Hash",
+        "Items": {
+            "UsernameField": {
+                "Type": "String",
+                "Default": "Username",
+                "ShortHelp": "The name of the username field of the login form"
+            },
+            "PasswordField": {
+                "Type": "String",
+                "Default": "Password",
+                "ShortHelp": "The name of the password field of the login form"
+            },
+            "URI": {
+                "Type": "String",
+                "Default": "lib/resources/formauth/login.nsp",
+                "ShortHelp": "The URI of the login form"
+            },
+            "Method": {
+                "Type": "Enumeration",
+                "Values": [
+                    "GET",
+                    "POST"
+                ],
+                "Default": "POST",
+                "ShortHelp": "The HTTP method to send the form data"
+            }
+        }
+    },
+    "MasterSlaveLayer": {
+        "Type": "Hash",
+        "Items": {
+            "MaxInitTime": {
+                "Type": "Duration",
+                "Group": "4Master-Slave",
+                "ShortHelp": "Max time a prio peer can take to become complete",
+                "Default": "60s"
+            },
+            "PingPeriod": {
+                "Type": "Duration",
+                "Group": "4Master-Slave",
+                "ShortHelp": "Time between two pings to other peers",
+                "Default": "500ms",
+                "Min": "10ms",
+                "Max": "1h"
+            },
+            "PingLosses": {
+                "Type": "Int",
+                "Group": "4Master-Slave",
+                "ShortHelp": "Number of missed packets to turn to master",
+                "Default": "8",
+                "Min": "1"
+            },
+            "Service": {
+                "Type": "String",
+                "Mandatory": "true"
+            }
+        }
+    },
+    "Node": {
+        "Type": "String",
+        "ShortHelp": "Name of Ulticom node to use",
+        "Example": "NODE1"
+    },
+    "Name": {
+        "Type": "String",
+        "ShortHelp": "The process identity for the Ulticom stack",
+        "Example": "MAPTD"
+    },
+    "SubSystemNumber": {
+        "Type": "Int",
+        "ShortHelp": "Local subsystem number (similar to a port number)",
+        "Example": "5"
+    },
+    "PointCode": {
+        "Type": "Int",
+        "ShortHelp": "Local pointcode (similar to an ip address)",
+        "Example": "6091"
+    },
+    "Debug": {
+        "Type": "Int",
+        "ShortHelp": "The MAP/SS7 stack debug level",
+        "Example": "1"
+    }
+}

@@ -1,0 +1,812 @@
+{
+    "Overload": {
+        "Type": "Hash",
+        "ShortHelp": "Configure overload protection parameters",
+        "Items": {
+            "SendQueueSize": {
+                "Type": "Int",
+                "Default": "10000",
+                "ShortHelp": "Max amount of pending-to-write messages per link."
+            },
+            "Enabled": {
+                "Type": "Boolean",
+                "Default": "true",
+                "ShortHelp": "Switch on/off backend CPU overload protection in the FE processes"
+            },
+            "AdaptSyncSpeed": {
+                "Type": "Boolean",
+                "Default": "false",
+                "ShortHelp": "If set to true  the synchronization speed is adapted according the overload level"
+            },
+            "ProcessOverloadProtectionLevel": {
+                "Type": "Enumeration",
+                "Values": [
+                    "disabled",
+                    "permissive",
+                    "enabled"
+                ],
+                "Default": "disabled",
+                "ShortHelp": "Enable or disable process specific BE CPU overload protection. If permissive  generate only warnings"
+            },
+            "LoadExpression": {
+                "Type": "String",
+                "ShortHelp": "Expression defining a load value between 0 and 100 on process load data",
+                "LongHelp": "Evaluate an ItemStore process load based on its load data. Following variables can be used: /Instance - name of the ItemStore process /ProcessCpu - CPU usage in percent per CPU core. Maximum is 100*/CpuCores. /CpuCores - Number of CPU cores /ProcessMem - head in percentage /GCTime - time spent in garbage collections in microseconds /GCCount - number of garbage collections /ThreadMaxCpu - CPU usage of most loaded thread in percentage /BackendDelay - average delay in itemstore interprocess communication in milliseconds /Freshness - UNIX time stamp (milliseconds since 1970/1/1) /ProcessTime - average processing time for one itemstore operation between two peers Expression shall return an integer between 0 and 100 representing an abstract load in percentage. Example: return /ProcessCpu.int / /CpuCores.int; "
+            },
+            "MaxResponseTime": {
+                "Type": "Duration",
+                "Default": "50ms",
+                "ShortHelp": "If the mean response time exceeds this limit  start to reject requests as overloaded",
+                "LongHelp": "If the mean ping response time to other items or index peers exceeds this limit start to reject requests as overloaded. This response time is assigned to CPU load percentage defined by value of ReportedAsOverload. If MaxResponseTime is set to 0 it signals the ItemStore processes to take the process CPU load given by the operating system via the Java VM as an overload indicator. In this case the parameter ReportedAsOverload is ignored. "
+            },
+            "ReportedAsOverload": {
+                "Type": "Int",
+                "Default": "85",
+                "ShortHelp": "Value between 0 and 100 which represents MaxResponseTime"
+            },
+            "HandledAsOverload": {
+                "Type": "Int",
+                "Default": "50",
+                "ShortHelp": "Average of reported values at which overload protection starts"
+            },
+            "HandledAsNormal": {
+                "Type": "Int",
+                "Default": "50",
+                "ShortHelp": "Average of reported values at which overload protection stops. Must be lower than HandledAsOverload"
+            },
+            "SamplingInterval": {
+                "Type": "Duration",
+                "Default": "1000ms",
+                "ShortHelp": "Interval for which the load is evaluated"
+            },
+            "ProcessSamplingInterval": {
+                "Type": "Duration",
+                "Default": "1000ms",
+                "ShortHelp": "Interval for which the CPU load of a single process is evaluated"
+            },
+            "MinFractionAllowed": {
+                "Type": "Int",
+                "Default": "5",
+                "ShortHelp": "Minimum fraction of allowed calls per mill to prevent the system from throttling all incoming calls"
+            },
+            "MaxIncreaseFactor": {
+                "Type": "Int",
+                "Default": "20",
+                "ShortHelp": "Maximum factor to increase fraction of allowed calls"
+            },
+            "MaxDecreaseFactor": {
+                "Type": "Int",
+                "Default": "40",
+                "ShortHelp": "Maximum factor to decrease fraction of allowed calls"
+            }
+        }
+    },
+    "InMemoryStore": {
+        "Type": "Hash",
+        "ShortHelp": "Configure the in memory store parameters here",
+        "Items": {
+            "ValueReuseQueueSize": {
+                "Type": "Int",
+                "Default": "200000",
+                "ShortHelp": "The number of added value kept for potential reuse"
+            },
+            "ValueReuseThreads": {
+                "Type": "Int",
+                "Default": "7",
+                "ShortHelp": "The number parallel access threads expected  use a prime"
+            },
+            "NetworkDuplicateLimit": {
+                "Type": "Duration",
+                "Default": "500ms",
+                "ShortHelp": "The interval for which a duplicate is regarded as a network duplicate (and not NAS retransmit)"
+            },
+            "NASRetryLimit": {
+                "Type": "Duration",
+                "Default": "2000ms",
+                "ShortHelp": "The interval for which a duplicate is regarded as a NAS retry (and not a network duplicate)"
+            },
+            "FinalDeleteDelay": {
+                "Type": "Duration",
+                "Default": "20s",
+                "ShortHelp": "The interval how long a deleted item is kept in the store prior final deletion. This should correlate to the usual expiration and the expected site replication times"
+            },
+            "ExpireOffset": {
+                "Type": "Duration",
+                "Default": "1s",
+                "ShortHelp": "The interval how long other copies wait for the responsible copy to expire an item. This should correlate to the expected local replication times"
+            },
+            "CreateItemsLimit": {
+                "Type": "Speed",
+                "ShortHelp": "Controls the overall rate of Create Requests  even in a geo-redundant system. Requests exceeding the configured value will be rejected."
+            },
+            "FullTableScanOpLimit": {
+                "Type": "Speed",
+                "Default": "4000/s",
+                "ShortHelp": "Controls the speed of FullTableScan operations as CloseByFilter/UpdateByFilter/Scan/Search. The limit is applied to all parallel running operations per items daemon. If the limit is reached  the operations are delayed until the condition allows to continue."
+            }
+        }
+    },
+    "History": {
+        "Type": "Hash",
+        "ShortHelp": "Configure the historical session writer",
+        "Items": {
+            "Enabled": {
+                "Type": "Boolean",
+                "Default": "false"
+            },
+            "Compressed": {
+                "Type": "Boolean",
+                "Default": "false",
+                "ShortHelp": "If the history files shall be compressed (zip)"
+            },
+            "HistoryFileName": {
+                "Type": "String",
+                "Default": "h-<instance>-<type>-<date\\|date yyyyMMdd.HHmmss>",
+                "ShortHelp": "The file name pattern used to name the historical files  e.g. h-<type>-<time\\|date(yyyyMMdd.HHmmss)>  see date transformer"
+            },
+            "HistoryDirectory": {
+                "Type": "String",
+                "Default": "$(Home)/history",
+                "ShortHelp": "The directory to write the historical sessions to  every expired or closed session will be written here"
+            },
+            "HistorySwitchInterval": {
+                "Type": "Duration",
+                "Default": "1h",
+                "ShortHelp": "The time after which a file is closed and the next started"
+            },
+            "CryptKey": {
+                "Type": "String",
+                "Default": "internalKey",
+                "ShortHelp": "The key used to encrypt attribute values in history file (if required)"
+            }
+        }
+    },
+    "Accounting": {
+        "Type": "Hash",
+        "ShortHelp": "Configures the accounting log writer",
+        "Items": {
+            "Enabled": {
+                "Type": "Boolean",
+                "Default": "false"
+            },
+            "AccountingFileName": {
+                "Type": "String",
+                "Default": "a-<instance>-<type>-<date\\|date yyyyMMdd.HHmmss>",
+                "ShortHelp": "The file name pattern used to name the accounting files  e.g. a-<time\\|date yyyyMMdd.HHmmss>  see date transformer"
+            },
+            "AccountingDirectory": {
+                "Type": "String",
+                "Default": "$(Home)/accounting",
+                "ShortHelp": "The directory to write the accounting csv data to"
+            },
+            "AccountingSwitchInterval": {
+                "Type": "Duration",
+                "Default": "1h",
+                "ShortHelp": "The time after which a file is closed and the next started"
+            },
+            "AccountingCode": {
+                "Type": "String",
+                "ShortHelp": "The code to be applied to the message object prior and for writing into the Accounting Log"
+            }
+        }
+    },
+    "Journal": {
+        "Type": "Hash",
+        "ShortHelp": "Configure the journal parameters here",
+        "Items": {
+            "UseDisk": {
+                "Type": "Boolean",
+                "Default": "true",
+                "ShortHelp": "If set to true then the journal is written to / read from disk"
+            },
+            "Compressed": {
+                "Type": "Boolean",
+                "Default": "false",
+                "ShortHelp": "If the journal files written to disk shall be compressed (zip)"
+            },
+            "JournalDirectory": {
+                "Type": "String",
+                "Default": "$(Home)/journal",
+                "ShortHelp": "The directory to store the journal files  every item will be written to this journal to ensure that on restart all data items are recovered from disk. This might become many files of significant size  e.g. if designed for 10Mio item of 2kB mean size  plan for 5 x 2kB x 10Mio bytes of journal storage (100GB)"
+            },
+            "WriteIPItems": {
+                "Type": "Boolean",
+                "Default": "true",
+                "ShortHelp": "If set to false  journal for internal ip items is not written to disk even if Journal/UseDisk is set to true"
+            },
+            "ChunkInterval": {
+                "Type": "Duration",
+                "Default": "1h",
+                "ShortHelp": "The time after which a chunk is closed and the next started"
+            },
+            "WipeInterval": {
+                "Type": "Int",
+                "Default": "1",
+                "ShortHelp": "The frequency (related to normal updates) a wipe attempt is made by the main thread. Value 0 means that main thread does not wipe at all."
+            },
+            "WipeSpeed": {
+                "Type": "Speed",
+                "Default": "20/s",
+                "ShortHelp": "The operation speed a wipe pass is made by the journal maintenance thread"
+            },
+            "OccupancyLimit": {
+                "Type": "Percentage",
+                "Default": "20%",
+                "Max": "90%",
+                "ShortHelp": "The occupancy percentage  a chunk will be cleaned if going below this limit"
+            },
+            "WipePerPass": {
+                "Type": "Int",
+                "Default": "5",
+                "ShortHelp": "Maximum number of entries to wipe during a single wipe pass performed by the journal maintenance thread"
+            },
+            "WriteQueueSize": {
+                "Type": "Int",
+                "Default": "10000",
+                "ShortHelp": "Maximum number of pending entries in the write queue before the journal is temporarily disabled for 1s"
+            }
+        }
+    },
+    "Addressing": {
+        "Type": "Hash",
+        "Items": {
+            "LocalIPPrefix": {
+                "Type": "String",
+                "ShortHelp": "The addressing for all internal communication  3 kinds: <fullIP>  <IPprefix>  <IPV6Prefix>. If not present  host ip is used."
+            },
+            "LocalPortBase": {
+                "Type": "Int",
+                "Mandatory": "true",
+                "ShortHelp": "The port (base) to be used for local IP address generation"
+            },
+            "LocalIPNetmask": {
+                "Type": "String",
+                "ShortHelp": "The netmask for internal addressing if necessary"
+            },
+            "HostPostfix": {
+                "Type": "String",
+                "ShortHelp": "Define the host postfix to be used when using host based IP address resolution (e.g. -int to resolve addresses for sdb101-int)"
+            },
+            "Server": {
+                "Type": "List",
+                "ShortHelp": "List of available servers for instance distribution",
+                "Keys": {
+                    "Type": "String"
+                }
+            },
+            "IndexServer": {
+                "Type": "List",
+                "ShortHelp": "List of available servers for index instance distribution  if omitted the Server list will be used",
+                "Keys": {
+                    "Type": "String"
+                }
+            },
+            "SitesServer": {
+                "Type": "List",
+                "ShortHelp": "List of available servers for site replication instance distribution  if omitted the Server list will be used",
+                "Keys": {
+                    "Type": "String"
+                }
+            },
+            "RemoteSites": {
+                "Type": "KeyValuePair",
+                "Keys": {
+                    "Type": "String",
+                    "ShortHelp": "The site name as number (1...n) or as character (A B C ...)"
+                },
+                "Values": {
+                    "Type": "Hash",
+                    "ShortHelp": "The site parameters",
+                    "Items": {
+                        "Enabled": {
+                            "Type": "Boolean",
+                            "Mandatory": "true",
+                            "ShortHelp": "Enable this remote site. Only for enabled remote sites a start script is created for the corresponding sites daemons."
+                        },
+                        "SyncInstances": {
+                            "Type": "Int",
+                            "Default": "1",
+                            "ShortHelp": "The number of sites daemons per copy for this sites connection"
+                        },
+                        "SitesServer": {
+                            "Type": "List",
+                            "ShortHelp": "List of available servers for site replication instance distribution  if omitted the general SitesServer list will be used",
+                            "Keys": {
+                                "Type": "String"
+                            }
+                        },
+                        "RemoteAddresses": {
+                            "Type": "List",
+                            "Keys": {
+                                "Type": "String"
+                            }
+                        },
+                        "LocalAddresses": {
+                            "Type": "List",
+                            "Keys": {
+                                "Type": "String",
+                                "ShortHelp": "The local address list (might be NATed from outside)"
+                            }
+                        },
+                        "Quorum": {
+                            "Type": "Float",
+                            "ShortHelp": "The remote quorum value between 0 and 1  if the sum of quorum is higher than 1 the store is allowed to override items ownership. This affects the multi site setup in case the connection between the sites is not available. If not set  the quorum is internally chosen so that the majority can override the ownership."
+                        },
+                        "ConnectionProfile": {
+                            "Type": "String",
+                            "Mandatory": "false",
+                            "ShortHelp": "Connection profile to use for the connection to the remote site"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "Instance": {
+        "Type": "Hash",
+        "Items": {
+            "InstanceTemplate": {
+                "Type": "String",
+                "In": "Instances"
+            },
+            "IndexTemplate": {
+                "Type": "String",
+                "In": "Instances"
+            },
+            "SitesTemplate": {
+                "Type": "String",
+                "In": "Instances"
+            },
+            "ItemsPrefix": {
+                "Type": "String",
+                "Default": "itex",
+                "ShortHelp": "process name  e.g. itex will result in A-itex-1b like instances"
+            },
+            "IndexPrefix": {
+                "Type": "String",
+                "Default": "itex",
+                "ShortHelp": "process name  e.g. itex will result in A-itex-1b like instances  if same as for the ItemsPrefix both services will run in the same process"
+            },
+            "SitesPrefix": {
+                "Type": "String",
+                "Default": "sites",
+                "ShortHelp": "process name  e.g. sites will result in A-sites-1b like instances"
+            },
+            "ItemsVMSettings": {
+                "Type": "String",
+                "Mandatory": "true"
+            },
+            "IndexVMSettings": {
+                "Type": "String",
+                "ShortHelp": "The process start java settings for all index daemons"
+            },
+            "SitesVMSettings": {
+                "Type": "String",
+                "ShortHelp": "The process start java settings for all site replication daemons"
+            },
+            "ProcessPriority": {
+                "Type": "Enumeration",
+                "Default": "Maximum",
+                "Values": [
+                    "Low",
+                    "Normal",
+                    "High",
+                    "Maximum"
+                ],
+                "ShortHelp": "Allow to set the process priority (nice). On UNIX that controls the nice level (10 0 -10 -20)"
+            },
+            "Quorum": {
+                "Type": "Float",
+                "ShortHelp": "The local quorum value between 0 and 1  if the sum of quorum is higher than 1 the store is allowed to override items ownership. This affects the multi site setup in case the connection between the sites is not available. If not set  the quorum is internally chosen so that the majority can override the ownership."
+            }
+        }
+    },
+    "Slicing": {
+        "Type": "Hash",
+        "Items": {
+            "Site": {
+                "Type": "String",
+                "Default": "A",
+                "ShortHelp": "The site name as number (1...n) or as character (A B C ...)"
+            },
+            "Slices": {
+                "Type": "Int",
+                "Default": "1",
+                "ShortHelp": "The number of data slices (1...n)  1 no slicing"
+            },
+            "Copies": {
+                "Type": "Int",
+                "Default": "1",
+                "ShortHelp": "The number of redundant copies  1 no redundancy"
+            }
+        }
+    },
+    "Synchronization": {
+        "Type": "Hash",
+        "Items": {
+            "WaitForInitialSyncSource": {
+                "Type": "Duration",
+                "Default": "30s",
+                "ShortHelp": "Max amount of time to wait for an ongoing startup sync to start before falling back to the backup file."
+            },
+            "InitialSyncDeadline": {
+                "Type": "Duration",
+                "Default": "300s",
+                "ShortHelp": "Max amount of time to wait for the initial sync procedure to finish before starting to warn."
+            },
+            "SyncToCopyWindowSize": {
+                "Type": "Int",
+                "Default": "500",
+                "ShortHelp": "Max amount of outstanding sync offers before sending more offers when syncing a local copy."
+            },
+            "SyncToRemoteCopyWindowSize": {
+                "Type": "Int",
+                "Default": "500",
+                "ShortHelp": "Max amount of outstanding sync offers before sending more offers when syncing a remote copy."
+            },
+            "SyncToIndexWindowSize": {
+                "Type": "Int",
+                "Default": "500",
+                "ShortHelp": "Max amount of outstanding index updates to send to an index process in a bulk synchronization before sending more."
+            },
+            "RemoteReplicationOfIPItems": {
+                "Type": "Boolean",
+                "Default": "true",
+                "ShortHelp": "Indicates if ip items should be distributed among all sites. If set to false  ip items are not synchronized to remote sites and are thus visible only locally."
+            },
+            "ItemsIndexSyncLimit": {
+                "Type": "Speed",
+                "Default": "4000/s",
+                "ShortHelp": "Limit applied to all parallel running items to index bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue."
+            },
+            "ItemsItemsSyncLimit": {
+                "Type": "Speed",
+                "Default": "4000/s",
+                "ShortHelp": "Limit applied to all parallel running items to items bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue."
+            },
+            "ItemsSiteSyncLimit": {
+                "Type": "Speed",
+                "Default": "4000/s",
+                "ShortHelp": "Limit applied to all parallel running items to remote site bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue."
+            },
+            "TotalSyncLimit": {
+                "Type": "Speed",
+                "Default": "4000/s",
+                "ShortHelp": "Limit applied to all parallel running bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue."
+            }
+        }
+    },
+    "Misc": {
+        "Type": "Hash",
+        "Items": {
+            "PoolStatsInterval": {
+                "Type": "Duration",
+                "Default": "1s",
+                "ShortHelp": "IP Pool SAM statistics reporting interval; shorter (smaller) values mean higher load on SAM"
+            },
+            "PreExpandWindowSize": {
+                "Type": "Int",
+                "ShortHelp": "Max amount of outstanding create requests for ip items before sending more. If not defined the value is set to 20*<number of slices>"
+            },
+            "PreTakeoverWindowSize": {
+                "Type": "Int",
+                "Default": "20",
+                "ShortHelp": "Max amount of outstanding takeover requests for ip items before sending more."
+            },
+            "SliceOutageResilience": {
+                "Type": "Int",
+                "Default": "0",
+                "ShortHelp": "Number of slices whose outage is tolerated"
+            },
+            "LimitCreatesDuringSliceOutage": {
+                "Type": "Boolean",
+                "Default": "false",
+                "ShortHelp": "Indicates if the item store shall reject a fraction of CreateReq corresponding to the number of missing items slices to avoid overload."
+            },
+            "SearchContextExpire": {
+                "Type": "Duration",
+                "Default": "5s",
+                "ShortHelp": "The interval how long a search context is kept after the last usage."
+            }
+        }
+    },
+    "Connections": {
+        "Type": "Hash",
+        "Items": {
+            "EnableNagleAlgorithm": {
+                "Type": "Boolean",
+                "Default": "true",
+                "ShortHelp": "Controls the use of the Nagle algorithm for the ItemStore TCP sites connections"
+            },
+            "TrafficClass": {
+                "Type": "Int",
+                "Default": "0",
+                "ShortHelp": "Sets the traffic class or type-of-service octet in the IP header"
+            }
+        }
+    },
+    "ConnectionProfiles": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "Connection specific settings",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The name of the connection profile"
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "TCP related connection settings",
+            "Items": {
+                "EnableNagleAlgorithm": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "If set to true enables the use of the nagle algorithm. This is the opposite of TCP_NODELAY."
+                },
+                "TrafficClass": {
+                    "Type": "Int",
+                    "ShortHelp": "Sets the traffic class or type-of-service octet in the IP header (IP_TOS)."
+                },
+                "KeepAlive": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "Enables use of the system dependent keep alive mechanism (SO_KEEPALIVE)."
+                },
+                "SendBuffer": {
+                    "Type": "Int",
+                    "ShortHelp": "The socket send buffer size in bytes (SO_SNDBUF)."
+                },
+                "ReceiveBuffer": {
+                    "Type": "Int",
+                    "ShortHelp": "The socket receive buffer size in bytes (SO_RCVBUF)."
+                },
+                "ReuseAddr": {
+                    "Type": "Boolean",
+                    "ShortHelp": "Re-use address (SO_REUSEADDR)."
+                }
+            }
+        }
+    },
+    "StoreTypes": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "The provided items classes in the store daemon",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The type name  e.g.: SESSION"
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "The class definition: search keys  types etc...",
+            "Items": {
+                "DefaultExpiration": {
+                    "Type": "Duration",
+                    "ShortHelp": "If provided: expire items of this type after that time if no other expiration is given"
+                },
+                "ProlongExpiration": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Controls if the time of expiration is prolonged automatically with each update (if expire is not set explicitly)"
+                },
+                "MaxSize": {
+                    "Type": "Int",
+                    "Default": "0",
+                    "ShortHelp": "Maximum allowed size of encoded item attributes. Value 0 means  no limit is applied."
+                },
+                "Fields": {
+                    "Type": "KeyValuePair",
+                    "ShortHelp": "Fixed defined fields  e.g.: Name (Type string)",
+                    "Keys": {
+                        "Type": "String",
+                        "ShortHelp": "The field or Attribute name  e.g.: IPRealm"
+                    },
+                    "Values": {
+                        "Type": "Hash",
+                        "Items": {
+                            "Type": {
+                                "Type": "Enumeration",
+                                "Values": [
+                                    "string",
+                                    "bref",
+                                    "bytes",
+                                    "int",
+                                    "long",
+                                    "num",
+                                    "ip",
+                                    "reference",
+                                    "node",
+                                    "timer",
+                                    "assignedip"
+                                ]
+                            },
+                            "EncryptInHistory": {
+                                "Type": "Boolean",
+                                "Default": "false",
+                                "ShortHelp": "Controls if the attribute value is encrypted when written to history"
+                            },
+                            "DefaultExpiryNotificationGroup": {
+                                "Type": "String",
+                                "ShortHelp": "If field is of type timer: ServerGroup to send expire notifications to if not overridden in the message"
+                            },
+                            "Notify": {
+                                "Type": "List",
+                                "ShortHelp": "If field is of type timer: List of attributes to be sent in expire notification",
+                                "Keys": {
+                                    "Type": "String"
+                                }
+                            },
+                            "DefaultExpiration": {
+                                "Type": "Duration",
+                                "ShortHelp": "If field is of type timer: expire timer after that time if no other expiration is given"
+                            },
+                            "ExpireLimit": {
+                                "Type": "Speed",
+                                "ShortHelp": "If field is of type timer: Limit of expires per second"
+                            }
+                        }
+                    }
+                },
+                "CardinalityCounter": {
+                    "Type": "List",
+                    "ShortHelp": "list of case insensitive fields for which a cardinality count is done",
+                    "Keys": {
+                        "Type": "String"
+                    },
+                    "Default": [
+                        "IMSI",
+                        "MSISDN"
+                    ]
+                },
+                "AutoIndexAttribute": {
+                    "Type": "String",
+                    "ShortHelp": "If configured  an attribute with the given name of type bytes is implicitly declared along with a unique key definition for that attribute. If the attribute type is declared explicitly in the Fields section  then that type declaration is used. For each create request that does not already contain an attribute mapping for the configured name  a unique value is implicitly inserted under the configured name. The item can subsequently be addressed using the implicit unique key  without the need to use the USID."
+                },
+                "UniqueKeys": {
+                    "Type": "List",
+                    "ShortHelp": "list of unique keys or key combinations  e.g.: \"IPAddress IPRealm\" or \"CustomerID\"",
+                    "Keys": {
+                        "Type": "String"
+                    }
+                },
+                "SearchKeys": {
+                    "Type": "List",
+                    "ShortHelp": "list of keys or key combinations  e.g.: \"Name\" or \"Session-State\"",
+                    "Keys": {
+                        "Type": "String"
+                    }
+                },
+                "UpdateMode": {
+                    "Type": "Enumeration",
+                    "Values": [
+                        "async",
+                        "local",
+                        "full"
+                    ],
+                    "Default": "local",
+                    "ShortHelp": "Defines the update mode items of this type"
+                },
+                "Handler": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Expire.JCode": {
+                            "Type": "String",
+                            "ShortHelp": "Handlercode that can be executed at expiry"
+                        }
+                    }
+                },
+                "History": {
+                    "Type": "Hash",
+                    "ShortHelp": "Configure the historical session writer",
+                    "Items": {
+                        "Enabled": {
+                            "Type": "Boolean",
+                            "Default": "false"
+                        },
+                        "Compressed": {
+                            "Type": "Boolean",
+                            "Default": "false",
+                            "ShortHelp": "If the history files shall be compressed (zip)"
+                        },
+                        "HistoryFileName": {
+                            "Type": "String",
+                            "Default": "h-<instance>-<type>-<date\\|date yyyyMMdd.HHmmss>",
+                            "ShortHelp": "The file name pattern used to name the historical files  e.g. h-<type>-<time\\|date(yyyyMMdd.HHmmss)>  see date transformer"
+                        },
+                        "HistoryDirectory": {
+                            "Type": "String",
+                            "Default": "$(Home)/history",
+                            "ShortHelp": "The directory to write the historical sessions to  every expired or closed session will be written here"
+                        },
+                        "HistorySwitchInterval": {
+                            "Type": "Duration",
+                            "Default": "1h",
+                            "ShortHelp": "The time after which a file is closed and the next started"
+                        },
+                        "CryptKey": {
+                            "Type": "String",
+                            "Default": "internalKey",
+                            "ShortHelp": "The key used to encrypt attribute values in history file (if required)"
+                        }
+                    }
+                },
+                "Accounting": {
+                    "Type": "Hash",
+                    "ShortHelp": "Configures the accounting log writer",
+                    "Items": {
+                        "Enabled": {
+                            "Type": "Boolean",
+                            "Default": "false"
+                        },
+                        "AccountingFileName": {
+                            "Type": "String",
+                            "Default": "a-<instance>-<type>-<date\\|date yyyyMMdd.HHmmss>",
+                            "ShortHelp": "The file name pattern used to name the accounting files  e.g. a-<time\\|date yyyyMMdd.HHmmss>  see date transformer"
+                        },
+                        "AccountingDirectory": {
+                            "Type": "String",
+                            "Default": "$(Home)/accounting",
+                            "ShortHelp": "The directory to write the accounting csv data to"
+                        },
+                        "AccountingSwitchInterval": {
+                            "Type": "Duration",
+                            "Default": "1h",
+                            "ShortHelp": "The time after which a file is closed and the next started"
+                        },
+                        "AccountingCode": {
+                            "Type": "String",
+                            "ShortHelp": "The code to be applied to the message object prior and for writing into the Accounting Log"
+                        }
+                    }
+                },
+                "DefaultExpiryNotificationGroup": {
+                    "Type": "String",
+                    "ShortHelp": "ServerGroup to send expire notifications to if not overridden in the message"
+                },
+                "ExpireLimit": {
+                    "Type": "Speed",
+                    "ShortHelp": "Limit of expires per second"
+                },
+                "RemoteReplication": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "Indicates if items of this type should be distributed among all sites. If set to false  this item is not synchronized to remote sites and is thus only locally visible."
+                },
+                "RequiresOwnership": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Indicates if the items store shall be aware of the ownership of this type"
+                },
+                "WriteJournal": {
+                    "Type": "Boolean",
+                    "Default": "true",
+                    "ShortHelp": "If set to false  journal for this type is not written to disk even if Journal/UseDisk is set to true"
+                },
+                "NetworkDuplicateLimit": {
+                    "Type": "Duration",
+                    "ShortHelp": "Type-specific override value for parameter InMemoryStore/NetworkDuplicateLimit"
+                },
+                "NASRetryLimit": {
+                    "Type": "Duration",
+                    "ShortHelp": "Type-specific override value for parameter InMemoryStore/NASRetryLimit"
+                },
+                "ChangeNotifications": {
+                    "Type": "Hash",
+                    "Items": {
+                        "Create": {
+                            "Type": "Boolean",
+                            "Default": "false",
+                            "ShortHelp": "Enable creation notifications for this type"
+                        },
+                        "Modify": {
+                            "Type": "Boolean",
+                            "Default": "false",
+                            "ShortHelp": "Enable modification notifications for this type"
+                        },
+                        "Delete": {
+                            "Type": "Boolean",
+                            "Default": "false",
+                            "ShortHelp": "Enable deletion notifications for this type"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

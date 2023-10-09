@@ -1,0 +1,1799 @@
+<?xml version="1.0" ?>
+<root>
+	<Enabled>
+		<Type>Boolean</Type>
+		<Default>true</Default>
+		<ShortHelp>Allows to disable this server temporarily</ShortHelp>
+		<Group>0Inheritance</Group>
+	</Enabled>
+	<Services>
+		<Type>List</Type>
+		<ShortHelp>List of service groups requiring this server (deprecated)</ShortHelp>
+		<Keys>
+			<Type>Enumeration</Type>
+			<Values>
+				<item>RADIUS</item>
+				<item>COMMAND</item>
+				<item>LDAP</item>
+				<item>DNS</item>
+				<item>PORTAL</item>
+				<item>LDAPTIER</item>
+				<item>DBT</item>
+				<item>SESSION</item>
+				<item>MME</item>
+				<item>SHADOW</item>
+			</Values>
+		</Keys>
+	</Services>
+	<Handler>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>Handler plug-ins on well-defined slots</ShortHelp>
+		<Keys>
+			<Type>Enumeration</Type>
+			<Values>
+				<item>Access.In</item>
+				<item>Access.Out</item>
+				<item>Accounting.In</item>
+				<item>Accounting.Out</item>
+			</Values>
+		</Keys>
+		<Values>
+			<Type>Handler</Type>
+			<ShortHelp>The handler (code or name) to be applied</ShortHelp>
+		</Values>
+	</Handler>
+	<Limit>
+		<Type>Speed</Type>
+		<ShortHelp>Throughput limit of submitted requests</ShortHelp>
+	</Limit>
+	<Limits>
+		<Type>List</Type>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>Additional throughput limiting resource names to be taken into account for throttling</ShortHelp>
+		</Keys>
+	</Limits>
+	<LazyDecoding>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>If supported by the coder: use late decoding  suitable for router applications</ShortHelp>
+	</LazyDecoding>
+	<ParallelProcessing>
+		<Type>Boolean</Type>
+		<Default>true</Default>
+		<ShortHelp>Use the threadpool to dipatch processing of incoming messages</ShortHelp>
+	</ParallelProcessing>
+	<ThreadPool>
+		<Type>String</Type>
+		<ShortHelp>The name of the ThreadPool that should be used for processing incoming requests. Thread pools are configured in the top level section 'ThreadPools'</ShortHelp>
+	</ThreadPool>
+	<Encoding>
+		<Type>String</Type>
+		<Group>1General</Group>
+		<ShortHelp>If the coder to be used differes from the Protocol  this defines the alternative coder (deprecated)</ShortHelp>
+	</Encoding>
+	<Protocol>
+		<Type>Enumeration</Type>
+		<Default>RADIUS</Default>
+		<Values>
+			<item>SAM</item>
+			<item>GIOP</item>
+			<item>RADIUS</item>
+			<item>MTP</item>
+			<item>MME</item>
+			<item>SESSION</item>
+			<item>LDAP</item>
+			<item>LDAP2</item>
+			<item>LDAP3</item>
+			<item>RAW</item>
+			<item>LES</item>
+			<item>PORTAL</item>
+			<item>UCP</item>
+			<item>Diameter</item>
+			<item>MAPTIER</item>
+			<item>Props</item>
+			<item>TEMPLATE</item>
+			<item>MYSQL</item>
+			<item>LDAPTIER</item>
+			<item>DBAD</item>
+			<item>Http</item>
+			<item>Http2</item>
+			<item>SESSIONItems</item>
+			<item>Items</item>
+			<item>H248Ascii</item>
+			<item>SMPP</item>
+			<item>DHCP</item>
+			<item>DHCPV6</item>
+			<item>BulkDHCP</item>
+			<item>BulkDHCPV6</item>
+			<item>DNS</item>
+			<item>BulkDNS</item>
+			<item>COPS</item>
+			<item>Command</item>
+			<item>Mysql</item>
+			<item>Smtp</item>
+			<item>Netconf</item>
+			<item>Event</item>
+			<item>Load</item>
+			<item>AML</item>
+			<item>LI</item>
+		</Values>
+		<ShortHelp>The peer protocol</ShortHelp>
+	</Protocol>
+	<Transport>
+		<Type>Enumeration</Type>
+		<Default>UDP</Default>
+		<Values>
+			<item>MCAST_UDP</item>
+			<item>UDP</item>
+			<item>TCP</item>
+			<item>SCTP</item>
+			<item>TCPS</item>
+			<item>TCPMultiConnection</item>
+			<item>RUDP</item>
+			<item>MCAST_RUDP</item>
+			<item>MAP</item>
+			<item>MYSQL</item>
+			<item>Sync</item>
+			<item>DiameterRouter</item>
+			<item>Items</item>
+			<item>Local</item>
+			<item>SSH</item>
+			<item>NioTCP</item>
+			<item>JDBC</item>
+			<item>COPS</item>
+		</Values>
+		<ShortHelp>The peer transport (IP) protocol</ShortHelp>
+	</Transport>
+	<Layer>
+		<Type>String</Type>
+		<ShortHelp>Comma separated list of layers to push on top of the plug  &lt;lowest&gt; &lt;next&gt; .. &lt;top&gt;</ShortHelp>
+	</Layer>
+	<NotificationReceiver>
+		<Type>Hash</Type>
+		<Items>
+			<Store>
+				<Type>String</Type>
+			</Store>
+			<ItemType>
+				<Type>String</Type>
+			</ItemType>
+			<Group>
+				<Type>String</Type>
+			</Group>
+		</Items>
+	</NotificationReceiver>
+	<HTTPFormAuthenticationLayer>
+		<Type>Hash</Type>
+		<Items>
+			<UsernameField>
+				<Type>String</Type>
+				<Default>Username</Default>
+				<ShortHelp>The name of the username field of the login form</ShortHelp>
+			</UsernameField>
+			<PasswordField>
+				<Type>String</Type>
+				<Default>Password</Default>
+				<ShortHelp>The name of the password field of the login form</ShortHelp>
+			</PasswordField>
+			<URI>
+				<Type>String</Type>
+				<Default>lib/resources/formauth/login.nsp</Default>
+				<ShortHelp>The URI of the login form</ShortHelp>
+			</URI>
+			<Method>
+				<Type>Enumeration</Type>
+				<Values>
+					<item>GET</item>
+					<item>POST</item>
+				</Values>
+				<Default>POST</Default>
+				<ShortHelp>The HTTP method to send the form data</ShortHelp>
+			</Method>
+		</Items>
+	</HTTPFormAuthenticationLayer>
+	<ReconnectLayer>
+		<Type>Hash</Type>
+		<Items>
+			<Mode>
+				<Type>Enumeration</Type>
+				<Default>BinaryExpBackoff</Default>
+				<Values>
+					<item>Interval</item>
+					<item>BinaryExpBackoff</item>
+				</Values>
+				<ShortHelp>Mode of reconnect</ShortHelp>
+			</Mode>
+			<StableConnectionInterval>
+				<Type>Duration</Type>
+				<Default>1s</Default>
+				<ShortHelp>Buffer zone after a maximal reconnect interval. If exceeded the InitialDelay is used for the next reconnect attempt.</ShortHelp>
+			</StableConnectionInterval>
+			<Interval>
+				<Type>Hash</Type>
+				<Items>
+					<InitialDelay>
+						<Type>Duration</Type>
+						<Default>10ms</Default>
+						<ShortHelp>Delay before first attempt to reconnect a lost TCP connection</ShortHelp>
+					</InitialDelay>
+					<MeanDelay>
+						<Type>Duration</Type>
+						<Default>5s</Default>
+						<ShortHelp>Mean delay before succeeding attempts to reconnect a lost TCP connection</ShortHelp>
+					</MeanDelay>
+					<MaxDeviation>
+						<Type>Percentage</Type>
+						<Default>20%</Default>
+						<ShortHelp>Maximum deviation from the MeanDelay in percent</ShortHelp>
+					</MaxDeviation>
+				</Items>
+			</Interval>
+			<BinaryExpBackoff>
+				<Type>Hash</Type>
+				<Items>
+					<InitialDelay>
+						<Type>Duration</Type>
+						<Default>10ms</Default>
+						<ShortHelp>Delay before first attempt to reconnect a lost TCP connection</ShortHelp>
+					</InitialDelay>
+					<MinDelay>
+						<Type>Duration</Type>
+						<Default>10ms</Default>
+						<ShortHelp>Min delay for succeeding attempts reconnect a lost TCP connection</ShortHelp>
+					</MinDelay>
+					<MaxDelay>
+						<Type>Duration</Type>
+						<Default>5s</Default>
+						<ShortHelp>Max delay for succeeding attempts reconnect a lost TCP connection</ShortHelp>
+					</MaxDelay>
+					<MaxDeviation>
+						<Type>Percentage</Type>
+						<Default>20%</Default>
+						<ShortHelp>Maximum deviation from the MeanDelay in percent</ShortHelp>
+					</MaxDeviation>
+				</Items>
+			</BinaryExpBackoff>
+		</Items>
+	</ReconnectLayer>
+	<Soap>
+		<Type>Hash</Type>
+		<Items>
+			<AppendSignalPostfix>
+				<ShortHelp>Append Req Res Rej to internal soap signals</ShortHelp>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+			</AppendSignalPostfix>
+			<Version>
+				<ShortHelp>Specifies the SOAP version</ShortHelp>
+				<Type>Enumeration</Type>
+				<Values>
+					<item>1.1</item>
+				</Values>
+			</Version>
+			<Mode>
+				<ShortHelp>Specifies the encoding document style and encoding</ShortHelp>
+				<Type>Enumeration</Type>
+				<Values>
+					<item>TRANSPARENT</item>
+					<item>DOCUMENT_LITERAL</item>
+					<item>RPC_LITERAL</item>
+					<item>RPC_ENCODED</item>
+					<item>DOCUMENT_ENCODED</item>
+				</Values>
+			</Mode>
+			<HttpVersion>
+				<Type>Enumeration</Type>
+				<Values>
+					<item>1.0</item>
+					<item>1.1</item>
+				</Values>
+				<ShortHelp>Use this HTTP version in requests.</ShortHelp>
+			</HttpVersion>
+			<HttpHeaders>
+				<ShortHelp>Additional HTTP headers to be included in requests</ShortHelp>
+				<Type>KeyValuePair</Type>
+				<Keys>
+					<Type>String</Type>
+					<ShortHelp>The header name</ShortHelp>
+					<Example>Connection</Example>
+				</Keys>
+				<Values>
+					<Type>String</Type>
+					<ShortHelp>The header value</ShortHelp>
+					<Example>Keep-Alive</Example>
+				</Values>
+			</HttpHeaders>
+		</Items>
+	</Soap>
+	<SMPP>
+		<Type>Hash</Type>
+		<Items>
+			<BindMode>
+				<Type>Enumeration</Type>
+				<Default>Transmitter</Default>
+				<Values>
+					<item>Receiver</item>
+					<item>Transmitter</item>
+					<item>Transceiver</item>
+				</Values>
+				<ShortHelp>Desired mode for binding to an SMSC</ShortHelp>
+			</BindMode>
+			<EnquireLinkInterval>
+				<Type>Duration</Type>
+				<Default>0s</Default>
+				<ShortHelp>Interval between two consecutive EnquireLinkReqs. Set to 0 to disable.</ShortHelp>
+			</EnquireLinkInterval>
+			<SystemId>
+				<Type>String</Type>
+				<ShortHelp>SystemId (username) to register with the SMSC</ShortHelp>
+			</SystemId>
+			<Password>
+				<Type>Password</Type>
+				<ShortHelp>Password to register with the SMSC</ShortHelp>
+			</Password>
+			<SystemType>
+				<Type>String</Type>
+				<ShortHelp>The system_type sent to the SMSC in bind request</ShortHelp>
+			</SystemType>
+			<Version>
+				<Type>String</Type>
+				<Default>SMPP_V34</Default>
+				<ShortHelp>The SMPP version to include in the bind request. Currently only SMPP 3.4 is supported.</ShortHelp>
+			</Version>
+			<AddressTon>
+				<Type>Enumeration</Type>
+				<Default>Unknown</Default>
+				<Values>
+					<item>Unknown</item>
+					<item>International</item>
+					<item>National</item>
+					<item>NetworkSpecific</item>
+					<item>SubscriberNumber</item>
+					<item>Alphanumeric</item>
+					<item>Abbreviated</item>
+				</Values>
+				<ShortHelp>The address type of number to send in the bind request. Set to 'Unknown' if not needed by SMSC</ShortHelp>
+			</AddressTon>
+			<AddressNpi>
+				<Type>Enumeration</Type>
+				<Default>Unknown</Default>
+				<Values>
+					<item>Unknown</item>
+					<item>ISDN</item>
+					<item>Data</item>
+					<item>Telex</item>
+					<item>LandMobile</item>
+					<item>National</item>
+					<item>Private</item>
+					<item>ERMES</item>
+					<item>Internet</item>
+					<item>WAP</item>
+				</Values>
+				<ShortHelp>The address number plan indicator to use in the bind request. Set to 'Unknown' if not needed by the SMSC</ShortHelp>
+			</AddressNpi>
+			<AddressRange>
+				<Type>String</Type>
+				<ShortHelp>The address range to use. If not known leave away.</ShortHelp>
+			</AddressRange>
+		</Items>
+	</SMPP>
+	<SMPPCoder>
+		<Type>Hash</Type>
+		<Items>
+			<SMSCDefaultEncoding>
+				<Type>String</Type>
+				<Default>ASCII</Default>
+				<ShortHelp>The default encoding used by the SMSC when no DataCoding is specified in an SMPP request.</ShortHelp>
+			</SMSCDefaultEncoding>
+		</Items>
+	</SMPPCoder>
+	<Smtp>
+		<Type>Hash</Type>
+		<Items>
+			<AuthMechanisms>
+				<Type>List</Type>
+				<ShortHelp>List of configured Sasl authentication mechanisms</ShortHelp>
+				<Keys>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>Plain</item>
+					</Values>
+				</Keys>
+				<Default>
+					<item>Plain</item>
+				</Default>
+			</AuthMechanisms>
+			<Sasl>
+				<Type>Hash</Type>
+				<Items>
+					<Plain>
+						<Type>Hash</Type>
+						<Items>
+							<Authzid>
+								<Type>String</Type>
+								<ShortHelp>Authorization identity</ShortHelp>
+							</Authzid>
+							<Authcid>
+								<Type>String</Type>
+								<ShortHelp>Authentication identity</ShortHelp>
+							</Authcid>
+							<Passwd>
+								<Type>Password</Type>
+								<ShortHelp>Password</ShortHelp>
+							</Passwd>
+						</Items>
+					</Plain>
+				</Items>
+			</Sasl>
+		</Items>
+	</Smtp>
+	<WindowSizeQueueSize>
+		<Type>Int</Type>
+		<Default>100</Default>
+		<ShortHelp>The maximum number of messages to queue due to windowssize limitations</ShortHelp>
+	</WindowSizeQueueSize>
+	<WindowSize>
+		<Type>Int</Type>
+		<Default>0</Default>
+		<ShortHelp>The allowed window size  0 means unlimited</ShortHelp>
+	</WindowSize>
+	<SSLCert>
+		<Type>String</Type>
+		<ShortHelp>TCP: The file containing the SSL certificate used for the SSL connection</ShortHelp>
+	</SSLCert>
+	<SSLKey>
+		<Type>String</Type>
+		<ShortHelp>TCP: The file containing the SSL key used for the SSL connection</ShortHelp>
+	</SSLKey>
+	<SSLCA>
+		<Type>String</Type>
+		<ShortHelp>TCP: The file containing the SSL certificate authority certificates used for the SSL connection</ShortHelp>
+	</SSLCA>
+	<SSLPass>
+		<Type>Secret</Type>
+		<ShortHelp>TCP: The secret for the SSL keystores</ShortHelp>
+	</SSLPass>
+	<SSLTrustAll>
+		<Type>Boolean</Type>
+		<ShortHelp>TCP: If activated all certificates will be trusted.</ShortHelp>
+	</SSLTrustAll>
+	<TemplatePath>
+		<Type>String</Type>
+		<ShortHelp>The path for the templating engine  the templates to be encoded and sent via HTTP are stored here.</ShortHelp>
+		<Default>$(Home)/conf/templates</Default>
+	</TemplatePath>
+	<Secret>
+		<Type>Secret</Type>
+		<ShortHelp>RADIUS: The shared secret/password</ShortHelp>
+	</Secret>
+	<LocalAddr>
+		<Type>IPv4v6Address</Type>
+		<ShortHelp>The IP address we send requests from</ShortHelp>
+	</LocalAddr>
+	<LocalPort>
+		<Type>Int</Type>
+		<ShortHelp>The IP port we send requests from</ShortHelp>
+		<Min>0</Min>
+		<Max>65535</Max>
+	</LocalPort>
+	<Interface>
+		<Type>String</Type>
+		<ShortHelp>The interface to send from  applies only to multicast  e.g. bge0</ShortHelp>
+	</Interface>
+	<ProbeMessage>
+		<Type>String</Type>
+		<ShortHelp>A message definition to be used for probing</ShortHelp>
+	</ProbeMessage>
+	<KeepAliveInterval>
+		<Type>Int</Type>
+		<ShortHelp>Interval in milliseconds after which traffic absence will be checked.</ShortHelp>
+	</KeepAliveInterval>
+	<KeepAliveMessage>
+		<Type>String</Type>
+		<ShortHelp>String representation of a message to be used to keep connection alive.</ShortHelp>
+	</KeepAliveMessage>
+	<RemoteAddr>
+		<Type>IPv4v6Address</Type>
+		<ShortHelp>The IP address we sent requests to</ShortHelp>
+		<Mandatory>true</Mandatory>
+	</RemoteAddr>
+	<RemotePort>
+		<Type>Int</Type>
+		<ShortHelp>The destination port</ShortHelp>
+		<Mandatory>true</Mandatory>
+	</RemotePort>
+	<RemoteService>
+		<Type>String</Type>
+		<ShortHelp>The destination service</ShortHelp>
+	</RemoteService>
+	<ReconnectMode>
+		<Type>Enumeration</Type>
+		<Default>Off</Default>
+		<Values>
+			<item>Off</item>
+			<item>Immediate</item>
+			<item>OnDemand</item>
+		</Values>
+		<ShortHelp>TCP: Configure if low-level auto-reconnect is required</ShortHelp>
+	</ReconnectMode>
+	<UDPReceiveBufferSize>
+		<Type>Int</Type>
+		<Default>65536</Default>
+		<Unavailable>1</Unavailable>
+		<Group>8UDP</Group>
+		<ShortHelp>The internal allocated UDP kernel buffer size (receive queue buffer)</ShortHelp>
+	</UDPReceiveBufferSize>
+	<UDPSendBufferSize>
+		<Type>Int</Type>
+		<Default>65536</Default>
+		<Unavailable>1</Unavailable>
+		<Group>8UDP</Group>
+		<ShortHelp>The internal allocated UDP kernel buffer size (send queue buffer)</ShortHelp>
+	</UDPSendBufferSize>
+	<MaxAttempts>
+		<Type>Int</Type>
+		<Default>1</Default>
+		<Min>1</Min>
+		<Max>100</Max>
+		<High>3</High>
+		<ShortHelp>How often shall we try until give up  obsolete if used with a ServerGroup  then the MaxAttepmts of that ServerGroup is used.</ShortHelp>
+	</MaxAttempts>
+	<Timeouts>
+		<Type>List</Type>
+		<Default>
+			<item>1000ms</item>
+		</Default>
+		<ShortHelp>List of staggered retry timeouts  e.g.  {  1s  2s  2s  } </ShortHelp>
+		<Keys>
+			<Type>Duration</Type>
+			<Min>100ms</Min>
+			<Low>500ms</Low>
+			<ShortHelp>Retry timeout if no answer has been received</ShortHelp>
+		</Keys>
+	</Timeouts>
+	<TcpSoTimeout>
+		<Type>Duration</Type>
+		<Default>200ms</Default>
+		<ShortHelp>TCP socket read timeout  default 200ms</ShortHelp>
+	</TcpSoTimeout>
+	<TcpWriteTimeout>
+		<Type>Duration</Type>
+		<Default>3s</Default>
+		<ShortHelp>TCP write timeout</ShortHelp>
+	</TcpWriteTimeout>
+	<TrafficClass>
+		<Type>Int</Type>
+		<ShortHelp>Sets the traffic class or type-of-service octet in the IP header</ShortHelp>
+		<Default>0</Default>
+	</TrafficClass>
+	<KeepUpInterval>
+		<Type>Duration</Type>
+		<Default>5s</Default>
+		<ShortHelp>The time a server waits until allowing to flag the destination as 'down' after receiving a valid response</ShortHelp>
+	</KeepUpInterval>
+	<DownWaitInterval>
+		<Type>Duration</Type>
+		<Default>10s</Default>
+		<ShortHelp>This defines the first ProbeInterval! after a server is flagged down</ShortHelp>
+	</DownWaitInterval>
+	<ProbeInterval>
+		<Type>Duration</Type>
+		<Default>2s</Default>
+		<ShortHelp>Interval to probe the destination after beeing recognised as unavailable  please see also DownWaitInterval as that interval will be used as the first probe interval before this value will be used for subsequent probes</ShortHelp>
+	</ProbeInterval>
+	<RestartInterval>
+		<Type>Duration</Type>
+		<Default>5s</Default>
+		<ShortHelp>Interval to restart an unavailable plug.</ShortHelp>
+	</RestartInterval>
+	<URIPath>
+		<Type>String</Type>
+		<ShortHelp>The required url for TCP connections  e.g. HotSpot fetch</ShortHelp>
+	</URIPath>
+	<CloseAfterRequest>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>Defines the closing behaviour for TCP connections  shall the connection be closed after finishing the request or stay open</ShortHelp>
+	</CloseAfterRequest>
+	<SingleRequest>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>Defines if only one request may be sent via a single connection. If so  a new connection will be invoked when a request is pending.</ShortHelp>
+	</SingleRequest>
+	<Username>
+		<Type>String</Type>
+		<ShortHelp>The username  if required for protocol (e.g. UCP)</ShortHelp>
+	</Username>
+	<ResTags>
+		<Type>String</Type>
+		<ShortHelp>A regular expression  defining the tags to check for in xml templating adapter answer</ShortHelp>
+	</ResTags>
+	<Password>
+		<Type>Secret</Type>
+		<ShortHelp>The required password for protocol (e.g. UCP)</ShortHelp>
+	</Password>
+	<ServiceId>
+		<Type>String</Type>
+		<ShortHelp>The required ServiceId for protocol (e.g. LES)</ShortHelp>
+	</ServiceId>
+	<LogonRequired>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>If the server needs a logon  a LogonReq message is generated with Username/Password and sent prior the real request. The used adapter must support a LogonReq</ShortHelp>
+	</LogonRequired>
+	<ConnectTimeout>
+		<Type>Duration</Type>
+		<Default>1s</Default>
+		<ShortHelp>Specifies the TCP connect timeout</ShortHelp>
+	</ConnectTimeout>
+	<MaxRequests>
+		<Type>Int</Type>
+		<ShortHelp>After this number of requests the connection is closed by the server</ShortHelp>
+	</MaxRequests>
+	<MaxConnectTime>
+		<Type>Duration</Type>
+		<ShortHelp>After this time the connection is closed by the server</ShortHelp>
+	</MaxConnectTime>
+	<MaxConnections>
+		<Type>Int</Type>
+		<ShortHelp>Maximum number of simultaneous connections opened by a client plug.</ShortHelp>
+		<Default>1</Default>
+	</MaxConnections>
+	<PropagateDeadline>
+		<Type>Boolean</Type>
+		<Default>true</Default>
+		<ShortHelp>Whether the deadline should be propagated</ShortHelp>
+	</PropagateDeadline>
+	<UseGlobalTimeout>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>Whether the timeout of the request should be used globally.</ShortHelp>
+	</UseGlobalTimeout>
+	<MAP>
+		<Type>Hash</Type>
+		<Items>
+			<Node>
+				<Type>String</Type>
+				<ShortHelp>Name of Ulticom node to use</ShortHelp>
+				<Example>NODE1</Example>
+			</Node>
+			<Name>
+				<Type>String</Type>
+				<ShortHelp>The process identity for the Ulticom stack</ShortHelp>
+				<Example>MAPTD</Example>
+			</Name>
+			<SubSystemNumber>
+				<Type>Int</Type>
+				<ShortHelp>Local subsystem number (similar to a port number)</ShortHelp>
+				<Example>5</Example>
+			</SubSystemNumber>
+			<PointCode>
+				<Type>Int</Type>
+				<ShortHelp>Local pointcode (similar to an ip address)</ShortHelp>
+				<Example>6091</Example>
+			</PointCode>
+			<Debug>
+				<Type>Int</Type>
+				<ShortHelp>The MAP/SS7 stack debug level</ShortHelp>
+				<Example>1</Example>
+			</Debug>
+		</Items>
+	</MAP>
+	<Dictionary>
+		<Type>Reference</Type>
+		<In>Dictionaries</In>
+		<ShortHelp>The dictionary to be used if required</ShortHelp>
+	</Dictionary>
+	<UseSSL>
+		<Type>Enumeration</Type>
+		<Values>
+			<item>true</item>
+			<item>false</item>
+			<item>starttls</item>
+			<item>mtls</item>
+		</Values>
+		<Default>false</Default>
+		<ShortHelp>Use the Secure Channel connection based on SSL</ShortHelp>
+		<Group>2SSL</Group>
+	</UseSSL>
+	<SSLPassword>
+		<Type>Password</Type>
+		<ShortHelp>The SSL Password</ShortHelp>
+		<Group>2SSL</Group>
+	</SSLPassword>
+	<SSLCertificate>
+		<Type>String</Type>
+		<ShortHelp>The filename of the certicate</ShortHelp>
+		<Group>2SSL</Group>
+	</SSLCertificate>
+	<SSLSessionCacheSize>
+		<Type>Int</Type>
+		<ShortHelp>Maximum size of SSL Session Cache</ShortHelp>
+		<Min>0</Min>
+		<Default>0</Default>
+		<Group>2SSL</Group>
+	</SSLSessionCacheSize>
+	<SSLSessionTimeout>
+		<Type>Int</Type>
+		<ShortHelp>Maximum duration of SSL Session in seconds</ShortHelp>
+		<Min>1</Min>
+		<Default>86400</Default>
+		<Group>2SSL</Group>
+	</SSLSessionTimeout>
+	<SSLCertificateStore>
+		<Type>Hash</Type>
+		<Items>
+			<Profile>
+				<Type>String</Type>
+				<ShortHelp>Name of the certificate profile</ShortHelp>
+			</Profile>
+		</Items>
+	</SSLCertificateStore>
+	<SSLEnabledProtocols>
+		<ShortHelp>List of enabled TLS versions</ShortHelp>
+		<Type>List</Type>
+		<Keys>
+			<Type>Enumeration</Type>
+			<Values>
+				<item>TLSv1</item>
+				<item>TLSv1.1</item>
+				<item>TLSv1.2</item>
+				<item>TLSv1.3</item>
+			</Values>
+		</Keys>
+		<Default>
+			<item>TLSv1.2</item>
+			<item>TLSv1.3</item>
+		</Default>
+		<Group>2SSL</Group>
+	</SSLEnabledProtocols>
+	<SSLCipher>
+		<ShortHelp>The list of allowed ciphers</ShortHelp>
+		<Type>List</Type>
+		<Keys>
+			<Type>String</Type>
+		</Keys>
+		<Group>2SSL</Group>
+	</SSLCipher>
+	<OCSPEnabled>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>Enables OCSP checking</ShortHelp>
+	</OCSPEnabled>
+	<OCSPResponderURL>
+		<Type>String</Type>
+		<ShortHelp>OCSP responder URL</ShortHelp>
+	</OCSPResponderURL>
+	<OCSPValidateCAChain>
+		<Type>Boolean</Type>
+		<Default>true</Default>
+		<ShortHelp>Validates intermediate CAs</ShortHelp>
+	</OCSPValidateCAChain>
+	<OCSPDistrustRevokedCA>
+		<Type>Boolean</Type>
+		<Default>true</Default>
+		<ShortHelp>Removes revoked or expired intermediate CAs from the trust store</ShortHelp>
+	</OCSPDistrustRevokedCA>
+	<OCSPTrustIfUnavailableResponder>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>Trust the client if the OCSP server is not responding</ShortHelp>
+	</OCSPTrustIfUnavailableResponder>
+	<MYSQL>
+		<Type>Hash</Type>
+		<Items>
+			<User>
+				<Type>String</Type>
+				<ShortHelp>The login account name</ShortHelp>
+			</User>
+			<Password>
+				<Type>Password</Type>
+				<ShortHelp>The login password</ShortHelp>
+			</Password>
+			<Host>
+				<Type>IPv4v6Address</Type>
+				<Mandatory>true</Mandatory>
+			</Host>
+			<Port>
+				<Type>Int</Type>
+				<Default>3306</Default>
+			</Port>
+			<Database>
+				<Type>String</Type>
+				<Mandatory>true</Mandatory>
+				<ShortHelp>The databasename to be used</ShortHelp>
+			</Database>
+			<TDLPath>
+				<Type>String</Type>
+				<ShortHelp>The path to table definition file in tdl format</ShortHelp>
+			</TDLPath>
+			<Engines>
+				<Type>Int</Type>
+				<ShortHelp>The number of threads processing the requests</ShortHelp>
+			</Engines>
+		</Items>
+	</MYSQL>
+	<JDBC>
+		<Type>Hash</Type>
+		<Items>
+			<DatabaseURL>
+				<Type>String</Type>
+				<ShortHelp>The database URL. The full URL is compiled from this string and references to other top level config elements using angle brackets &lt;&gt;. E.g. jdbc:oracle:thin:&lt;Username&gt;/&lt;Password&gt;@myhost:1521:orcl or jdbc:mysql://&lt;RemoteAddr&gt;:&lt;RemotePort&gt;/</ShortHelp>
+			</DatabaseURL>
+			<QueueSize>
+				<Type>Int</Type>
+				<Default>10000</Default>
+				<ShortHelp>The maximum queue size of one database connection</ShortHelp>
+			</QueueSize>
+			<PreparedStatementMapSize>
+				<Type>Int</Type>
+				<Default>1000</Default>
+				<ShortHelp>The maximum number of concurrently held prepared statements per connection</ShortHelp>
+			</PreparedStatementMapSize>
+		</Items>
+	</JDBC>
+	<Internal>
+		<Type>Boolean</Type>
+		<Default>false</Default>
+		<ShortHelp>Whether logging is on iin iout rather than in  out</ShortHelp>
+	</Internal>
+	<PlugCount>
+		<Type>Int</Type>
+		<Default>1</Default>
+		<ShortHelp>The number of parallel incarnated plugs for this server (used round robin)</ShortHelp>
+	</PlugCount>
+	<PlugCreateDelay>
+		<Type>Duration</Type>
+		<Default>200ms</Default>
+		<ShortHelp>The delay between creating the multiple plugs belonging to a single server</ShortHelp>
+	</PlugCreateDelay>
+	<XmlSig>
+		<Type>Hash</Type>
+		<Items>
+			<SSLKeyStore>
+				<Type>String</Type>
+				<ShortHelp>Filename of the java keystore</ShortHelp>
+			</SSLKeyStore>
+			<SSLKeyStorePass>
+				<Type>String</Type>
+				<ShortHelp>The passphrase for the keystore</ShortHelp>
+			</SSLKeyStorePass>
+			<SSLKeyAlias>
+				<Type>String</Type>
+				<ShortHelp>The alias of the key to use</ShortHelp>
+			</SSLKeyAlias>
+			<References>
+				<Type>KeyValuePair</Type>
+				<ShortHelp>A list of reference to include in signature</ShortHelp>
+				<Keys>
+					<Type>String</Type>
+					<ShortHelp>The Name of the Reference in slash syntax</ShortHelp>
+					<Example>soapenv:Envelope/soapenv:Body</Example>
+				</Keys>
+				<Values>
+					<Type>Hash</Type>
+					<Items>
+						<Transforms>
+							<Type>List</Type>
+							<Keys>
+								<Type>Enumeration</Type>
+								<Values>
+									<item>http://www.w3.org/2000/09/xmldsig#enveloped-signature</item>
+									<item>http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments</item>
+								</Values>
+							</Keys>
+						</Transforms>
+					</Items>
+				</Values>
+			</References>
+		</Items>
+	</XmlSig>
+	<DiameterBase>
+		<Type>Hash</Type>
+		<Items>
+			<Realm>
+				<ShortHelp>The diameter realm this diameter node belongs to</ShortHelp>
+				<Mandatory>true</Mandatory>
+				<Type>String</Type>
+				<Example>pcrf.customer.us</Example>
+			</Realm>
+			<NodeID>
+				<ShortHelp>The NodeID of this diameter node. Will be derived based on configured Realm and the instance name if not set. The NodeID is used to derive the DiameterIdentity to anounce to direct peers in CER/CEA messages.</ShortHelp>
+				<Type>String</Type>
+				<Example>pcrf.tm.us</Example>
+			</NodeID>
+			<AuthApplicationIds>
+				<Type>List</Type>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</AuthApplicationIds>
+			<AcctApplicationIds>
+				<Type>List</Type>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</AcctApplicationIds>
+			<SupportedVendorIds>
+				<Type>List</Type>
+				<Keys>
+					<Type>Int</Type>
+				</Keys>
+				<ShortHelp>A list of application ids (numerical) to be included in outgoing CER messages in AVP Supported-Vendor-Id</ShortHelp>
+			</SupportedVendorIds>
+			<HostIPAddress>
+				<Type>List</Type>
+				<Keys>
+					<Type>IPv4v6Address</Type>
+				</Keys>
+				<ShortHelp>The IP addresses to provide as Host-IP-Address AVPs in the CER/CEA exchange. If configured it overrides the addresses of the physical interfaces</ShortHelp>
+			</HostIPAddress>
+			<WatchdogInterval>
+				<Type>Duration</Type>
+				<Default>30s</Default>
+				<ShortHelp>The interval between two Device-WatchdogReq (see also WatchdogJitter) </ShortHelp>
+			</WatchdogInterval>
+			<WatchdogMaxAttempts>
+				<Type>Int</Type>
+				<Default>1</Default>
+				<ShortHelp>Number of unresponded Device-WatchdogReq before closing the connection. </ShortHelp>
+			</WatchdogMaxAttempts>
+			<WatchdogJitter>
+				<Type>Duration</Type>
+				<Default>2s</Default>
+				<ShortHelp>The additional random jitter for the WatchdogInterval. </ShortHelp>
+			</WatchdogJitter>
+			<UseUniqueIdentity>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>If set to true  the Origin-Host AVP value to be used is constructed by prepending the node id value with a unique prefix  so no two diameter connections use the same value. If set to false  the node id is used unmodified.</ShortHelp>
+			</UseUniqueIdentity>
+			<CERRetryInterval>
+				<Type>Duration</Type>
+				<Default>3s</Default>
+				<ShortHelp>Time to wait before retrying a rejected or timed out Capabilities-ExchangeRequest. </ShortHelp>
+			</CERRetryInterval>
+			<DPRDisablePeriod>
+				<Type>Duration</Type>
+				<Default>5s</Default>
+				<ShortHelp>Time period that the diameter connection is disabled (not sending diameter messages) after receiving a Disconnect-Peer-Request. </ShortHelp>
+			</DPRDisablePeriod>
+			<OverwriteDestinationHost>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set</ShortHelp>
+			</OverwriteDestinationHost>
+			<OverwriteDestinationRealm>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set</ShortHelp>
+			</OverwriteDestinationRealm>
+			<DestinationHost>
+				<ShortHelp>The specified destination host will be inserted into outgoing messages. If the message already has a destination host it will only be overwritten if OverwriteDestinationHost is set to true</ShortHelp>
+				<Mandatory>false</Mandatory>
+				<Type>String</Type>
+			</DestinationHost>
+			<DestinationRealm>
+				<ShortHelp>The specified destination realm will be inserted into outgoing messages. If the message already has a destination realm it will only be overwritten if OverwriteDestinationRealm is set to true</ShortHelp>
+				<Mandatory>false</Mandatory>
+				<Type>String</Type>
+			</DestinationRealm>
+			<ProxyInfoFromRequest>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>Set to true if the coder should insert the multivalued Proxy-Info AVP from the request into the response</ShortHelp>
+			</ProxyInfoFromRequest>
+			<DOIC>
+				<Type>Hash</Type>
+				<Items>
+					<Algorithms>
+						<ShortHelp>List of algorithms supported by the node </ShortHelp>
+						<Type>List</Type>
+						<Keys>
+							<Type>Enumeration</Type>
+							<Values>
+								<item>OLR_DEFAULT_ALGO</item>
+							</Values>
+						</Keys>
+						<Default>
+							<item>OLR_DEFAULT_ALGO</item>
+						</Default>
+					</Algorithms>
+					<Enabled>
+						<ShortHelp>If set to true reacting role will be enabled. </ShortHelp>
+						<Type>Boolean</Type>
+						<Default>false</Default>
+					</Enabled>
+					<SlowStart>
+						<Type>Hash</Type>
+						<Items>
+							<Mode>
+								<Type>Enumeration</Type>
+								<Default>Interval</Default>
+								<Values>
+									<item>Interval</item>
+								</Values>
+								<ShortHelp>Mode of slow start</ShortHelp>
+							</Mode>
+							<Use>
+								<Type>Enumeration</Type>
+								<Default>ExpireFull</Default>
+								<Values>
+									<item>Expire</item>
+									<item>ExpireFull</item>
+									<item>Off</item>
+								</Values>
+								<ShortHelp>Active for use cases</ShortHelp>
+							</Use>
+							<Interval>
+								<Type>Hash</Type>
+								<Items>
+									<Time>
+										<Type>Duration</Type>
+										<Default>30s</Default>
+										<ShortHelp>Time interval</ShortHelp>
+									</Time>
+									<Step>
+										<Type>Percentage</Type>
+										<Default>5%</Default>
+										<ShortHelp>Each step in percentage</ShortHelp>
+									</Step>
+								</Items>
+							</Interval>
+						</Items>
+					</SlowStart>
+				</Items>
+			</DOIC>
+			<VendorId>
+				<ShortHelp>Vendor id to use when inserting identity</ShortHelp>
+				<Mandatory>false</Mandatory>
+				<Type>Int</Type>
+				<Default>53228</Default>
+			</VendorId>
+			<ProductName>
+				<ShortHelp>Product name to use when inserting identity</ShortHelp>
+				<Mandatory>false</Mandatory>
+				<Type>String</Type>
+				<Default>One-AAA</Default>
+			</ProductName>
+			<RemoveVendorSpecificAVPs>
+				<Type>List</Type>
+				<Keys>
+					<Type>Int</Type>
+				</Keys>
+				<Mandatory>false</Mandatory>
+				<ShortHelp>AVPs with these Vendor ids will be removed from external communication</ShortHelp>
+				<Default>
+					<item>35269</item>
+					<item>10548</item>
+				</Default>
+			</RemoveVendorSpecificAVPs>
+		</Items>
+	</DiameterBase>
+	<DiameterOutRouter>
+		<Type>Hash</Type>
+		<Items>
+			<RealmRoutingTable>
+				<ShortHelp>The name of the realm routing table</ShortHelp>
+				<Type>String</Type>
+				<Mandatory>false</Mandatory>
+				<Example>RealmRoutingTable</Example>
+			</RealmRoutingTable>
+			<CapabilityMode>
+				<ShortHelp>In 'Standard' mode the DiameterRouter finds diameter connections over the tuple (DiameterId  Auth-Application-Id/Acct-Application-Id'). In 'Weak' mode the DiameterRouter finds the connections over the DiameterId only</ShortHelp>
+				<Type>Enumeration</Type>
+				<Default>Standard</Default>
+				<Values>
+					<item>Standard</item>
+					<item>Weak</item>
+				</Values>
+			</CapabilityMode>
+		</Items>
+	</DiameterOutRouter>
+	<DiameterRouter>
+		<Type>Hash</Type>
+		<Items>
+			<Realm>
+				<ShortHelp>The diameter realm this diameter node belongs to</ShortHelp>
+				<Type>String</Type>
+				<Mandatory>true</Mandatory>
+				<Example>company.com</Example>
+			</Realm>
+			<NodeID>
+				<ShortHelp>The NodeID of this diameter node. Will be derived based on configured Realm and the instance name if not set. The NodeID is used to derive the DiameterIdentity to anounce to direct peers in CER/CEA messages.</ShortHelp>
+				<Type>String</Type>
+				<Example>aaa.company.com</Example>
+			</NodeID>
+			<OriginHost>
+				<ShortHelp>If set and RewriteOriginHost is set to true  this value is used to rewrite the Origin-Host AVP for outgoing payload (application-level) messages.</ShortHelp>
+				<Type>String</Type>
+				<Example>aaa.company.com</Example>
+			</OriginHost>
+			<AuthApplicationIds>
+				<Type>List</Type>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</AuthApplicationIds>
+			<AcctApplicationIds>
+				<Type>List</Type>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</AcctApplicationIds>
+			<SupportedVendorIds>
+				<Type>List</Type>
+				<Keys>
+					<Type>Int</Type>
+				</Keys>
+				<ShortHelp>A list of application ids (numerical) to be included in outgoing CEA messages in AVP Supported-Vendor-Id</ShortHelp>
+			</SupportedVendorIds>
+			<HostIPAddress>
+				<Type>List</Type>
+				<Keys>
+					<Type>IPv4v6Address</Type>
+				</Keys>
+				<ShortHelp>The IP addresses to provide as Host-IP-Address AVPs in the CER/CEA exchange. If configured it overrides the addresses of the physical interfaces</ShortHelp>
+			</HostIPAddress>
+			<WatchdogInterval>
+				<Type>Duration</Type>
+				<Default>30s</Default>
+				<ShortHelp>The interval between two Device-WatchdogReq (see also WatchdogJitter) </ShortHelp>
+			</WatchdogInterval>
+			<WatchdogMaxAttempts>
+				<Type>Int</Type>
+				<Default>1</Default>
+				<ShortHelp>Number of unresponded Device-WatchdogReq before closing the connection. </ShortHelp>
+			</WatchdogMaxAttempts>
+			<WatchdogJitter>
+				<Type>Duration</Type>
+				<Default>2s</Default>
+				<ShortHelp>The additional random jitter for the WatchdogInterval. </ShortHelp>
+			</WatchdogJitter>
+			<RequireCER>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>If set to false  accept Diameter requests without preceeding CER/CEA round. If set to true  the behaviour is compliant to rfc 3588</ShortHelp>
+				<OLR_DEFAULT_ALGO>}</OLR_DEFAULT_ALGO>
+				<InterceptCER>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+					<ShortHelp>If set to true  received CER messages are passed to the application for processing  along with the prepared CEA being available as /Response.</ShortHelp>
+				</InterceptCER>
+				<CERRetryInterval>
+					<Type>Duration</Type>
+					<Default>3s</Default>
+					<ShortHelp>Time to wait before retrying a rejected or timed out Capabilities-ExchangeRequest. </ShortHelp>
+				</CERRetryInterval>
+				<DPRDisablePeriod>
+					<Type>Duration</Type>
+					<Default>5s</Default>
+					<ShortHelp>Time period that the diameter connection is disabled (not sending diameter messages) after receiving a Disconnect-Peer-Request. </ShortHelp>
+				</DPRDisablePeriod>
+				<RewriteOriginHost>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>If set to true  the Origin-Host and Origin-Realm AVPs of forwarded response messages will be rewritten to contain the configuration values defined for OriginHost and Realm of this layer. If this is set to true and UseUniqueIdentity is set to false  OriginHost must also be configured.</ShortHelp>
+				</RewriteOriginHost>
+				<UseUniqueIdentity>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>If set to true  the Origin-Host AVP value to be used is constructed by prepending the node id value with a unique prefix  so no two diameter connections use the same value. If set to false  the node id is used unmodified.</ShortHelp>
+				</UseUniqueIdentity>
+				<OverwriteDestinationHost>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set</ShortHelp>
+				</OverwriteDestinationHost>
+				<OverwriteDestinationRealm>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>If set to true the destination-host and destination-realm will be overwritten in outgoing messages if DestinationRealm and/or DestinationHost are set</ShortHelp>
+				</OverwriteDestinationRealm>
+				<DestinationHost>
+					<ShortHelp>The specified destination host will be inserted into outgoing messages. If the message already has a destination host it will only be overwritten if OverwriteDestinationHost is set to true</ShortHelp>
+					<Mandatory>false</Mandatory>
+					<Type>String</Type>
+				</DestinationHost>
+				<DestinationRealm>
+					<ShortHelp>The specified destination realm will be inserted into outgoing messages. If the message already has a destination realm it will only be overwritten if OverwriteDestinationRealm is set to true</ShortHelp>
+					<Mandatory>false</Mandatory>
+					<Type>String</Type>
+				</DestinationRealm>
+				<ProxyInfoFromRequest>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>Set to true if the coder should insert the multivalued Proxy-Info AVP from the request into the response</ShortHelp>
+				</ProxyInfoFromRequest>
+				<DOIC>
+					<Type>Hash</Type>
+					<Items>
+						<Algorithms>
+							<ShortHelp>List of algorithms supported by the node </ShortHelp>
+							<Type>List</Type>
+							<Keys>
+								<Type>Enumeration</Type>
+								<Values>
+									<item>OLR_DEFAULT_ALGO</item>
+								</Values>
+							</Keys>
+							<Default>
+								<item>OLR_DEFAULT_ALGO</item>
+							</Default>
+						</Algorithms>
+						<Enabled>
+							<ShortHelp>If set to true reacting role will be enabled. </ShortHelp>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+						</Enabled>
+						<SlowStart>
+							<Type>Hash</Type>
+							<Items>
+								<Mode>
+									<Type>Enumeration</Type>
+									<Default>Interval</Default>
+									<Values>
+										<item>Interval</item>
+									</Values>
+									<ShortHelp>Mode of slow start</ShortHelp>
+								</Mode>
+								<Use>
+									<Type>Enumeration</Type>
+									<Default>ExpireFull</Default>
+									<Values>
+										<item>Expire</item>
+										<item>ExpireFull</item>
+										<item>Off</item>
+									</Values>
+									<ShortHelp>Active for use cases</ShortHelp>
+								</Use>
+								<Interval>
+									<Type>Hash</Type>
+									<Items>
+										<Time>
+											<Type>Duration</Type>
+											<Default>30s</Default>
+											<ShortHelp>Time interval</ShortHelp>
+										</Time>
+										<Step>
+											<Type>Percentage</Type>
+											<Default>5%</Default>
+											<ShortHelp>Each step in percentage</ShortHelp>
+										</Step>
+									</Items>
+								</Interval>
+							</Items>
+						</SlowStart>
+					</Items>
+				</DOIC>
+				<VendorId>
+					<ShortHelp>Vendor id to use when inserting identity</ShortHelp>
+					<Mandatory>false</Mandatory>
+					<Type>Int</Type>
+					<Default>53228</Default>
+				</VendorId>
+				<ProductName>
+					<ShortHelp>Product name to use when inserting identity</ShortHelp>
+					<Mandatory>false</Mandatory>
+					<Type>String</Type>
+					<Default>One-AAA</Default>
+				</ProductName>
+				<RemoveVendorSpecificAVPs>
+					<Type>List</Type>
+					<Keys>
+						<Type>Int</Type>
+					</Keys>
+					<Mandatory>false</Mandatory>
+					<ShortHelp>AVPs with these Vendor ids will be removed from external communication</ShortHelp>
+					<Default>
+						<item>35269</item>
+						<item>10548</item>
+					</Default>
+				</RemoveVendorSpecificAVPs>
+			</RequireCER>
+		</Items>
+		<Controller>
+			<Type>Enumeration</Type>
+			<Values>
+				<item>none</item>
+				<item>RMTP</item>
+			</Values>
+			<Default>none</Default>
+			<ShortHelp>The traffic controller to be used </ShortHelp>
+		</Controller>
+		<RMTPSettings>
+			<Type>Hash</Type>
+			<Items>
+				<BucketBeat>
+					<Type>Duration</Type>
+					<Default>20ms</Default>
+					<ShortHelp>The detection of lost packets and its refetching using a RetransmitReq\ will operate in this cycle. Should be set to a small number\ between 10ms and 40ms. </ShortHelp>
+				</BucketBeat>
+				<FirstRefetchInterval>
+					<Type>Duration</Type>
+					<Default>390ms</Default>
+					<ShortHelp>The interval after which the receiver will attempt to ask\ for a packet retransmission of lost packets. </ShortHelp>
+				</FirstRefetchInterval>
+				<RefetchInterval>
+					<Type>Duration</Type>
+					<Default>690ms</Default>
+					<ShortHelp>The refetch interval for the second or later refetch request. </ShortHelp>
+				</RefetchInterval>
+				<KeepTime>
+					<Type>Duration</Type>
+					<Default>15s</Default>
+					<ShortHelp>The sender will store and keep submittet packets for that amount of time.\ After this time the packets are deleted by the server and are\ not further available for a retransmission. </ShortHelp>
+				</KeepTime>
+				<FlushInterval>
+					<Type>Duration</Type>
+					<Default>90ms</Default>
+					<ShortHelp>If payload traffic stops for longer than this interval the sender\ will submit a KeepAliveReq to allow a loss detection on the receiver site. </ShortHelp>
+				</FlushInterval>
+				<KeepAliveInterval>
+					<Type>Duration</Type>
+					<Default>3s</Default>
+					<ShortHelp>The sender will send KeepAliveReq messages after that amount of idle time\ on the link to update its list of available receivers (Peers). </ShortHelp>
+				</KeepAliveInterval>
+				<ResyncGap>
+					<Type>Int</Type>
+					<Default>12500</Default>
+					<ShortHelp>If the receiver receives a sequence number with a big difference to\ the previously received one exceeding this maximum distance \ it will assume an out-of-sync situation and clear and reset its receiver context. </ShortHelp>
+				</ResyncGap>
+				<ReceiveTableSize>
+					<Type>Int</Type>
+					<Default>32768</Default>
+					<ShortHelp>The internal receiver table to collect received sequence numbers in.\ Should not be changed without a good reason. </ShortHelp>
+				</ReceiveTableSize>
+				<SendTableSize>
+					<Type>Int</Type>
+					<Default>32768</Default>
+					<ShortHelp>The senders packet table size the default is adequate and\ should not be change without a good reason. </ShortHelp>
+				</SendTableSize>
+				<MaxRetries>
+					<Type>Int</Type>
+					<Default>10</Default>
+					<ShortHelp>The maximum allowed number of retransmit requests for a single missing\ packet. </ShortHelp>
+				</MaxRetries>
+				<MaxRefetchSize>
+					<Type>Int</Type>
+					<Default>400</Default>
+					<ShortHelp>Once per BucketBeat interval all missing packets are requested for retransmission\ by the receiver to the sender. This number limits the number of simultaneously\ requested packets per RetransmitReq per BucketBeat interval. This parameter will limit the refetch overhead and allows to throttle the retransmissions. </ShortHelp>
+				</MaxRefetchSize>
+				<PeerIdleLimit>
+					<Type>Duration</Type>
+					<Default>120s</Default>
+					<ShortHelp>The sender maintains a Peer-State per receiver updated using KeepAliveReq/Res\ message exchanges. If the sender does not receive a KeepAliveRes from a Peer for this\ amount of time it will assume this receiver as gone. </ShortHelp>
+				</PeerIdleLimit>
+			</Items>
+		</RMTPSettings>
+		<SCTP>
+			<Type>Hash</Type>
+			<Items>
+				<WriteTimeout>
+					<ShortHelp>Maximal time to block on a write operation. A zero value disables the functionality. </ShortHelp>
+					<Type>Duration</Type>
+					<Default>3s</Default>
+				</WriteTimeout>
+				<LocalAddrList>
+					<ShortHelp>A list of IPv4 and/or IPv6 addresses to bind to if the wildcard address should not be used. </ShortHelp>
+					<Mandatory>false</Mandatory>
+					<Type>List</Type>
+					<Keys>
+						<Type>IPv4v6Address</Type>
+					</Keys>
+				</LocalAddrList>
+				<RemoteAddrList>
+					<ShortHelp>A list of IPv4 and/or IPv6 addresses to connect to. </ShortHelp>
+					<Mandatory>true</Mandatory>
+					<Type>List</Type>
+					<Keys>
+						<Type>IPv4v6Address</Type>
+					</Keys>
+				</RemoteAddrList>
+				<PrimaryRemoteAddr>
+					<ShortHelp>The peer address to use as the association primary. </ShortHelp>
+					<Type>IPv4v6Address</Type>
+					<Mandatory>false</Mandatory>
+				</PrimaryRemoteAddr>
+				<PrimaryLocalAddr>
+					<ShortHelp>The address that the peer should use as the association primary. </ShortHelp>
+					<Type>IPv4v6Address</Type>
+					<Mandatory>false</Mandatory>
+				</PrimaryLocalAddr>
+				<FragmentInterleave>
+					<ShortHelp>None: do not interleave messages at all. Multi: interleave messages from different associations only. Complete: interleave messages within associations </ShortHelp>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>None</item>
+						<item>Multi</item>
+						<item>Complete</item>
+					</Values>
+					<Default>None</Default>
+				</FragmentInterleave>
+				<NoDelay>
+					<ShortHelp>If set to true will disable a Nagle-like algorithm which coalesces short segments. </ShortHelp>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+				</NoDelay>
+				<DisableFragments>
+					<ShortHelp>If set to true no SCTP message fragmentation will be performed. </ShortHelp>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+				</DisableFragments>
+				<ExplicitComplete>
+					<ShortHelp>If set to true the send method may be invoked multiple times to a send message. </ShortHelp>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+				</ExplicitComplete>
+				<SoLinger>
+					<ShortHelp>Time interval given in seconds to send queued unsent data after close is invoked on the socket. A negative value is disables the functionality. </ShortHelp>
+					<Type>Int</Type>
+					<Default>1</Default>
+				</SoLinger>
+				<SoRcvBuf>
+					<ShortHelp>Size of the socket receive buffer. </ShortHelp>
+					<Type>Int</Type>
+					<Default>65536</Default>
+				</SoRcvBuf>
+				<SoSndBuf>
+					<ShortHelp>Size of the socket send buffer. </ShortHelp>
+					<Type>Int</Type>
+					<Default>65536</Default>
+				</SoSndBuf>
+				<InitMaxInStreams>
+					<ShortHelp>Maximum number of in streams requested during association. 0 indicates the default value. </ShortHelp>
+					<Type>Int</Type>
+					<Default>0</Default>
+				</InitMaxInStreams>
+				<InitMaxOutStreams>
+					<ShortHelp>Maximum number of out streams requested during association. 0 indicates the default value. </ShortHelp>
+					<Type>Int</Type>
+					<Default>0</Default>
+				</InitMaxOutStreams>
+				<PPID>
+					<ShortHelp>Payload Protocol Identifier. Overrides any protocol specific value. </ShortHelp>
+					<Type>Int</Type>
+				</PPID>
+			</Items>
+		</SCTP>
+		<SSHClient>
+			<Type>Hash</Type>
+			<Items>
+				<UserName>
+					<Type>String</Type>
+					<Mandatory>true</Mandatory>
+					<ShortHelp>The user name</ShortHelp>
+				</UserName>
+				<UserPassword>
+					<Type>Password</Type>
+					<Mandatory>false</Mandatory>
+					<ShortHelp>The authentication password to use</ShortHelp>
+				</UserPassword>
+				<UserKeyFile>
+					<Type>Path</Type>
+					<Mandatory>false</Mandatory>
+					<ShortHelp>The path to the keyfile to use for authentication</ShortHelp>
+				</UserKeyFile>
+				<TrustedServers>
+					<Type>List</Type>
+					<Keys>
+						<Type>String</Type>
+					</Keys>
+					<ShortHelp>List of fingerprints of trusted servers. If not given  all servers are trusted</ShortHelp>
+				</TrustedServers>
+			</Items>
+		</SSHClient>
+		<NetconfClient>
+			<Type>Hash</Type>
+			<Items>
+				<Realm>
+					<Type>String</Type>
+					<ShortHelp>The diameter realm this diameter node belongs to</ShortHelp>
+				</Realm>
+			</Items>
+		</NetconfClient>
+		<DNS>
+			<Type>Hash</Type>
+			<Items>
+				<SendBufferSize>
+					<ShortHelp>The maximum size of DNS data before the packet is truncated. Configurable in the interval 512-65536 bytes. </ShortHelp>
+					<Type>Int</Type>
+					<Default>4096</Default>
+				</SendBufferSize>
+				<ReceiveBufferSize>
+					<ShortHelp>The payload size communicated in the OPT Resource Record to the peer. Configurable in the interval 512-65536 bytes. </ShortHelp>
+					<Type>Int</Type>
+					<Default>4096</Default>
+				</ReceiveBufferSize>
+			</Items>
+		</DNS>
+		<ItemStore>
+			<Type>Hash</Type>
+			<Items>
+				<StoreName>
+					<Type>String</Type>
+					<ShortHelp>The name of the ItemStore to be used</ShortHelp>
+					<Default>DefaultStore</Default>
+				</StoreName>
+				<ChangeNotificationSubscriptions>
+					<Type>List</Type>
+					<ShortHelp>list of the types that this connection wants to monitor for changes</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+					</Keys>
+				</ChangeNotificationSubscriptions>
+				<FilterDuplicateChangeNotifications>
+					<Type>Boolean</Type>
+					<ShortHelp>If enabled only the first notification for a change is propagated to the application. Duplicates of the same event from other copies are discarded. </ShortHelp>
+					<Default>true</Default>
+				</FilterDuplicateChangeNotifications>
+				<ChangeNotificationRetainWindow>
+					<Type>Duration</Type>
+					<ShortHelp>Size of the look-back window used to filter out duplicate change notifications.</ShortHelp>
+					<Default>5s</Default>
+				</ChangeNotificationRetainWindow>
+				<ThreadCount>
+					<Type>Int</Type>
+					<Default>1</Default>
+					<ShortHelp>The number of threads used to process IO events in the item store network</ShortHelp>
+				</ThreadCount>
+				<MultiValueList>
+					<Type>Boolean</Type>
+					<ShortHelp>If enabled values of multivalued attributes in the response from ItemStore are provided as lists rather than properties (supporting LDAP coder). </ShortHelp>
+					<Default>false</Default>
+				</MultiValueList>
+			</Items>
+		</ItemStore>
+		<COPS>
+			<Type>Hash</Type>
+			<Items>
+				<PEPID>
+					<Type>String</Type>
+					<ShortHelp>Identity to use when acting as a client</ShortHelp>
+					<Mandatory>true</Mandatory>
+				</PEPID>
+				<MessageIntegrity>
+					<ShortHelp>List of accepted methods in precedence order PLAIN - no data integrity MMAC - data integrity (shared keys) TLS - data encryption </ShortHelp>
+					<Type>List</Type>
+					<Keys>
+						<Type>Enumeration</Type>
+						<Values>
+							<item>PLAIN</item>
+							<item>HMAC</item>
+							<item>TLS</item>
+						</Values>
+					</Keys>
+				</MessageIntegrity>
+				<KeyTable>
+					<Type>Reference</Type>
+					<In>KeyTables</In>
+					<ShortHelp>Key table in case of HMAC data integrity</ShortHelp>
+				</KeyTable>
+				<Extension>
+					<Type>String</Type>
+					<Default>Base</Default>
+					<ShortHelp>Configure to PR if the COPS-PR extension should be used (Base/PR)</ShortHelp>
+				</Extension>
+			</Items>
+		</COPS>
+		<DHCP>
+			<Type>Hash</Type>
+			<Items>
+				<KeyTable>
+					<Type>Reference</Type>
+					<In>KeyTables</In>
+					<ShortHelp>Key table in case of HMAC data integrity</ShortHelp>
+				</KeyTable>
+				<PadTo300>
+					<Type>Boolean</Type>
+					<ShortHelp>If enabled the coder pads messages to a minimum of 300 bytes. </ShortHelp>
+					<Default>true</Default>
+				</PadTo300>
+				<PadToWordBoundary>
+					<Type>Boolean</Type>
+					<ShortHelp>If enabled the coder pads messages to word boundary. </ShortHelp>
+					<Default>true</Default>
+				</PadToWordBoundary>
+				<MessageIntegrity>
+					<ShortHelp>Authentication method </ShortHelp>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>PLAIN</item>
+						<item>HMAC</item>
+					</Values>
+					<Default>PLAIN</Default>
+				</MessageIntegrity>
+				<DoReplayDetection>
+					<Type>Boolean</Type>
+					<ShortHelp>If enabled coder will perform replay detection </ShortHelp>
+					<Default>true</Default>
+				</DoReplayDetection>
+			</Items>
+		</DHCP>
+		<Filters>
+			<Type>Hash</Type>
+			<Short>Optional filters</Short>
+			<Items>
+				<LoadMetrics>
+					<Type>Hash</Type>
+					<Short>Load metrics for overload control</Short>
+					<Items>
+						<Tag>
+							<Type>String</Type>
+							<ShortHelp>Tag to unify several plugs </ShortHelp>
+						</Tag>
+						<ResponseTimes>
+							<Type>Boolean</Type>
+							<ShortHelp>Measure response times </ShortHelp>
+							<Default>true</Default>
+						</ResponseTimes>
+						<WindowSize>
+							<Type>Duration</Type>
+							<Default>1s</Default>
+							<ShortHelp>Floating window size</ShortHelp>
+						</WindowSize>
+						<FailureMatchers>
+							<Type>KeyValuePair</Type>
+							<Keys>
+								<Type>String</Type>
+								<ShortHelp>Matcher name</ShortHelp>
+							</Keys>
+							<Values>
+								<Type>Hash</Type>
+								<Items>
+									<MessageSignature>
+										<Type>KeyValuePair</Type>
+										<ShortHelp>Message keys and values to match</ShortHelp>
+										<Keys>
+											<Type>String</Type>
+											<ShortHelp>Path to key</ShortHelp>
+										</Keys>
+										<Values>
+											<Type>String</Type>
+											<ShortHelp>Value to match</ShortHelp>
+										</Values>
+									</MessageSignature>
+									<MatcherType>
+										<Type>Enumeration</Type>
+										<Values>
+											<item>Exact</item>
+											<item>Regexp</item>
+										</Values>
+										<Default>Exact</Default>
+										<ShortHelp>Matching method</ShortHelp>
+									</MatcherType>
+								</Items>
+							</Values>
+						</FailureMatchers>
+					</Items>
+				</LoadMetrics>
+			</Items>
+		</Filters>
+		<Registration>
+			<Type>Hash</Type>
+			<Items>
+				<Signal>
+					<Type>String</Type>
+					<Default>Register</Default>
+					<ShortHelp>Signal by which registration is requested.</ShortHelp>
+				</Signal>
+				<RetryInterval>
+					<Type>Duration</Type>
+					<Default>1s</Default>
+					<ShortHelp>Retry registration interval.</ShortHelp>
+				</RetryInterval>
+			</Items>
+		</Registration>
+		<Http2>
+			<Type>Hash</Type>
+			<Items>
+				<SETTINGS_HEADER_TABLE_SIZE>
+					<Type>Int</Type>
+					<Default>4096</Default>
+					<ShortHelp>Allows the sender to inform the remote endpoint of the maximum size of the header compression table used to decode header blocks  in octets. </ShortHelp>
+				</SETTINGS_HEADER_TABLE_SIZE>
+				<SETTINGS_INITIAL_WINDOW_SIZE>
+					<Type>Int</Type>
+					<Default>65535</Default>
+					<ShortHelp>Indicates the sender’s initial window size (in octets) for stream-level flow control. Max value: 2^31-1</ShortHelp>
+				</SETTINGS_INITIAL_WINDOW_SIZE>
+				<SETTINGS_MAX_FRAME_SIZE>
+					<Type>Int</Type>
+					<Default>16384</Default>
+					<ShortHelp>Indicates the size of the largest frame payload that the sender is willing to receive  in octets. Max value: 2^24-1</ShortHelp>
+				</SETTINGS_MAX_FRAME_SIZE>
+				<SETTINGS_MAX_HEADER_LIST_SIZE>
+					<Type>Int</Type>
+					<Default>100</Default>
+					<ShortHelp>This directive informs a peer of the maximum size of header list that the sender is prepared to accept  in octets.</ShortHelp>
+				</SETTINGS_MAX_HEADER_LIST_SIZE>
+				<SETTINGS_MAX_CONCURRENT_STREAMS>
+					<Type>Int</Type>
+					<Min>1</Min>
+					<Default>100</Default>
+					<ShortHelp>The maximum number of concurrently active streams</ShortHelp>
+				</SETTINGS_MAX_CONCURRENT_STREAMS>
+			</Items>
+		</Http2>
+		<HTTPRest>
+			<Type>Hash</Type>
+			<Items>
+				<OutBoundProfile>
+					<Type>String</Type>
+					<Default>OutBound</Default>
+					<ShortHelp>The name of profile in provisioning chunk</ShortHelp>
+				</OutBoundProfile>
+				<EnableDynamicSAMStatistics>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+					<ShortHelp>If enabled  HTTPRestLayer will generate Dynamic SAM Statistics</ShortHelp>
+				</EnableDynamicSAMStatistics>
+				<SwappingTable>
+					<Type>KeyValuePair</Type>
+					<ShortHelp>Swapping keys for outbound traffic</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+						<ShortHelp>The key name</ShortHelp>
+						<Example>Host</Example>
+					</Keys>
+					<Values>
+						<Type>String</Type>
+						<ShortHelp>The key value</ShortHelp>
+						<Example>Authority</Example>
+					</Values>
+				</SwappingTable>
+				<RESTProfiles>
+					<Type>List</Type>
+					<ShortHelp>List of profiles loaded with RESTProfileYAML provisioning chunks (used only by HTTPRestV2 layer)</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+						<ShortHelp>The name of RESTProfileYAML provisioning chunk</ShortHelp>
+						<Example>TestProfile</Example>
+					</Keys>
+				</RESTProfiles>
+			</Items>
+		</HTTPRest>
+		<LDAP>
+			<Type>Hash</Type>
+			<Items>
+				<RebindOnErr1>
+					<Type>Boolean</Type>
+					<ShortHelp>Forces rebind on LDAP layer on response with ErrorCode   1</ShortHelp>
+					<Default>false</Default>
+				</RebindOnErr1>
+			</Items>
+		</LDAP>
+		<IdleTimeout>
+			<Type>Duration</Type>
+			<ShortHelp>Close server connection if idle for the specified time. Used only with CallbackServerGroup.</ShortHelp>
+			<Default>0s</Default>
+		</IdleTimeout>
+		<Http>
+			<Type>Hash</Type>
+			<Items>
+				<BodyCharset>
+					<Type>String</Type>
+					<Default>ISO-8859-1</Default>
+					<ShortHelp>Charset used when encoding message body.</ShortHelp>
+				</BodyCharset>
+			</Items>
+		</Http>
+		<StratumIPC>
+			<Type>Hash</Type>
+			<Items>
+				<HeartbeatInterval>
+					<Type>Duration</Type>
+					<Default>1000ms</Default>
+					<ShortHelp>The interval between heartbeat messages sent by the client</ShortHelp>
+				</HeartbeatInterval>
+				<MaxMissingHeartbeats>
+					<Type>Int</Type>
+					<Min>0</Min>
+					<Default>2</Default>
+					<ShortHelp>The number of heartbeats sent without receiving heartbeat before connection is terminated</ShortHelp>
+				</MaxMissingHeartbeats>
+			</Items>
+		</StratumIPC>
+	</DiameterRouter>
+</root>

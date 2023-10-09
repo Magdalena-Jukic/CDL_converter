@@ -1,0 +1,399 @@
+<?xml version="1.0" ?>
+<root>
+	<Service>
+		<Type>String</Type>
+		<ShortHelp>The service name  stores in Session as 'Service' attriute</ShortHelp>
+	</Service>
+	<Imports>
+		<Type>List</Type>
+		<ShortHelp>List of applications to import handler from</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+		</Keys>
+	</Imports>
+	<ServerGroups>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>The configuration of used server groups  used for validation and mapping of internally used server group names to real config ServerGroups</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>The application internally used name of the server group</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>The properties of the server group for validation</ShortHelp>
+			<Items>
+				<Protocol>
+					<Type>String</Type>
+					<ShortHelp>The protocol for this peer communication  used for validation</ShortHelp>
+				</Protocol>
+				<Encoding>
+					<Type>String</Type>
+					<ShortHelp>The encoding for this peer communication  used for validation</ShortHelp>
+				</Encoding>
+				<ServerGroupSection>
+					<Type>String</Type>
+					<ShortHelp>The name of the used section to map the servergroup</ShortHelp>
+				</ServerGroupSection>
+				<ServerGroup>
+					<Type>String</Type>
+					<ShortHelp>The name of the used servergroup in ServerGroupSection</ShortHelp>
+				</ServerGroup>
+				<Namespace>
+					<Type>String</Type>
+					<ShortHelp>Optional additional Namespace specification (e.g.: schema:tmus.ldif)</ShortHelp>
+				</Namespace>
+				<LocalDeliveryApplication>
+					<Type>String</Type>
+					<ShortHelp>If specified  messages sent to this server group will be delivered directly to the given application without network IO</ShortHelp>
+				</LocalDeliveryApplication>
+				<LocalDeliveryClientSection>
+					<Type>String</Type>
+					<ShortHelp>Client section used by local delivery client</ShortHelp>
+				</LocalDeliveryClientSection>
+				<LocalDeliveryClientName>
+					<Type>String</Type>
+					<Default>LocalDelivery</Default>
+					<ShortHelp>Client name used by local delivery client</ShortHelp>
+				</LocalDeliveryClientName>
+				<LocalDeliveryTimeout>
+					<Type>Duration</Type>
+					<Default>10s</Default>
+					<ShortHelp>Timeout for requests delivered over local delivery</ShortHelp>
+				</LocalDeliveryTimeout>
+				<AutoStart>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+					<ShortHelp>Starts the server group upon process startup</ShortHelp>
+				</AutoStart>
+				<Servant>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>Servers</item>
+						<item>ServerGroup</item>
+					</Values>
+					<Default>Servers</Default>
+					<ShortHelp>The type of the servant (used for auto start only)</ShortHelp>
+				</Servant>
+			</Items>
+		</Values>
+	</ServerGroups>
+	<Clients>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>The configuration of clients  used for validation</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>The application internally used name of the client</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>The properties of the client for validation</ShortHelp>
+			<Items>
+				<MappedName>
+					<Type>String</Type>
+					<ShortHelp>The name of the used client in the respective clients section</ShortHelp>
+				</MappedName>
+				<Protocol>
+					<Type>String</Type>
+					<ShortHelp>The protocol for this peer communication  used for validation</ShortHelp>
+				</Protocol>
+			</Items>
+		</Values>
+	</Clients>
+	<CommunicationReferencePoints>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>Define communication protocols _between_ server group entities.</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>A communication reference point name.</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>The properties for this communication reference point.</ShortHelp>
+			<Items>
+				<Client>
+					<Type>String</Type>
+					<ShortHelp>Symbolic server group name.</ShortHelp>
+				</Client>
+				<Server>
+					<Type>String</Type>
+					<ShortHelp>Symbolic server group name.</ShortHelp>
+				</Server>
+				<Namespace>
+					<Type>String</Type>
+					<ShortHelp>A namespace path which is used for validation and coresponds to the desired protocol.</ShortHelp>
+				</Namespace>
+				<Transport>
+					<Type>String</Type>
+					<ShortHelp>Optionally provide a transport layer protocol name.</ShortHelp>
+				</Transport>
+				<Protocol>
+					<Type>String</Type>
+					<ShortHelp>Optionally provide an application layer protocol name.</ShortHelp>
+				</Protocol>
+			</Items>
+		</Values>
+	</CommunicationReferencePoints>
+	<ProvData>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>ProvData chunks definitions</ShortHelp>
+		<LongHelp>This section enables definition of ProvData chunks which are loaded while Rules Tool Use Case(s) execution. </LongHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>Global name of this chunk</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>The Content and other properties of ProvData chunk.</ShortHelp>
+			<Items>
+				<Version>
+					<Type>Int</Type>
+					<ShortHelp>Version number of the ProvData chunk</ShortHelp>
+				</Version>
+				<ContentType>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>Data</item>
+						<item>Config</item>
+					</Values>
+					<Default>Data</Default>
+					<ShortHelp>Type of content of ProvData chunk</ShortHelp>
+				</ContentType>
+				<Type>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>DHCPDictionary</item>
+						<item>DHCPV6Dictionary</item>
+						<item>DNSDictionary</item>
+						<item>COPSDictionary</item>
+						<item>DiameterDictionary</item>
+						<item>DiameterRealmRoutingTables</item>
+						<item>IPPools</item>
+						<item>Mapping</item>
+						<item>Policy</item>
+						<item>Application</item>
+						<item>RadiusDictionary</item>
+						<item>ServerGroupMappings</item>
+						<item>ContentBasedConfig</item>
+						<item>LoadEvaluationConfig</item>
+						<item>LIDictionary</item>
+						<item>RESTProfileYAML</item>
+					</Values>
+					<Default>Mapping</Default>
+					<ShortHelp>Type of ProvData chunk</ShortHelp>
+				</Type>
+				<Content>
+					<Type>String</Type>
+					<ShortHelp>Content of ProvData chunk (xml csv...)</ShortHelp>
+				</Content>
+				<Product>
+					<Type>String</Type>
+					<Default>-</Default>
+					<ShortHelp>Product name to which ProvData chunk belongs</ShortHelp>
+				</Product>
+			</Items>
+		</Values>
+	</ProvData>
+	<Handler>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>Transaction handler definitions</ShortHelp>
+		<LongHelp>A handler is a piece of code working on a transaction. A transaction is the context of a request just processed. Handlers are combined to processing sequences in the Applications\ section. </LongHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>Global name of this handler</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>The Code and properties of a handler</ShortHelp>
+			<Items>
+				<AliasName>
+					<Type>String</Type>
+					<ShortHelp>A different name for the same handler  allows easier migration</ShortHelp>
+				</AliasName>
+				<Tests>
+					<Type>KeyValuePair</Type>
+					<ShortHelp>Collection of handler test pattern</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+						<ShortHelp>Test name  e.g.: T122AccessOK</ShortHelp>
+					</Keys>
+					<Values>
+						<Type>Hash</Type>
+						<Items>
+							<Kind>
+								<Type>Enumeration</Type>
+								<Values>
+									<item>Test</item>
+									<item>UseCase</item>
+									<item>Informational</item>
+								</Values>
+								<Default>UseCase</Default>
+							</Kind>
+							<ContextIn>
+								<Type>String</Type>
+							</ContextIn>
+							<Return>
+								<Type>String</Type>
+								<ShortHelp>Expected return value</ShortHelp>
+							</Return>
+							<ContextOut>
+								<Type>String</Type>
+								<ShortHelp>Expected contxt after call</ShortHelp>
+							</ContextOut>
+							<SetupHandlers>
+								<Type>List</Type>
+								<ShortHelp>The handlers to setup an environment before running the test</ShortHelp>
+								<Keys>
+									<Type>String</Type>
+								</Keys>
+							</SetupHandlers>
+						</Items>
+					</Values>
+				</Tests>
+				<PseudoCode>
+					<Type>String</Type>
+					<ShortHelp>Internal documentation in pseudo code format</ShortHelp>
+				</PseudoCode>
+				<JCode>
+					<Type>Handler</Type>
+					<ShortHelp>Handler code (Java preprocessed)</ShortHelp>
+				</JCode>
+				<JCodeSig>
+					<Type>String</Type>
+					<ShortHelp>Handler code (Java) signature</ShortHelp>
+				</JCodeSig>
+				<Question>
+					<Type>String</Type>
+					<ShortHelp>If this handler is a decision branch  no state change</ShortHelp>
+				</Question>
+				<Input>
+					<Type>String</Type>
+					<ShortHelp>Optional desciption of input requirements</ShortHelp>
+					<Example>/PoolName - the pool name to be used for allocation (optional) </Example>
+				</Input>
+				<Context>
+					<Type>String</Type>
+					<ShortHelp>Optional desciption of context requirements</ShortHelp>
+					<Example>Subscriber - The LDAP subscriber record has to be available (fetched before) </Example>
+				</Context>
+				<Output>
+					<Type>String</Type>
+					<ShortHelp>Optional desciption of output provided or fields changed</ShortHelp>
+					<Example>Changes the AccountingLast time in the session context. </Example>
+				</Output>
+				<ReturnValue>
+					<Type>String</Type>
+					<ShortHelp>Optional value the handler returns in the flow</ShortHelp>
+					<Example>0 or assigned address. </Example>
+				</ReturnValue>
+				<See>
+					<Type>String</Type>
+					<ShortHelp>Optional desciption of related docs</ShortHelp>
+				</See>
+			</Items>
+		</Values>
+	</Handler>
+	<Languages>
+		<Type>List</Type>
+		<ShortHelp>List of languages this flow is written for.</ShortHelp>
+		<Keys>
+			<Type>Enumeration</Type>
+			<Values>
+				<item>java</item>
+			</Values>
+		</Keys>
+		<Default>
+			<item>java</item>
+		</Default>
+	</Languages>
+	<States>
+		<Type>List</Type>
+		<ShortHelp>List of possible machine states</ShortHelp>
+		<LongHelp>Only some of the applications use this states feature e.g. the LDAP service uses two states: bound and unbound to know if a LDAP client has authenticated (bound) himself. </LongHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>State - first is initial one</ShortHelp>
+		</Keys>
+	</States>
+	<Namespaces>
+		<Type>String</Type>
+		<ShortHelp>Namespace declarations  ('//Request Diameter/Gx/....')</ShortHelp>
+	</Namespaces>
+	<Tests>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>Collection of flow test pattern</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>Test name  e.g.: T122AccessOK</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<Items>
+				<Kind>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>Test</item>
+						<item>UseCase</item>
+						<item>Informational</item>
+						<item>Snoop</item>
+						<item>GlobalUseCase</item>
+					</Values>
+					<Default>UseCase</Default>
+				</Kind>
+				<Context>
+					<Type>String</Type>
+				</Context>
+				<Request>
+					<Type>String</Type>
+					<ShortHelp>Message to inject</ShortHelp>
+				</Request>
+				<MSC>
+					<Type>String</Type>
+					<ShortHelp>internal messages exchanged/simulated</ShortHelp>
+				</MSC>
+				<Response>
+					<Type>String</Type>
+					<ShortHelp>Message expected as response</ShortHelp>
+				</Response>
+				<Config>
+					<Type>String</Type>
+					<ShortHelp>The config accessible as /Config in use cases and the Start flow</ShortHelp>
+				</Config>
+				<GlobalUseCase>
+					<Type>KeyValuePair</Type>
+					<ShortHelp>List of applications to be executed within GlobalUseCase</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+						<ShortHelp>Real name of application to be invoked during GlobalUseCase execution.</ShortHelp>
+					</Keys>
+					<Values>
+						<Type>Hash</Type>
+						<Items>
+							<Context>
+								<Type>String</Type>
+								<ShortHelp>Transaction Context to initialize application with.</ShortHelp>
+							</Context>
+						</Items>
+					</Values>
+				</GlobalUseCase>
+			</Items>
+		</Values>
+	</Tests>
+	<Rules>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>Service applications rules</ShortHelp>
+		<Merge>1</Merge>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>Entry name  e.g.: Do</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Application</Type>
+			<ShortHelp>Handler processing rules</ShortHelp>
+		</Values>
+	</Rules>
+	<FormatVersion>
+		<Type>Int</Type>
+		<ShortHelp>An internal version tag to track backward and forward compatible changes needed.</ShortHelp>
+		<Default>0</Default>
+	</FormatVersion>
+</root>

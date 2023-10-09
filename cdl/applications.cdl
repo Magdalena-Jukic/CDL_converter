@@ -48,6 +48,7 @@ Applications { Type = KeyValuePair , ShortHelp = 'Service applications'
                 Keys { Type = String, ShortHelp = 'A communication reference point name.'}
                 Values { Type = Hash, ShortHelp = "The properties for this communication reference point." 
                     Items {
+                        
                         Client { Type = String, ShortHelp = "Symbolic server group name."}
                         Server { Type = String, ShortHelp = "Symbolic server group name."}
                         Namespace { Type = String, ShortHelp = "A namespace path which is used for validation and coresponds to the desired protocol." }

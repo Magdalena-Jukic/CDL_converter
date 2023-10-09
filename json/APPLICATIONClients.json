@@ -1,0 +1,7 @@
+{
+    "Dictionary": {
+        "Type": "Reference",
+        "In": "Dictionaries",
+        "ShortHelp": "The dictionary to be used if required"
+    }
+}

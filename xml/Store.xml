@@ -1,0 +1,813 @@
+<?xml version="1.0" ?>
+<root>
+	<Overload>
+		<Type>Hash</Type>
+		<ShortHelp>Configure overload protection parameters</ShortHelp>
+		<Items>
+			<SendQueueSize>
+				<Type>Int</Type>
+				<Default>10000</Default>
+				<ShortHelp>Max amount of pending-to-write messages per link.</ShortHelp>
+			</SendQueueSize>
+			<Enabled>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>Switch on/off backend CPU overload protection in the FE processes</ShortHelp>
+			</Enabled>
+			<AdaptSyncSpeed>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+				<ShortHelp>If set to true  the synchronization speed is adapted according the overload level</ShortHelp>
+			</AdaptSyncSpeed>
+			<ProcessOverloadProtectionLevel>
+				<Type>Enumeration</Type>
+				<Values>
+					<item>disabled</item>
+					<item>permissive</item>
+					<item>enabled</item>
+				</Values>
+				<Default>disabled</Default>
+				<ShortHelp>Enable or disable process specific BE CPU overload protection. If permissive  generate only warnings</ShortHelp>
+			</ProcessOverloadProtectionLevel>
+			<LoadExpression>
+				<Type>String</Type>
+				<ShortHelp>Expression defining a load value between 0 and 100 on process load data</ShortHelp>
+				<LongHelp>Evaluate an ItemStore process load based on its load data. Following variables can be used: /Instance - name of the ItemStore process /ProcessCpu - CPU usage in percent per CPU core. Maximum is 100*/CpuCores. /CpuCores - Number of CPU cores /ProcessMem - head in percentage /GCTime - time spent in garbage collections in microseconds /GCCount - number of garbage collections /ThreadMaxCpu - CPU usage of most loaded thread in percentage /BackendDelay - average delay in itemstore interprocess communication in milliseconds /Freshness - UNIX time stamp (milliseconds since 1970/1/1) /ProcessTime - average processing time for one itemstore operation between two peers Expression shall return an integer between 0 and 100 representing an abstract load in percentage. Example: return /ProcessCpu.int / /CpuCores.int; </LongHelp>
+			</LoadExpression>
+			<MaxResponseTime>
+				<Type>Duration</Type>
+				<Default>50ms</Default>
+				<ShortHelp>If the mean response time exceeds this limit  start to reject requests as overloaded</ShortHelp>
+				<LongHelp>If the mean ping response time to other items or index peers exceeds this limit start to reject requests as overloaded. This response time is assigned to CPU load percentage defined by value of ReportedAsOverload. If MaxResponseTime is set to 0 it signals the ItemStore processes to take the process CPU load given by the operating system via the Java VM as an overload indicator. In this case the parameter ReportedAsOverload is ignored. </LongHelp>
+			</MaxResponseTime>
+			<ReportedAsOverload>
+				<Type>Int</Type>
+				<Default>85</Default>
+				<ShortHelp>Value between 0 and 100 which represents MaxResponseTime</ShortHelp>
+			</ReportedAsOverload>
+			<HandledAsOverload>
+				<Type>Int</Type>
+				<Default>50</Default>
+				<ShortHelp>Average of reported values at which overload protection starts</ShortHelp>
+			</HandledAsOverload>
+			<HandledAsNormal>
+				<Type>Int</Type>
+				<Default>50</Default>
+				<ShortHelp>Average of reported values at which overload protection stops. Must be lower than HandledAsOverload</ShortHelp>
+			</HandledAsNormal>
+			<SamplingInterval>
+				<Type>Duration</Type>
+				<Default>1000ms</Default>
+				<ShortHelp>Interval for which the load is evaluated</ShortHelp>
+			</SamplingInterval>
+			<ProcessSamplingInterval>
+				<Type>Duration</Type>
+				<Default>1000ms</Default>
+				<ShortHelp>Interval for which the CPU load of a single process is evaluated</ShortHelp>
+			</ProcessSamplingInterval>
+			<MinFractionAllowed>
+				<Type>Int</Type>
+				<Default>5</Default>
+				<ShortHelp>Minimum fraction of allowed calls per mill to prevent the system from throttling all incoming calls</ShortHelp>
+			</MinFractionAllowed>
+			<MaxIncreaseFactor>
+				<Type>Int</Type>
+				<Default>20</Default>
+				<ShortHelp>Maximum factor to increase fraction of allowed calls</ShortHelp>
+			</MaxIncreaseFactor>
+			<MaxDecreaseFactor>
+				<Type>Int</Type>
+				<Default>40</Default>
+				<ShortHelp>Maximum factor to decrease fraction of allowed calls</ShortHelp>
+			</MaxDecreaseFactor>
+		</Items>
+	</Overload>
+	<InMemoryStore>
+		<Type>Hash</Type>
+		<ShortHelp>Configure the in memory store parameters here</ShortHelp>
+		<Items>
+			<ValueReuseQueueSize>
+				<Type>Int</Type>
+				<Default>200000</Default>
+				<ShortHelp>The number of added value kept for potential reuse</ShortHelp>
+			</ValueReuseQueueSize>
+			<ValueReuseThreads>
+				<Type>Int</Type>
+				<Default>7</Default>
+				<ShortHelp>The number parallel access threads expected  use a prime</ShortHelp>
+			</ValueReuseThreads>
+			<NetworkDuplicateLimit>
+				<Type>Duration</Type>
+				<Default>500ms</Default>
+				<ShortHelp>The interval for which a duplicate is regarded as a network duplicate (and not NAS retransmit)</ShortHelp>
+			</NetworkDuplicateLimit>
+			<NASRetryLimit>
+				<Type>Duration</Type>
+				<Default>2000ms</Default>
+				<ShortHelp>The interval for which a duplicate is regarded as a NAS retry (and not a network duplicate)</ShortHelp>
+			</NASRetryLimit>
+			<FinalDeleteDelay>
+				<Type>Duration</Type>
+				<Default>20s</Default>
+				<ShortHelp>The interval how long a deleted item is kept in the store prior final deletion. This should correlate to the usual expiration and the expected site replication times</ShortHelp>
+			</FinalDeleteDelay>
+			<ExpireOffset>
+				<Type>Duration</Type>
+				<Default>1s</Default>
+				<ShortHelp>The interval how long other copies wait for the responsible copy to expire an item. This should correlate to the expected local replication times</ShortHelp>
+			</ExpireOffset>
+			<CreateItemsLimit>
+				<Type>Speed</Type>
+				<ShortHelp>Controls the overall rate of Create Requests  even in a geo-redundant system. Requests exceeding the configured value will be rejected.</ShortHelp>
+			</CreateItemsLimit>
+			<FullTableScanOpLimit>
+				<Type>Speed</Type>
+				<Default>4000/s</Default>
+				<ShortHelp>Controls the speed of FullTableScan operations as CloseByFilter/UpdateByFilter/Scan/Search. The limit is applied to all parallel running operations per items daemon. If the limit is reached  the operations are delayed until the condition allows to continue.</ShortHelp>
+			</FullTableScanOpLimit>
+		</Items>
+	</InMemoryStore>
+	<History>
+		<Type>Hash</Type>
+		<ShortHelp>Configure the historical session writer</ShortHelp>
+		<Items>
+			<Enabled>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+			</Enabled>
+			<Compressed>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+				<ShortHelp>If the history files shall be compressed (zip)</ShortHelp>
+			</Compressed>
+			<HistoryFileName>
+				<Type>String</Type>
+				<Default>h-&lt;instance&gt;-&lt;type&gt;-&lt;date\|date yyyyMMdd.HHmmss&gt;</Default>
+				<ShortHelp>The file name pattern used to name the historical files  e.g. h-&lt;type&gt;-&lt;time\|date(yyyyMMdd.HHmmss)&gt;  see date transformer</ShortHelp>
+			</HistoryFileName>
+			<HistoryDirectory>
+				<Type>String</Type>
+				<Default>$(Home)/history</Default>
+				<ShortHelp>The directory to write the historical sessions to  every expired or closed session will be written here</ShortHelp>
+			</HistoryDirectory>
+			<HistorySwitchInterval>
+				<Type>Duration</Type>
+				<Default>1h</Default>
+				<ShortHelp>The time after which a file is closed and the next started</ShortHelp>
+			</HistorySwitchInterval>
+			<CryptKey>
+				<Type>String</Type>
+				<Default>internalKey</Default>
+				<ShortHelp>The key used to encrypt attribute values in history file (if required)</ShortHelp>
+			</CryptKey>
+		</Items>
+	</History>
+	<Accounting>
+		<Type>Hash</Type>
+		<ShortHelp>Configures the accounting log writer</ShortHelp>
+		<Items>
+			<Enabled>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+			</Enabled>
+			<AccountingFileName>
+				<Type>String</Type>
+				<Default>a-&lt;instance&gt;-&lt;type&gt;-&lt;date\|date yyyyMMdd.HHmmss&gt;</Default>
+				<ShortHelp>The file name pattern used to name the accounting files  e.g. a-&lt;time\|date yyyyMMdd.HHmmss&gt;  see date transformer</ShortHelp>
+			</AccountingFileName>
+			<AccountingDirectory>
+				<Type>String</Type>
+				<Default>$(Home)/accounting</Default>
+				<ShortHelp>The directory to write the accounting csv data to</ShortHelp>
+			</AccountingDirectory>
+			<AccountingSwitchInterval>
+				<Type>Duration</Type>
+				<Default>1h</Default>
+				<ShortHelp>The time after which a file is closed and the next started</ShortHelp>
+			</AccountingSwitchInterval>
+			<AccountingCode>
+				<Type>String</Type>
+				<ShortHelp>The code to be applied to the message object prior and for writing into the Accounting Log</ShortHelp>
+			</AccountingCode>
+		</Items>
+	</Accounting>
+	<Journal>
+		<Type>Hash</Type>
+		<ShortHelp>Configure the journal parameters here</ShortHelp>
+		<Items>
+			<UseDisk>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>If set to true then the journal is written to / read from disk</ShortHelp>
+			</UseDisk>
+			<Compressed>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+				<ShortHelp>If the journal files written to disk shall be compressed (zip)</ShortHelp>
+			</Compressed>
+			<JournalDirectory>
+				<Type>String</Type>
+				<Default>$(Home)/journal</Default>
+				<ShortHelp>The directory to store the journal files  every item will be written to this journal to ensure that on restart all data items are recovered from disk. This might become many files of significant size  e.g. if designed for 10Mio item of 2kB mean size  plan for 5 x 2kB x 10Mio bytes of journal storage (100GB)</ShortHelp>
+			</JournalDirectory>
+			<WriteIPItems>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>If set to false  journal for internal ip items is not written to disk even if Journal/UseDisk is set to true</ShortHelp>
+			</WriteIPItems>
+			<ChunkInterval>
+				<Type>Duration</Type>
+				<Default>1h</Default>
+				<ShortHelp>The time after which a chunk is closed and the next started</ShortHelp>
+			</ChunkInterval>
+			<WipeInterval>
+				<Type>Int</Type>
+				<Default>1</Default>
+				<ShortHelp>The frequency (related to normal updates) a wipe attempt is made by the main thread. Value 0 means that main thread does not wipe at all.</ShortHelp>
+			</WipeInterval>
+			<WipeSpeed>
+				<Type>Speed</Type>
+				<Default>20/s</Default>
+				<ShortHelp>The operation speed a wipe pass is made by the journal maintenance thread</ShortHelp>
+			</WipeSpeed>
+			<OccupancyLimit>
+				<Type>Percentage</Type>
+				<Default>20%</Default>
+				<Max>90%</Max>
+				<ShortHelp>The occupancy percentage  a chunk will be cleaned if going below this limit</ShortHelp>
+			</OccupancyLimit>
+			<WipePerPass>
+				<Type>Int</Type>
+				<Default>5</Default>
+				<ShortHelp>Maximum number of entries to wipe during a single wipe pass performed by the journal maintenance thread</ShortHelp>
+			</WipePerPass>
+			<WriteQueueSize>
+				<Type>Int</Type>
+				<Default>10000</Default>
+				<ShortHelp>Maximum number of pending entries in the write queue before the journal is temporarily disabled for 1s</ShortHelp>
+			</WriteQueueSize>
+		</Items>
+	</Journal>
+	<Addressing>
+		<Type>Hash</Type>
+		<Items>
+			<LocalIPPrefix>
+				<Type>String</Type>
+				<ShortHelp>The addressing for all internal communication  3 kinds: &lt;fullIP&gt;  &lt;IPprefix&gt;  &lt;IPV6Prefix&gt;. If not present  host ip is used.</ShortHelp>
+			</LocalIPPrefix>
+			<LocalPortBase>
+				<Type>Int</Type>
+				<Mandatory>true</Mandatory>
+				<ShortHelp>The port (base) to be used for local IP address generation</ShortHelp>
+			</LocalPortBase>
+			<LocalIPNetmask>
+				<Type>String</Type>
+				<ShortHelp>The netmask for internal addressing if necessary</ShortHelp>
+			</LocalIPNetmask>
+			<HostPostfix>
+				<Type>String</Type>
+				<ShortHelp>Define the host postfix to be used when using host based IP address resolution (e.g. -int to resolve addresses for sdb101-int)</ShortHelp>
+			</HostPostfix>
+			<Server>
+				<Type>List</Type>
+				<ShortHelp>List of available servers for instance distribution</ShortHelp>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</Server>
+			<IndexServer>
+				<Type>List</Type>
+				<ShortHelp>List of available servers for index instance distribution  if omitted the Server list will be used</ShortHelp>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</IndexServer>
+			<SitesServer>
+				<Type>List</Type>
+				<ShortHelp>List of available servers for site replication instance distribution  if omitted the Server list will be used</ShortHelp>
+				<Keys>
+					<Type>String</Type>
+				</Keys>
+			</SitesServer>
+			<RemoteSites>
+				<Type>KeyValuePair</Type>
+				<Keys>
+					<Type>String</Type>
+					<ShortHelp>The site name as number (1...n) or as character (A B C ...)</ShortHelp>
+				</Keys>
+				<Values>
+					<Type>Hash</Type>
+					<ShortHelp>The site parameters</ShortHelp>
+					<Items>
+						<Enabled>
+							<Type>Boolean</Type>
+							<Mandatory>true</Mandatory>
+							<ShortHelp>Enable this remote site. Only for enabled remote sites a start script is created for the corresponding sites daemons.</ShortHelp>
+						</Enabled>
+						<SyncInstances>
+							<Type>Int</Type>
+							<Default>1</Default>
+							<ShortHelp>The number of sites daemons per copy for this sites connection</ShortHelp>
+						</SyncInstances>
+						<SitesServer>
+							<Type>List</Type>
+							<ShortHelp>List of available servers for site replication instance distribution  if omitted the general SitesServer list will be used</ShortHelp>
+							<Keys>
+								<Type>String</Type>
+							</Keys>
+						</SitesServer>
+						<RemoteAddresses>
+							<Type>List</Type>
+							<Keys>
+								<Type>String</Type>
+							</Keys>
+						</RemoteAddresses>
+						<LocalAddresses>
+							<Type>List</Type>
+							<Keys>
+								<Type>String</Type>
+								<ShortHelp>The local address list (might be NATed from outside)</ShortHelp>
+							</Keys>
+						</LocalAddresses>
+						<Quorum>
+							<Type>Float</Type>
+							<ShortHelp>The remote quorum value between 0 and 1  if the sum of quorum is higher than 1 the store is allowed to override items ownership. This affects the multi site setup in case the connection between the sites is not available. If not set  the quorum is internally chosen so that the majority can override the ownership.</ShortHelp>
+						</Quorum>
+						<ConnectionProfile>
+							<Type>String</Type>
+							<Mandatory>false</Mandatory>
+							<ShortHelp>Connection profile to use for the connection to the remote site</ShortHelp>
+						</ConnectionProfile>
+					</Items>
+				</Values>
+			</RemoteSites>
+		</Items>
+	</Addressing>
+	<Instance>
+		<Type>Hash</Type>
+		<Items>
+			<InstanceTemplate>
+				<Type>String</Type>
+				<In>Instances</In>
+			</InstanceTemplate>
+			<IndexTemplate>
+				<Type>String</Type>
+				<In>Instances</In>
+			</IndexTemplate>
+			<SitesTemplate>
+				<Type>String</Type>
+				<In>Instances</In>
+			</SitesTemplate>
+			<ItemsPrefix>
+				<Type>String</Type>
+				<Default>itex</Default>
+				<ShortHelp>process name  e.g. itex will result in A-itex-1b like instances</ShortHelp>
+			</ItemsPrefix>
+			<IndexPrefix>
+				<Type>String</Type>
+				<Default>itex</Default>
+				<ShortHelp>process name  e.g. itex will result in A-itex-1b like instances  if same as for the ItemsPrefix both services will run in the same process</ShortHelp>
+			</IndexPrefix>
+			<SitesPrefix>
+				<Type>String</Type>
+				<Default>sites</Default>
+				<ShortHelp>process name  e.g. sites will result in A-sites-1b like instances</ShortHelp>
+			</SitesPrefix>
+			<ItemsVMSettings>
+				<Type>String</Type>
+				<Mandatory>true</Mandatory>
+			</ItemsVMSettings>
+			<IndexVMSettings>
+				<Type>String</Type>
+				<ShortHelp>The process start java settings for all index daemons</ShortHelp>
+			</IndexVMSettings>
+			<SitesVMSettings>
+				<Type>String</Type>
+				<ShortHelp>The process start java settings for all site replication daemons</ShortHelp>
+			</SitesVMSettings>
+			<ProcessPriority>
+				<Type>Enumeration</Type>
+				<Default>Maximum</Default>
+				<Values>
+					<item>Low</item>
+					<item>Normal</item>
+					<item>High</item>
+					<item>Maximum</item>
+				</Values>
+				<ShortHelp>Allow to set the process priority (nice). On UNIX that controls the nice level (10 0 -10 -20)</ShortHelp>
+			</ProcessPriority>
+			<Quorum>
+				<Type>Float</Type>
+				<ShortHelp>The local quorum value between 0 and 1  if the sum of quorum is higher than 1 the store is allowed to override items ownership. This affects the multi site setup in case the connection between the sites is not available. If not set  the quorum is internally chosen so that the majority can override the ownership.</ShortHelp>
+			</Quorum>
+		</Items>
+	</Instance>
+	<Slicing>
+		<Type>Hash</Type>
+		<Items>
+			<Site>
+				<Type>String</Type>
+				<Default>A</Default>
+				<ShortHelp>The site name as number (1...n) or as character (A B C ...)</ShortHelp>
+			</Site>
+			<Slices>
+				<Type>Int</Type>
+				<Default>1</Default>
+				<ShortHelp>The number of data slices (1...n)  1 no slicing</ShortHelp>
+			</Slices>
+			<Copies>
+				<Type>Int</Type>
+				<Default>1</Default>
+				<ShortHelp>The number of redundant copies  1 no redundancy</ShortHelp>
+			</Copies>
+		</Items>
+	</Slicing>
+	<Synchronization>
+		<Type>Hash</Type>
+		<Items>
+			<WaitForInitialSyncSource>
+				<Type>Duration</Type>
+				<Default>30s</Default>
+				<ShortHelp>Max amount of time to wait for an ongoing startup sync to start before falling back to the backup file.</ShortHelp>
+			</WaitForInitialSyncSource>
+			<InitialSyncDeadline>
+				<Type>Duration</Type>
+				<Default>300s</Default>
+				<ShortHelp>Max amount of time to wait for the initial sync procedure to finish before starting to warn.</ShortHelp>
+			</InitialSyncDeadline>
+			<SyncToCopyWindowSize>
+				<Type>Int</Type>
+				<Default>500</Default>
+				<ShortHelp>Max amount of outstanding sync offers before sending more offers when syncing a local copy.</ShortHelp>
+			</SyncToCopyWindowSize>
+			<SyncToRemoteCopyWindowSize>
+				<Type>Int</Type>
+				<Default>500</Default>
+				<ShortHelp>Max amount of outstanding sync offers before sending more offers when syncing a remote copy.</ShortHelp>
+			</SyncToRemoteCopyWindowSize>
+			<SyncToIndexWindowSize>
+				<Type>Int</Type>
+				<Default>500</Default>
+				<ShortHelp>Max amount of outstanding index updates to send to an index process in a bulk synchronization before sending more.</ShortHelp>
+			</SyncToIndexWindowSize>
+			<RemoteReplicationOfIPItems>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>Indicates if ip items should be distributed among all sites. If set to false  ip items are not synchronized to remote sites and are thus visible only locally.</ShortHelp>
+			</RemoteReplicationOfIPItems>
+			<ItemsIndexSyncLimit>
+				<Type>Speed</Type>
+				<Default>4000/s</Default>
+				<ShortHelp>Limit applied to all parallel running items to index bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue.</ShortHelp>
+			</ItemsIndexSyncLimit>
+			<ItemsItemsSyncLimit>
+				<Type>Speed</Type>
+				<Default>4000/s</Default>
+				<ShortHelp>Limit applied to all parallel running items to items bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue.</ShortHelp>
+			</ItemsItemsSyncLimit>
+			<ItemsSiteSyncLimit>
+				<Type>Speed</Type>
+				<Default>4000/s</Default>
+				<ShortHelp>Limit applied to all parallel running items to remote site bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue.</ShortHelp>
+			</ItemsSiteSyncLimit>
+			<TotalSyncLimit>
+				<Type>Speed</Type>
+				<Default>4000/s</Default>
+				<ShortHelp>Limit applied to all parallel running bulk synchronizations per items daemon. If the limit is reached  the synchronization is delayed until the condition allows to continue.</ShortHelp>
+			</TotalSyncLimit>
+		</Items>
+	</Synchronization>
+	<Misc>
+		<Type>Hash</Type>
+		<Items>
+			<PoolStatsInterval>
+				<Type>Duration</Type>
+				<Default>1s</Default>
+				<ShortHelp>IP Pool SAM statistics reporting interval; shorter (smaller) values mean higher load on SAM</ShortHelp>
+			</PoolStatsInterval>
+			<PreExpandWindowSize>
+				<Type>Int</Type>
+				<ShortHelp>Max amount of outstanding create requests for ip items before sending more. If not defined the value is set to 20*&lt;number of slices&gt;</ShortHelp>
+			</PreExpandWindowSize>
+			<PreTakeoverWindowSize>
+				<Type>Int</Type>
+				<Default>20</Default>
+				<ShortHelp>Max amount of outstanding takeover requests for ip items before sending more.</ShortHelp>
+			</PreTakeoverWindowSize>
+			<SliceOutageResilience>
+				<Type>Int</Type>
+				<Default>0</Default>
+				<ShortHelp>Number of slices whose outage is tolerated</ShortHelp>
+			</SliceOutageResilience>
+			<LimitCreatesDuringSliceOutage>
+				<Type>Boolean</Type>
+				<Default>false</Default>
+				<ShortHelp>Indicates if the item store shall reject a fraction of CreateReq corresponding to the number of missing items slices to avoid overload.</ShortHelp>
+			</LimitCreatesDuringSliceOutage>
+			<SearchContextExpire>
+				<Type>Duration</Type>
+				<Default>5s</Default>
+				<ShortHelp>The interval how long a search context is kept after the last usage.</ShortHelp>
+			</SearchContextExpire>
+		</Items>
+	</Misc>
+	<Connections>
+		<Type>Hash</Type>
+		<Items>
+			<EnableNagleAlgorithm>
+				<Type>Boolean</Type>
+				<Default>true</Default>
+				<ShortHelp>Controls the use of the Nagle algorithm for the ItemStore TCP sites connections</ShortHelp>
+			</EnableNagleAlgorithm>
+			<TrafficClass>
+				<Type>Int</Type>
+				<Default>0</Default>
+				<ShortHelp>Sets the traffic class or type-of-service octet in the IP header</ShortHelp>
+			</TrafficClass>
+		</Items>
+	</Connections>
+	<ConnectionProfiles>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>Connection specific settings</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>The name of the connection profile</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>TCP related connection settings</ShortHelp>
+			<Items>
+				<EnableNagleAlgorithm>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>If set to true enables the use of the nagle algorithm. This is the opposite of TCP_NODELAY.</ShortHelp>
+				</EnableNagleAlgorithm>
+				<TrafficClass>
+					<Type>Int</Type>
+					<ShortHelp>Sets the traffic class or type-of-service octet in the IP header (IP_TOS).</ShortHelp>
+				</TrafficClass>
+				<KeepAlive>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>Enables use of the system dependent keep alive mechanism (SO_KEEPALIVE).</ShortHelp>
+				</KeepAlive>
+				<SendBuffer>
+					<Type>Int</Type>
+					<ShortHelp>The socket send buffer size in bytes (SO_SNDBUF).</ShortHelp>
+				</SendBuffer>
+				<ReceiveBuffer>
+					<Type>Int</Type>
+					<ShortHelp>The socket receive buffer size in bytes (SO_RCVBUF).</ShortHelp>
+				</ReceiveBuffer>
+				<ReuseAddr>
+					<Type>Boolean</Type>
+					<ShortHelp>Re-use address (SO_REUSEADDR).</ShortHelp>
+				</ReuseAddr>
+			</Items>
+		</Values>
+	</ConnectionProfiles>
+	<StoreTypes>
+		<Type>KeyValuePair</Type>
+		<ShortHelp>The provided items classes in the store daemon</ShortHelp>
+		<Keys>
+			<Type>String</Type>
+			<ShortHelp>The type name  e.g.: SESSION</ShortHelp>
+		</Keys>
+		<Values>
+			<Type>Hash</Type>
+			<ShortHelp>The class definition: search keys  types etc...</ShortHelp>
+			<Items>
+				<DefaultExpiration>
+					<Type>Duration</Type>
+					<ShortHelp>If provided: expire items of this type after that time if no other expiration is given</ShortHelp>
+				</DefaultExpiration>
+				<ProlongExpiration>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+					<ShortHelp>Controls if the time of expiration is prolonged automatically with each update (if expire is not set explicitly)</ShortHelp>
+				</ProlongExpiration>
+				<MaxSize>
+					<Type>Int</Type>
+					<Default>0</Default>
+					<ShortHelp>Maximum allowed size of encoded item attributes. Value 0 means  no limit is applied.</ShortHelp>
+				</MaxSize>
+				<Fields>
+					<Type>KeyValuePair</Type>
+					<ShortHelp>Fixed defined fields  e.g.: Name (Type string)</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+						<ShortHelp>The field or Attribute name  e.g.: IPRealm</ShortHelp>
+					</Keys>
+					<Values>
+						<Type>Hash</Type>
+						<Items>
+							<Type>
+								<Type>Enumeration</Type>
+								<Values>
+									<item>string</item>
+									<item>bref</item>
+									<item>bytes</item>
+									<item>int</item>
+									<item>long</item>
+									<item>num</item>
+									<item>ip</item>
+									<item>reference</item>
+									<item>node</item>
+									<item>timer</item>
+									<item>assignedip</item>
+								</Values>
+							</Type>
+							<EncryptInHistory>
+								<Type>Boolean</Type>
+								<Default>false</Default>
+								<ShortHelp>Controls if the attribute value is encrypted when written to history</ShortHelp>
+							</EncryptInHistory>
+							<DefaultExpiryNotificationGroup>
+								<Type>String</Type>
+								<ShortHelp>If field is of type timer: ServerGroup to send expire notifications to if not overridden in the message</ShortHelp>
+							</DefaultExpiryNotificationGroup>
+							<Notify>
+								<Type>List</Type>
+								<ShortHelp>If field is of type timer: List of attributes to be sent in expire notification</ShortHelp>
+								<Keys>
+									<Type>String</Type>
+								</Keys>
+							</Notify>
+							<DefaultExpiration>
+								<Type>Duration</Type>
+								<ShortHelp>If field is of type timer: expire timer after that time if no other expiration is given</ShortHelp>
+							</DefaultExpiration>
+							<ExpireLimit>
+								<Type>Speed</Type>
+								<ShortHelp>If field is of type timer: Limit of expires per second</ShortHelp>
+							</ExpireLimit>
+						</Items>
+					</Values>
+				</Fields>
+				<CardinalityCounter>
+					<Type>List</Type>
+					<ShortHelp>list of case insensitive fields for which a cardinality count is done</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+					</Keys>
+					<Default>
+						<item>IMSI</item>
+						<item>MSISDN</item>
+					</Default>
+				</CardinalityCounter>
+				<AutoIndexAttribute>
+					<Type>String</Type>
+					<ShortHelp>If configured  an attribute with the given name of type bytes is implicitly declared along with a unique key definition for that attribute. If the attribute type is declared explicitly in the Fields section  then that type declaration is used. For each create request that does not already contain an attribute mapping for the configured name  a unique value is implicitly inserted under the configured name. The item can subsequently be addressed using the implicit unique key  without the need to use the USID.</ShortHelp>
+				</AutoIndexAttribute>
+				<UniqueKeys>
+					<Type>List</Type>
+					<ShortHelp>list of unique keys or key combinations  e.g.: &quot;IPAddress IPRealm&quot; or &quot;CustomerID&quot;</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+					</Keys>
+				</UniqueKeys>
+				<SearchKeys>
+					<Type>List</Type>
+					<ShortHelp>list of keys or key combinations  e.g.: &quot;Name&quot; or &quot;Session-State&quot;</ShortHelp>
+					<Keys>
+						<Type>String</Type>
+					</Keys>
+				</SearchKeys>
+				<UpdateMode>
+					<Type>Enumeration</Type>
+					<Values>
+						<item>async</item>
+						<item>local</item>
+						<item>full</item>
+					</Values>
+					<Default>local</Default>
+					<ShortHelp>Defines the update mode items of this type</ShortHelp>
+				</UpdateMode>
+				<Handler>
+					<Type>Hash</Type>
+					<Items>
+						<Expire.JCode>
+							<Type>String</Type>
+							<ShortHelp>Handlercode that can be executed at expiry</ShortHelp>
+						</Expire.JCode>
+					</Items>
+				</Handler>
+				<History>
+					<Type>Hash</Type>
+					<ShortHelp>Configure the historical session writer</ShortHelp>
+					<Items>
+						<Enabled>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+						</Enabled>
+						<Compressed>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+							<ShortHelp>If the history files shall be compressed (zip)</ShortHelp>
+						</Compressed>
+						<HistoryFileName>
+							<Type>String</Type>
+							<Default>h-&lt;instance&gt;-&lt;type&gt;-&lt;date\|date yyyyMMdd.HHmmss&gt;</Default>
+							<ShortHelp>The file name pattern used to name the historical files  e.g. h-&lt;type&gt;-&lt;time\|date(yyyyMMdd.HHmmss)&gt;  see date transformer</ShortHelp>
+						</HistoryFileName>
+						<HistoryDirectory>
+							<Type>String</Type>
+							<Default>$(Home)/history</Default>
+							<ShortHelp>The directory to write the historical sessions to  every expired or closed session will be written here</ShortHelp>
+						</HistoryDirectory>
+						<HistorySwitchInterval>
+							<Type>Duration</Type>
+							<Default>1h</Default>
+							<ShortHelp>The time after which a file is closed and the next started</ShortHelp>
+						</HistorySwitchInterval>
+						<CryptKey>
+							<Type>String</Type>
+							<Default>internalKey</Default>
+							<ShortHelp>The key used to encrypt attribute values in history file (if required)</ShortHelp>
+						</CryptKey>
+					</Items>
+				</History>
+				<Accounting>
+					<Type>Hash</Type>
+					<ShortHelp>Configures the accounting log writer</ShortHelp>
+					<Items>
+						<Enabled>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+						</Enabled>
+						<AccountingFileName>
+							<Type>String</Type>
+							<Default>a-&lt;instance&gt;-&lt;type&gt;-&lt;date\|date yyyyMMdd.HHmmss&gt;</Default>
+							<ShortHelp>The file name pattern used to name the accounting files  e.g. a-&lt;time\|date yyyyMMdd.HHmmss&gt;  see date transformer</ShortHelp>
+						</AccountingFileName>
+						<AccountingDirectory>
+							<Type>String</Type>
+							<Default>$(Home)/accounting</Default>
+							<ShortHelp>The directory to write the accounting csv data to</ShortHelp>
+						</AccountingDirectory>
+						<AccountingSwitchInterval>
+							<Type>Duration</Type>
+							<Default>1h</Default>
+							<ShortHelp>The time after which a file is closed and the next started</ShortHelp>
+						</AccountingSwitchInterval>
+						<AccountingCode>
+							<Type>String</Type>
+							<ShortHelp>The code to be applied to the message object prior and for writing into the Accounting Log</ShortHelp>
+						</AccountingCode>
+					</Items>
+				</Accounting>
+				<DefaultExpiryNotificationGroup>
+					<Type>String</Type>
+					<ShortHelp>ServerGroup to send expire notifications to if not overridden in the message</ShortHelp>
+				</DefaultExpiryNotificationGroup>
+				<ExpireLimit>
+					<Type>Speed</Type>
+					<ShortHelp>Limit of expires per second</ShortHelp>
+				</ExpireLimit>
+				<RemoteReplication>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>Indicates if items of this type should be distributed among all sites. If set to false  this item is not synchronized to remote sites and is thus only locally visible.</ShortHelp>
+				</RemoteReplication>
+				<RequiresOwnership>
+					<Type>Boolean</Type>
+					<Default>false</Default>
+					<ShortHelp>Indicates if the items store shall be aware of the ownership of this type</ShortHelp>
+				</RequiresOwnership>
+				<WriteJournal>
+					<Type>Boolean</Type>
+					<Default>true</Default>
+					<ShortHelp>If set to false  journal for this type is not written to disk even if Journal/UseDisk is set to true</ShortHelp>
+				</WriteJournal>
+				<NetworkDuplicateLimit>
+					<Type>Duration</Type>
+					<ShortHelp>Type-specific override value for parameter InMemoryStore/NetworkDuplicateLimit</ShortHelp>
+				</NetworkDuplicateLimit>
+				<NASRetryLimit>
+					<Type>Duration</Type>
+					<ShortHelp>Type-specific override value for parameter InMemoryStore/NASRetryLimit</ShortHelp>
+				</NASRetryLimit>
+				<ChangeNotifications>
+					<Type>Hash</Type>
+					<Items>
+						<Create>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+							<ShortHelp>Enable creation notifications for this type</ShortHelp>
+						</Create>
+						<Modify>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+							<ShortHelp>Enable modification notifications for this type</ShortHelp>
+						</Modify>
+						<Delete>
+							<Type>Boolean</Type>
+							<Default>false</Default>
+							<ShortHelp>Enable deletion notifications for this type</ShortHelp>
+						</Delete>
+					</Items>
+				</ChangeNotifications>
+			</Items>
+		</Values>
+	</StoreTypes>
+</root>

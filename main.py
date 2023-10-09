@@ -1,4 +1,5 @@
-
+from xml.dom.minidom import parseString
+from dicttoxml import dicttoxml
 import json
 import os
 import time
@@ -94,6 +95,17 @@ def create_definition(tokens, name, index, isEnumeration):
             this_object["ShortHelp"] = short_help
             index += 1
             continue
+
+        example = ""
+        if tokens[index] == "Example" and tokens[index + 1] == "{":
+            index = index + 2
+            while(tokens[index] != "}"):
+                example += tokens[index] + " "
+                index += 1
+
+            this_object["Example"] = example
+            index += 1
+            continue
         
         if tokens[index + 1] == "{":
             new_index, values, new_object = create_definition(tokens, tokens[index], index + 2, isEnumeration)
@@ -138,7 +150,7 @@ def make_table(object_name, object_value):
 file_list = []
 path = "C:/xampp/htdocs/pydipl/cdl/"
 for x in os.listdir(path): 
-    if x.endswith(".cdl"):
+    if x.endswith(".cdl"): #hack
         file_list.append(x)
 
             
@@ -148,11 +160,11 @@ for file in file_list:
 
     file = open(path+file, 'r')
     contents = file.read()
-    contents = contents.replace("\t", "").replace("\n", " ").replace('=', ' ').replace(',', ' ').replace("}.", " } ").replace('}', " } ").replace('{', " { ")
+    contents = contents.replace("\t", " ").replace("\n", " ").replace('=', ' ').replace(',', ' ').replace("}.", "}").replace("= {", "{").replace('}', " } ").replace('{', " { ")
     tokens = tokenize(contents)
 
     returnValue = create_definition(tokens, "start", 0, False)
-    dictionary = returnValue[2] #print(json.dumps(dictionary, indent=4))
+    dictionary = returnValue[2]#print(json.dumps(dictionary, indent=4))
     name = list(dictionary.keys())[0]
 
 ##if Isa attribute exist ->
@@ -188,7 +200,7 @@ for file in file_list:
     back_button = f"<a href='../index.php' class='button_position'> Configuration Reference </a>"
     html_content += f"<h3 id='name' class='header'> {name} {back_button}</h3> "
     html_content += html_inherits
-
+    
     html = "<table>"
     make_table("", dictionary)
     html_content += html
@@ -197,16 +209,28 @@ for file in file_list:
     script += " else {cell.innerHTML = '-';target_col.style.display = 'block';}}"
     html_content += f"</table><script>{script}</script></body></html>"
     
-    file_path = name+'.html'
-    with open("html/"+file_path, 'w', encoding='utf-8') as html_file:
+    with open("html/"+name+'.html', 'w', encoding='utf-8') as html_file:
         html_file.write(html_content)
 
-    ent_time = time.time()
+    json_object = json.dumps(dictionary, indent = 4)
+    with open("json/"+name+".json", 'w') as json_file:
+        json_file.write(json_object)
+
+    xml = dicttoxml(dictionary, attr_type = False)
+    xml_string = parseString(xml).toprettyxml()
+    with open("xml/"+name+".xml", 'w') as xml_file:
+        xml_file.write(xml_string)
+
+    end_time = time.time()
 
     print("File: ", name)
-    print("Time of execution: ", ent_time-start_time, "seconds")
+    print("Time of execution: ", end_time-start_time, "seconds")
     print()
 
+    
+ 
+    
+   
 
         
 

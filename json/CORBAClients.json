@@ -1,0 +1,26 @@
+{
+    "Limit": {
+        "Type": "Speed",
+        "ShortHelp": "Throughput limit"
+    },
+    "IORHost": {
+        "Type": "String",
+        "ShortHelp": "The IP address which will be returned in locate requests",
+        "Mandatory": "true",
+        "Group": "1Global"
+    },
+    "IORPort": {
+        "Type": "String",
+        "ShortHelp": "The port which will be returned in locate requests",
+        "Mandatory": "true",
+        "Group": "1Global"
+    },
+    "Password": {
+        "ShortHelp": "The password for the Client",
+        "Type": "Password"
+    },
+    "Username": {
+        "Type": "String",
+        "ShortHelp": "The Username for the Client"
+    }
+}

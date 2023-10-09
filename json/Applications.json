@@ -1,0 +1,398 @@
+{
+    "Service": {
+        "Type": "String",
+        "ShortHelp": "The service name  stores in Session as 'Service' attriute"
+    },
+    "Imports": {
+        "Type": "List",
+        "ShortHelp": "List of applications to import handler from",
+        "Keys": {
+            "Type": "String"
+        }
+    },
+    "ServerGroups": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "The configuration of used server groups  used for validation and mapping of internally used server group names to real config ServerGroups",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The application internally used name of the server group"
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "The properties of the server group for validation",
+            "Items": {
+                "Protocol": {
+                    "Type": "String",
+                    "ShortHelp": "The protocol for this peer communication  used for validation"
+                },
+                "Encoding": {
+                    "Type": "String",
+                    "ShortHelp": "The encoding for this peer communication  used for validation"
+                },
+                "ServerGroupSection": {
+                    "Type": "String",
+                    "ShortHelp": "The name of the used section to map the servergroup"
+                },
+                "ServerGroup": {
+                    "Type": "String",
+                    "ShortHelp": "The name of the used servergroup in ServerGroupSection"
+                },
+                "Namespace": {
+                    "Type": "String",
+                    "ShortHelp": "Optional additional Namespace specification (e.g.: schema:tmus.ldif)"
+                },
+                "LocalDeliveryApplication": {
+                    "Type": "String",
+                    "ShortHelp": "If specified  messages sent to this server group will be delivered directly to the given application without network IO"
+                },
+                "LocalDeliveryClientSection": {
+                    "Type": "String",
+                    "ShortHelp": "Client section used by local delivery client"
+                },
+                "LocalDeliveryClientName": {
+                    "Type": "String",
+                    "Default": "LocalDelivery",
+                    "ShortHelp": "Client name used by local delivery client"
+                },
+                "LocalDeliveryTimeout": {
+                    "Type": "Duration",
+                    "Default": "10s",
+                    "ShortHelp": "Timeout for requests delivered over local delivery"
+                },
+                "AutoStart": {
+                    "Type": "Boolean",
+                    "Default": "false",
+                    "ShortHelp": "Starts the server group upon process startup"
+                },
+                "Servant": {
+                    "Type": "Enumeration",
+                    "Values": [
+                        "Servers",
+                        "ServerGroup"
+                    ],
+                    "Default": "Servers",
+                    "ShortHelp": "The type of the servant (used for auto start only)"
+                }
+            }
+        }
+    },
+    "Clients": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "The configuration of clients  used for validation",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "The application internally used name of the client"
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "The properties of the client for validation",
+            "Items": {
+                "MappedName": {
+                    "Type": "String",
+                    "ShortHelp": "The name of the used client in the respective clients section"
+                },
+                "Protocol": {
+                    "Type": "String",
+                    "ShortHelp": "The protocol for this peer communication  used for validation"
+                }
+            }
+        }
+    },
+    "CommunicationReferencePoints": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "Define communication protocols _between_ server group entities.",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "A communication reference point name."
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "The properties for this communication reference point.",
+            "Items": {
+                "Client": {
+                    "Type": "String",
+                    "ShortHelp": "Symbolic server group name."
+                },
+                "Server": {
+                    "Type": "String",
+                    "ShortHelp": "Symbolic server group name."
+                },
+                "Namespace": {
+                    "Type": "String",
+                    "ShortHelp": "A namespace path which is used for validation and coresponds to the desired protocol."
+                },
+                "Transport": {
+                    "Type": "String",
+                    "ShortHelp": "Optionally provide a transport layer protocol name."
+                },
+                "Protocol": {
+                    "Type": "String",
+                    "ShortHelp": "Optionally provide an application layer protocol name."
+                }
+            }
+        }
+    },
+    "ProvData": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "ProvData chunks definitions",
+        "LongHelp": "This section enables definition of ProvData chunks which are loaded while Rules Tool Use Case(s) execution. ",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "Global name of this chunk"
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "The Content and other properties of ProvData chunk.",
+            "Items": {
+                "Version": {
+                    "Type": "Int",
+                    "ShortHelp": "Version number of the ProvData chunk"
+                },
+                "ContentType": {
+                    "Type": "Enumeration",
+                    "Values": [
+                        "Data",
+                        "Config"
+                    ],
+                    "Default": "Data",
+                    "ShortHelp": "Type of content of ProvData chunk"
+                },
+                "Type": {
+                    "Type": "Enumeration",
+                    "Values": [
+                        "DHCPDictionary",
+                        "DHCPV6Dictionary",
+                        "DNSDictionary",
+                        "COPSDictionary",
+                        "DiameterDictionary",
+                        "DiameterRealmRoutingTables",
+                        "IPPools",
+                        "Mapping",
+                        "Policy",
+                        "Application",
+                        "RadiusDictionary",
+                        "ServerGroupMappings",
+                        "ContentBasedConfig",
+                        "LoadEvaluationConfig",
+                        "LIDictionary",
+                        "RESTProfileYAML"
+                    ],
+                    "Default": "Mapping",
+                    "ShortHelp": "Type of ProvData chunk"
+                },
+                "Content": {
+                    "Type": "String",
+                    "ShortHelp": "Content of ProvData chunk (xml csv...)"
+                },
+                "Product": {
+                    "Type": "String",
+                    "Default": "-",
+                    "ShortHelp": "Product name to which ProvData chunk belongs"
+                }
+            }
+        }
+    },
+    "Handler": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "Transaction handler definitions",
+        "LongHelp": "A handler is a piece of code working on a transaction. A transaction is the context of a request just processed. Handlers are combined to processing sequences in the Applications\\ section. ",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "Global name of this handler"
+        },
+        "Values": {
+            "Type": "Hash",
+            "ShortHelp": "The Code and properties of a handler",
+            "Items": {
+                "AliasName": {
+                    "Type": "String",
+                    "ShortHelp": "A different name for the same handler  allows easier migration"
+                },
+                "Tests": {
+                    "Type": "KeyValuePair",
+                    "ShortHelp": "Collection of handler test pattern",
+                    "Keys": {
+                        "Type": "String",
+                        "ShortHelp": "Test name  e.g.: T122AccessOK"
+                    },
+                    "Values": {
+                        "Type": "Hash",
+                        "Items": {
+                            "Kind": {
+                                "Type": "Enumeration",
+                                "Values": [
+                                    "Test",
+                                    "UseCase",
+                                    "Informational"
+                                ],
+                                "Default": "UseCase"
+                            },
+                            "ContextIn": {
+                                "Type": "String"
+                            },
+                            "Return": {
+                                "Type": "String",
+                                "ShortHelp": "Expected return value"
+                            },
+                            "ContextOut": {
+                                "Type": "String",
+                                "ShortHelp": "Expected contxt after call"
+                            },
+                            "SetupHandlers": {
+                                "Type": "List",
+                                "ShortHelp": "The handlers to setup an environment before running the test",
+                                "Keys": {
+                                    "Type": "String"
+                                }
+                            }
+                        }
+                    }
+                },
+                "PseudoCode": {
+                    "Type": "String",
+                    "ShortHelp": "Internal documentation in pseudo code format"
+                },
+                "JCode": {
+                    "Type": "Handler",
+                    "ShortHelp": "Handler code (Java preprocessed)"
+                },
+                "JCodeSig": {
+                    "Type": "String",
+                    "ShortHelp": "Handler code (Java) signature"
+                },
+                "Question": {
+                    "Type": "String",
+                    "ShortHelp": "If this handler is a decision branch  no state change"
+                },
+                "Input": {
+                    "Type": "String",
+                    "ShortHelp": "Optional desciption of input requirements",
+                    "Example": "/PoolName - the pool name to be used for allocation (optional) "
+                },
+                "Context": {
+                    "Type": "String",
+                    "ShortHelp": "Optional desciption of context requirements",
+                    "Example": "Subscriber - The LDAP subscriber record has to be available (fetched before) "
+                },
+                "Output": {
+                    "Type": "String",
+                    "ShortHelp": "Optional desciption of output provided or fields changed",
+                    "Example": "Changes the AccountingLast time in the session context. "
+                },
+                "ReturnValue": {
+                    "Type": "String",
+                    "ShortHelp": "Optional value the handler returns in the flow",
+                    "Example": "0 or assigned address. "
+                },
+                "See": {
+                    "Type": "String",
+                    "ShortHelp": "Optional desciption of related docs"
+                }
+            }
+        }
+    },
+    "Languages": {
+        "Type": "List",
+        "ShortHelp": "List of languages this flow is written for.",
+        "Keys": {
+            "Type": "Enumeration",
+            "Values": [
+                "java"
+            ]
+        },
+        "Default": [
+            "java"
+        ]
+    },
+    "States": {
+        "Type": "List",
+        "ShortHelp": "List of possible machine states",
+        "LongHelp": "Only some of the applications use this states feature e.g. the LDAP service uses two states: bound and unbound to know if a LDAP client has authenticated (bound) himself. ",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "State - first is initial one"
+        }
+    },
+    "Namespaces": {
+        "Type": "String",
+        "ShortHelp": "Namespace declarations  ('//Request Diameter/Gx/....')"
+    },
+    "Tests": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "Collection of flow test pattern",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "Test name  e.g.: T122AccessOK"
+        },
+        "Values": {
+            "Type": "Hash",
+            "Items": {
+                "Kind": {
+                    "Type": "Enumeration",
+                    "Values": [
+                        "Test",
+                        "UseCase",
+                        "Informational",
+                        "Snoop",
+                        "GlobalUseCase"
+                    ],
+                    "Default": "UseCase"
+                },
+                "Context": {
+                    "Type": "String"
+                },
+                "Request": {
+                    "Type": "String",
+                    "ShortHelp": "Message to inject"
+                },
+                "MSC": {
+                    "Type": "String",
+                    "ShortHelp": "internal messages exchanged/simulated"
+                },
+                "Response": {
+                    "Type": "String",
+                    "ShortHelp": "Message expected as response"
+                },
+                "Config": {
+                    "Type": "String",
+                    "ShortHelp": "The config accessible as /Config in use cases and the Start flow"
+                },
+                "GlobalUseCase": {
+                    "Type": "KeyValuePair",
+                    "ShortHelp": "List of applications to be executed within GlobalUseCase",
+                    "Keys": {
+                        "Type": "String",
+                        "ShortHelp": "Real name of application to be invoked during GlobalUseCase execution."
+                    },
+                    "Values": {
+                        "Type": "Hash",
+                        "Items": {
+                            "Context": {
+                                "Type": "String",
+                                "ShortHelp": "Transaction Context to initialize application with."
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "Rules": {
+        "Type": "KeyValuePair",
+        "ShortHelp": "Service applications rules",
+        "Merge": "1",
+        "Keys": {
+            "Type": "String",
+            "ShortHelp": "Entry name  e.g.: Do"
+        },
+        "Values": {
+            "Type": "Application",
+            "ShortHelp": "Handler processing rules"
+        }
+    },
+    "FormatVersion": {
+        "Type": "Int",
+        "ShortHelp": "An internal version tag to track backward and forward compatible changes needed.",
+        "Default": "0"
+    }
+}

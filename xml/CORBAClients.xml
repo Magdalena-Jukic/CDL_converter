@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<root>
+	<Limit>
+		<Type>Speed</Type>
+		<ShortHelp>Throughput limit</ShortHelp>
+	</Limit>
+	<IORHost>
+		<Type>String</Type>
+		<ShortHelp>The IP address which will be returned in locate requests</ShortHelp>
+		<Mandatory>true</Mandatory>
+		<Group>1Global</Group>
+	</IORHost>
+	<IORPort>
+		<Type>String</Type>
+		<ShortHelp>The port which will be returned in locate requests</ShortHelp>
+		<Mandatory>true</Mandatory>
+		<Group>1Global</Group>
+	</IORPort>
+	<Password>
+		<ShortHelp>The password for the Client</ShortHelp>
+		<Type>Password</Type>
+	</Password>
+	<Username>
+		<Type>String</Type>
+		<ShortHelp>The Username for the Client</ShortHelp>
+	</Username>
+</root>
